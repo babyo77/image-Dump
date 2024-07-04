@@ -439,7 +439,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
             <Input
               ref={inputRef}
               placeholder={image.link || image.data}
-              value={image.link || image.data}
+              defaultValue={image.link || image.data}
             />
             <Button size={"sm"} onClick={handleUpdate} disabled={loader}>
               {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Update"}
