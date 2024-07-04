@@ -353,7 +353,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
           <DrawerTitle>Image Analytics</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
-        {renderAnalytics()}
+        <div style={{ width: "100%", height: 200 }}>{renderAnalytics()}</div>
       </DrawerContent>
     </Drawer>
   );
