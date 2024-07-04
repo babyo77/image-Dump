@@ -262,7 +262,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
           );
 
           if (existingData) {
-            existingData.clicks += 1;
+            existingData.views += 1;
           } else {
             aggregatedData.push({
               date: createdAtDate,
@@ -292,7 +292,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         <ResponsiveContainer>
           <AreaChart
             data={data}
-            className=" text-sm"
+            className=" text-xs"
             margin={{
               top: 10,
               right: 30,
@@ -303,12 +303,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
             <XAxis dataKey="date" tickFormatter={formatDate} />
             <YAxis />
             <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="views"
-              stroke="#000"
-              fill="#ffffff"
-            />
+            <Area type="basis" dataKey="views" stroke="#000" fill="#ffffff" />
           </AreaChart>
         </ResponsiveContainer>
       </div>

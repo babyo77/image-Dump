@@ -299,7 +299,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
         <ResponsiveContainer>
           <AreaChart
             data={data}
-            className=" text-sm"
+            className=" text-xs"
             margin={{
               top: 10,
               right: 30,
@@ -310,12 +310,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
             <XAxis dataKey="date" tickFormatter={formatDate} />
             <YAxis />
             <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="clicks"
-              stroke="#000"
-              fill="#ffffff"
-            />
+            <Area type="basis" dataKey="clicks" stroke="#000" fill="#ffffff" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
