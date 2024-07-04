@@ -295,11 +295,16 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
 
   const renderAnalytics = () => {
     return (
-      <div style={{ width: "100%", height: 200, marginBottom: ".7rem" }}>
+      <motion.div
+        initial={{ filter: "blur(10px)", opacity: 0 }}
+        animate={{ filter: "blur(0px)", opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{ width: "100%", height: "100%", marginBottom: ".7rem" }}
+      >
         <ResponsiveContainer>
           <AreaChart
             data={data}
-            className=" text-xs"
+            className=" text-xs md:text-base"
             margin={{
               top: 10,
               right: 30,
@@ -318,7 +323,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </motion.div>
     );
   };
   if (isDesktop) {
@@ -327,12 +332,12 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
         <DialogTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
           <PiCursorClick /> {formatNumber(image.clicks)}
         </DialogTrigger>
-        <DialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
+        <DialogContent className="w-[100dvw] rounded-xl border-none bg-zinc-950/90">
           <DialogHeader>
             <DialogTitle>Image Analytics</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
-          {renderAnalytics()}
+          <div className=" h-[87dvh] ">{renderAnalytics()}</div>
         </DialogContent>
       </Dialog>
     );

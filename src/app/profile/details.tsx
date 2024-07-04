@@ -288,11 +288,16 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
 
   const renderAnalytics = () => {
     return (
-      <div style={{ width: "100%", height: 200, marginBottom: ".7rem" }}>
+      <motion.div
+        initial={{ filter: "blur(10px)", opacity: 0 }}
+        animate={{ filter: "blur(0px)", opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{ width: "100%", height: "100%", marginBottom: ".7rem" }}
+      >
         <ResponsiveContainer>
           <AreaChart
             data={data}
-            className=" text-xs"
+            className=" text-xs md:text-base"
             margin={{
               top: 10,
               right: 30,
@@ -311,7 +316,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </motion.div>
     );
   };
   if (isDesktop) {
@@ -320,12 +325,12 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         <DialogTrigger className="h-[1.4rem] w-[1.4rem] ml-1 text-zinc-400 hover:text-zinc-200 mt-2">
           <SiSimpleanalytics />
         </DialogTrigger>
-        <DialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
+        <DialogContent className="w-[100dvw] rounded-xl border-none bg-zinc-950/90">
           <DialogHeader>
             <DialogTitle>Profile Analytics</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
-          {renderAnalytics()}
+          <div className="h-[87dvh] ">{renderAnalytics()}</div>
         </DialogContent>
       </Dialog>
     );
