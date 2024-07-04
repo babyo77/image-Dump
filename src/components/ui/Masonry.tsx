@@ -329,7 +329,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
         </DialogTrigger>
         <DialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
           <DialogHeader>
-            <DialogTitle>Analytics</DialogTitle>
+            <DialogTitle>Image Analytics</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           {renderAnalytics()}
@@ -345,7 +345,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
       </DrawerTrigger>
       <DrawerContent className=" border-none">
         <DrawerHeader>
-          <DrawerTitle>Analytics</DrawerTitle>
+          <DrawerTitle>Image Analytics</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         {renderAnalytics()}

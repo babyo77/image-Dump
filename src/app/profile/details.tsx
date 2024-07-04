@@ -229,10 +229,10 @@ function Details({ details }: { details: user }) {
 }
 
 export const ProfileAnalytics = ({ user }: { user: user }) => {
-  const [data, setData] = useState<ClicksData[]>([
+  const [data, setData] = useState<any[]>([
     {
       date: new Date().toISOString().split("T")[0],
-      clicks: 0,
+      views: 0,
     },
   ]);
   const analytics = useCallback(() => {
@@ -266,7 +266,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
           } else {
             aggregatedData.push({
               date: createdAtDate,
-              clicks: 0,
+              views: 0,
             });
           }
         });
@@ -305,7 +305,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
             <Tooltip />
             <Area
               type="monotone"
-              dataKey="clicks"
+              dataKey="views"
               stroke="#000"
               fill="#ffffff"
             />
@@ -322,7 +322,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         </DialogTrigger>
         <DialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
           <DialogHeader>
-            <DialogTitle>Analytics</DialogTitle>
+            <DialogTitle>Profile Analytics</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           {renderAnalytics()}
@@ -338,7 +338,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
       </DrawerTrigger>
       <DrawerContent className=" border-none">
         <DrawerHeader>
-          <DrawerTitle>Analytics</DrawerTitle>
+          <DrawerTitle>Profile Analytics</DrawerTitle>
           <DrawerDescription></DrawerDescription>
         </DrawerHeader>
         {renderAnalytics()}
