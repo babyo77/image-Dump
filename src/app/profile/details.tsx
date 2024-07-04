@@ -303,7 +303,12 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
             <XAxis dataKey="date" tickFormatter={formatDate} />
             <YAxis />
             <Tooltip />
-            <Area type="basis" dataKey="views" stroke="#000" fill="#ffffff" />
+            <Area
+              type="monotoneX"
+              dataKey="views"
+              stroke="#000"
+              fill="#ffffff"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
