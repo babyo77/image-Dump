@@ -252,7 +252,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         ]
       )
       .then((response) => {
-        const aggregatedData: ClicksData[] = [];
+        const aggregatedData: any[] = [];
         response.documents.forEach((doc) => {
           const createdAtDate = new Date(doc.$createdAt)
             .toISOString()
