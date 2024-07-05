@@ -162,6 +162,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
     imageObj.link && imageObj.link.length > 0
       ? window.open(imageObj.link)
       : window.open(imageObj.data);
+    if (remove) return;
     try {
       await fetch("/api/analytics", {
         method: "POST",

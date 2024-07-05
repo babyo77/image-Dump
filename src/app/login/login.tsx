@@ -2,20 +2,37 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useRandom from "@/hooks/useRandom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { HTMLProps } from "react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { getRandom } from "@/lib/utils";
+
 export interface verificationInfo {
   id: string;
   bio: string;
+}
+interface BackgroundGridProps {
+  color: string;
+  cellSize: string | number;
+  strokeWidth: number | string;
+  className?: string;
+  fade?: boolean;
 }
 
 function Login() {
   const [username, setUsername] = useState<string>("");
   const { code: verificationCode } = useRandom();
   const [checking, setChecking] = useState<boolean>(false);
+  const [sendOtp, setSendOtp] = useState<boolean>(false);
+  const [uid, setUID] = useState<string>(getRandom());
   const router = useRouter();
   useEffect(() => {
     toast.dismiss();
@@ -66,13 +83,40 @@ function Login() {
     }
   };
 
+  const handleGetOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const MakeUid = getRandom();
+    setUID(MakeUid);
+    setSendOtp(true);
+    const res = await fetch("/api/otp", {
+      method: "POST",
+      body: JSON.stringify({ type: "c", uid: MakeUid, username }),
+      cache: "no-cache",
+    });
+    if (res.ok) {
+      return;
+    } else {
+      toast.error("can't send OTP");
+    }
+  };
   return (
     <>
+      <AnimatePresence>
+        {sendOtp && (
+          <motion.div
+            style={{
+              backdropFilter: "blur(11px)",
+              WebkitBackdropFilter: "blur(11px)",
+            }}
+            onClick={() => setSendOtp(false)}
+            className=" absolute w-full z-40 h-full flex justify-center items-center "
+          >
+            <InputOTPForm uid={uid} username={username} />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <BackgroundGrid />
       <motion.form
-        initial={{ filter: "blur(10px)", opacity: 0 }}
-        animate={{ filter: "blur(0px)", opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
         onSubmit={handleVerify}
         className="absolute z-10 inset-0 flex flex-col gap-4 items-center justify-center text-white font-medium px-5 text-xs"
       >
@@ -102,7 +146,10 @@ function Login() {
           >
             Please add <span className="text-white">{verificationCode}</span> to
             your Instagram bio for account verification. You can remove it once
-            the verification is complete.
+            the verification is complete.{" "}
+            <span onClick={handleGetOTP} className="text-zinc-100">
+              Login via OTP?
+            </span>
           </motion.p>
         )}
       </motion.form>
@@ -118,15 +165,6 @@ function Login() {
       </motion.footer>
     </>
   );
-}
-import { HTMLProps } from "react";
-
-interface BackgroundGridProps {
-  color: string;
-  cellSize: string | number;
-  strokeWidth: number | string;
-  className?: string;
-  fade?: boolean;
 }
 
 const BackgroundGrid = ({
@@ -167,5 +205,82 @@ const BackgroundGrid = ({
     ></motion.div>
   );
 };
+
+export function InputOTPForm({
+  uid,
+  username,
+}: {
+  uid: string;
+  username: string;
+}) {
+  const OTPRef = useRef<HTMLInputElement>(null);
+  const [loader, setLoader] = useState<boolean>(false);
+  const router = useRouter();
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    setLoader(true);
+    e.stopPropagation();
+    e.preventDefault();
+    const res = await fetch("/api/otp", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "v",
+        uid: uid,
+        username,
+        sentCode: OTPRef.current?.value || "",
+      }),
+      cache: "no-cache",
+    });
+    if (res.ok) {
+      toast.dismiss("verify");
+      router.push(`/profile`);
+      return;
+    } else {
+      toast.error("wrong OTP");
+    }
+    setLoader(false);
+  }
+
+  return (
+    <motion.div
+      initial={{ filter: "blur(10px)", opacity: 0 }}
+      animate={{ filter: "blur(0px)", opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      exit={{ filter: "blur(10px)", opacity: 0 }}
+      className=" rounded-xl bg-neutral-900 p-4"
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={onSubmit}
+        className="flex flex-col justify-center items-center gap-4 w-full"
+      >
+        <label>One-Time Password</label>
+        <InputOTP maxLength={6} ref={OTPRef}>
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
+
+        <p className=" text-zinc-400 text-[0.72rem] text-start">
+          Please enter the one-time password sent to <br /> your Instagram dm
+          from{" "}
+          <a href="" target="blank" className=" text-zinc-100">
+            @circles_verification
+          </a>
+        </p>
+        {/* <div className="flex text-xs -mt-3 cursor-pointer  -mb-2 justify-center items-center w-full">
+          <p className="text-neutral-500">Send again?</p>
+        </div> */}
+        <Button type="submit" size={"sm"} disabled={loader} className=" w-full">
+          {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Done"}
+        </Button>
+      </form>
+    </motion.div>
+  );
+}
 
 export default Login;
