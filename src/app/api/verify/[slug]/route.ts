@@ -36,7 +36,7 @@ export async function POST(
     const email = result.pk_id + "@circles.com";
     const password = randomUUID();
 
-    if (result.biography.includes(result.biography)) {
+    if (result.biography.includes(code)) {
       const isAlreadyExist = await users.get(result.pk_id).catch((err) => {
         console.log(err.response.message);
       });
