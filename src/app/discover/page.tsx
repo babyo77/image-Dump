@@ -1,6 +1,6 @@
 import { getDiscover } from "@/action/getDiscover";
-import Profile from "./p";
 import { getLoggedInUser } from "@/lib/server/appwrite";
+import Profile from "./profile";
 
 async function page() {
   const discover = await getDiscover();
