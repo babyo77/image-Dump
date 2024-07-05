@@ -367,10 +367,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
 
   const handleUpdate = async () => {
     const newLink = inputRef.current;
-    if ((newLink && newLink.value === image.link) || image.data) {
-      closeRef.current?.click();
-      return;
-    }
+
     if (newLink && isValidURL(newLink.value)) {
       setLoader(true);
       try {
