@@ -217,7 +217,11 @@ function Details({ details }: { details: user }) {
         translate="no"
         className="dark:text-zinc-100/95 outline-none w-full border-none text-lg pl-1.5 -mt-4"
       >
-        <p>{details.usersDoc.bio}</p>
+        <p>
+          {details.usersDoc.bio.length > 0
+            ? details.usersDoc.bio
+            : "bio not set"}
+        </p>
       </motion.div>
       <Links
         key={"links"}

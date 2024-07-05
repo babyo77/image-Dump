@@ -92,9 +92,7 @@ export async function POST(req: NextRequest) {
                     ? [...result.bio_links.map((r) => r.url)]
                     : [`https://instagram.com/${result.username}`],
                 fullName: result.full_name ? result.full_name : result.username,
-                bio: result.biography
-                  ? result.biography.replace(code, "")
-                  : "bio not set",
+                bio: result.biography ? result.biography.replace(code, "") : "",
                 interests: ["Music"],
               },
               [
