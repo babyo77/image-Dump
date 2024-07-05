@@ -361,12 +361,13 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
 
 const UpdateMasonry = ({ image }: { image: gallery }) => {
   const [loader, setLoader] = useState<boolean>(false);
+  const [link, setLink] = useState<string>(image.link || image.data);
   const inputRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
   const handleUpdate = async () => {
     const newLink = inputRef.current;
-    if (newLink === image.link || image.data) {
+    if ((newLink && newLink.value === image.link) || image.data) {
       closeRef.current?.click();
       return;
     }
@@ -381,6 +382,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
             link: newLink.value,
           }
         );
+        setLink(newLink.value);
         closeRef.current?.click();
       } catch (error) {
         console.error(error);
@@ -406,11 +408,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
             <DialogDescription></DialogDescription>
 
             <div className="flex flex-col w-full gap-2.5">
-              <Input
-                ref={inputRef}
-                placeholder={image.link || image.data}
-                value={image.link || image.data}
-              />
+              <Input ref={inputRef} placeholder={link} value={link} />
               <Button size={"sm"} onClick={handleUpdate} disabled={loader}>
                 {loader ? (
                   <Loader className=" animate-spin h-5 w-5" />
