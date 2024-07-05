@@ -16,7 +16,10 @@ export function calculatePercentageMatching(
 
   const Similarity = intersection.size / union.size;
 
-  let similarityPercentage = Similarity * 100;
+  const similarityPercentage = Similarity * 100;
 
+  if (similarityPercentage === 0) {
+    return "1.00";
+  }
   return similarityPercentage.toFixed(2);
 }
