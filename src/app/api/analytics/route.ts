@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ID, Permission, Role } from "node-appwrite";
 
 export async function POST(req: NextRequest) {
-  const { imageObj, type } = await req.json();
+  const { id, user, type, c } = await req.json();
   const { db: database } = await createAdminClient();
 
   if (type === "click") {
@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
       await database.updateDocument(
         process.env.DATABASE_ID || "",
         process.env.GALLERY_ID || "",
-        imageObj.$id,
+        id,
         {
-          clicks: imageObj.clicks + 1,
+          clicks: c + 1,
         }
       );
       await database.createDocument(
@@ -22,9 +22,9 @@ export async function POST(req: NextRequest) {
         ID.unique(),
         {
           type: "image",
-          for: imageObj.$id,
+          for: id,
         },
-        [Permission.read(Role.user(imageObj.users[0].$id))]
+        [Permission.read(Role.user(user))]
       );
     } catch (error) {
       return NextResponse.json(

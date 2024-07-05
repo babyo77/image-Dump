@@ -169,7 +169,12 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify({ imageObj: imageObj, type: "click" }),
+        body: JSON.stringify({
+          id: imageObj.$id,
+          type: "click",
+          c: imageObj.click,
+          user: imageObj.users[0].$id,
+        }),
       });
     } catch (error) {
       console.error(error);
