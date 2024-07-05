@@ -10,6 +10,7 @@ export interface instagramUser {
   biography: string;
   pk_id: string;
   full_name: string;
+  category: string;
 }
 
 export interface metadata {

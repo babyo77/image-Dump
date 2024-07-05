@@ -53,7 +53,11 @@ export async function POST(
                 ? [...result.bio_links.map((r) => r.url)]
                 : [`https://instagram.com/${result.username}`],
             fullName: result.full_name ? result.full_name : result.username,
-            bio: result.biography ? result.biography.replace(code, "") : "",
+            bio: result.biography
+              ? result.biography.replace(code, "")
+              : result.category
+              ? result.category
+              : "",
             interests: ["Music"],
           },
           [
