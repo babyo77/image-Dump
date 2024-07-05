@@ -65,3 +65,12 @@ export function formatNumber(text: string | number) {
     return num.toString();
   }
 }
+
+export function getRandom() {
+  const chars = "0123456789";
+  return chars
+    .slice(0, 6)
+    .split("")
+    .map(() => chars[Math.floor(Math.random() * chars.length)])
+    .join("");
+}
