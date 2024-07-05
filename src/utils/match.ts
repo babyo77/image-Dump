@@ -2,19 +2,18 @@ export function calculatePercentageMatching(
   array1: string[],
   array2: string[]
 ): string {
-  array1 = array1.map((str) => str.toLowerCase().trim());
-  array2 = array2.map((str) => str.toLowerCase().trim());
+  const set1 = new Set(array1);
+  const set2 = new Set(array2);
 
-  let set2 = new Set(array2);
+  const intersection = new Set(
+    [...Array.from(set1)].filter((x) => set2.has(x))
+  );
 
-  let count = 0;
-  for (let string of array1) {
-    if (set2.has(string)) {
-      count++;
-    }
-  }
+  const union = new Set([...Array.from(set1), ...Array.from(set2)]);
 
-  let similarityPercentage = (count / (array1.length + array2.length)) * 100;
+  const Similarity = intersection.size / union.size;
+
+  let similarityPercentage = Similarity * 100;
 
   return similarityPercentage.toFixed(2);
 }
