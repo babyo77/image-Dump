@@ -82,7 +82,7 @@ export async function POST(
     }
     return NextResponse.json(
       {
-        error: "Verification failed,Try OPT login or come back tomorrow!",
+        error: "Verification failed,Try login via OTP or come back tomorrow!",
         ...result,
       },
       { status: 403 }
