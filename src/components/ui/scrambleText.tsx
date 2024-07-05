@@ -110,7 +110,7 @@ export default function NumberTicker({
   return (
     <div
       ref={statusRef}
-      className="transition-all duration-500 whitespace-pre-wrap text-5xl font-medium tracking-tighter"
+      className="transition-all duration-500 whitespace-pre-wrap text-4xl font-medium tracking-tighter"
     >
       <span className={cn("inline-block tabular-nums", className)} ref={ref} />{" "}
       % Match
