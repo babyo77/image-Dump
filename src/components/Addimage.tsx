@@ -155,7 +155,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
     return (
       <Dialog>
         <DialogTrigger ref={ref}></DialogTrigger>
-        <DialogContent className="w-[40dvw] rounded-xl bg-zinc-950/90">
+        <DialogContent className="w-[35dvw] rounded-xl bg-zinc-950/90">
           <DialogHeader>
             <DialogTitle>Upload</DialogTitle>
             <DialogDescription></DialogDescription>

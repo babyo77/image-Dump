@@ -67,7 +67,7 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         <DialogContent
           aria-describedby="music"
           aria-description="music"
-          className="w-[40dvw] rounded-xl bg-zinc-950/90"
+          className="w-[35dvw] rounded-xl bg-zinc-950/90"
         >
           <DialogHeader>
             <DialogTitle>Music</DialogTitle>
