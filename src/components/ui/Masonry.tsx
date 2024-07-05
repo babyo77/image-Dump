@@ -217,12 +217,12 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   <UpdateMasonry image={imageObj} />
                 </>
               )}
-              <p
+              {/* <p
                 onClick={() => handleClick(imageObj)}
                 className=" absolute flex gap-1 items-center text-lg hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2"
               >
                 <MdOutlineArrowOutward />
-              </p>
+              </p> */}
               {remove && <ClicksAnalytics image={imageObj} />}
             </motion.div>
           ))}
