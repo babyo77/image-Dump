@@ -236,7 +236,7 @@ export function InputOTPForm({
       router.push(`/profile`);
       return;
     } else {
-      toast.error("wrong OTP");
+      toast.error("wrong OTP or invalid username");
     }
     setLoader(false);
   }

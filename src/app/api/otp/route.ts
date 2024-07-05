@@ -9,7 +9,6 @@ import { Permission, Query, Role, Users } from "node-appwrite";
 export async function POST(req: NextRequest) {
   try {
     const { type, uid, username, sentCode } = await req.json();
-    console.log(type, uid, username);
 
     const { db, account, users } = await createAdminClient();
     const code = getRandom();
@@ -41,7 +40,6 @@ export async function POST(req: NextRequest) {
         uid,
         [Query.select(["code"])]
       );
-      console.log(DBcode);
 
       if (DBcode.code === sentCode) {
         await db.deleteDocument(
