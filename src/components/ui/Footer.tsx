@@ -93,28 +93,9 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
     }
   }, [links, setLinks, user.$id]);
 
-  const [isScrolling, setIsScrolling] = useState(false);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    const handleScroll = () => {
-      setIsScrolling(true);
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
-    };
-  }, []);
-
   return (
     <AnimatePresence>
-      {!isScrolling && loggedIn && (
+      {loggedIn && (
         <div className="w-full flex overflow-hidden justify-center items-center">
           <motion.div
             initial={{ y: "100dvh", opacity: 0 }}
