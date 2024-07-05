@@ -172,7 +172,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
         body: JSON.stringify({
           id: imageObj.$id,
           type: "click",
-          c: imageObj.click,
+          c: imageObj.clicks,
           user: imageObj.users[0].$id,
         }),
       });
