@@ -90,11 +90,6 @@ export default function NumberTicker({
           if (latest === value) {
             if (value >= 70) {
               handleClick();
-              statusRef.current.style.color = "white";
-              ref.current.style.color = "white";
-            } else {
-              statusRef.current.style.color = "red";
-              ref.current.style.color = "red";
             }
           }
         }
