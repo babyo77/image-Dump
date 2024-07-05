@@ -165,7 +165,7 @@ function Details({ details }: { details: user }) {
               stiffness: 45,
             }}
             exit={{ y: "5dvh", opacity: 0 }}
-            className="h-28 w-28 rounded-full overflow-hidden"
+            className="h-32 w-32 rounded-full overflow-hidden"
           >
             <Image
               key={"profile"}
@@ -197,7 +197,7 @@ function Details({ details }: { details: user }) {
         ref={fullNameRef}
         contentEditable
         translate="no"
-        className="font-semibold outline-none text-2xl w-full py-0.5 pl-1.5 border-none -mt-0.5"
+        className="font-semibold outline-none text-2xl w-full py-0.5 pl-1.5 border-none -mt-1"
       >
         <p>{details.usersDoc.fullName}</p>
       </motion.div>

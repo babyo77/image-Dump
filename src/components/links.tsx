@@ -76,7 +76,7 @@ export function Links({
               stiffness: 45,
             }}
             exit={{ y: "5dvh", opacity: 0 }}
-            className="flex -mt-2 cursor-pointer  font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
+            className="flex -mt-2.5 cursor-pointer  font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
           >
             {!links ? (
               details.links.slice(0, 3).map(({ image }, i) => (
@@ -200,7 +200,7 @@ export function Links({
             stiffness: 45,
           }}
           exit={{ y: "5dvh", opacity: 0 }}
-          className="flex -mt-2 cursor-pointer max-w-[90dvw] font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
+          className="flex -mt-2.5 cursor-pointer max-w-[90dvw] font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
         >
           {!links ? (
             details.links.slice(0, 3).map(({ image }, i) => (

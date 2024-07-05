@@ -17,7 +17,6 @@ import Image from "next/image";
 import { HeartHandshake } from "lucide-react";
 import { ID } from "appwrite";
 import { toast } from "sonner";
-import RetroGrid from "@/components/ui/grid";
 function User({ user }: { user: user }) {
   const { match, setMatch } = useUserContext();
   const router = useRouter();
