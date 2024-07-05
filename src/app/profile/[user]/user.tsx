@@ -275,7 +275,7 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
-                <p>{user.usersDoc.bio}</p>
+                <p>{user.usersDoc.bio.replace("bio not set", "")}</p>
               </motion.div>
 
               <Links details={user} loggedIn={false} />
