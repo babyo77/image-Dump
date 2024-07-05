@@ -2,8 +2,11 @@ export function calculatePercentageMatching(
   array1: string[],
   array2: string[]
 ): string {
-  const set1 = new Set(array1);
-  const set2 = new Set(array2);
+  const lowerCaseArray1 = array1.map((item) => item.toLowerCase());
+  const lowerCaseArray2 = array2.map((item) => item.toLowerCase());
+
+  const set1 = new Set(lowerCaseArray1);
+  const set2 = new Set(lowerCaseArray2);
 
   const intersection = new Set(
     [...Array.from(set1)].filter((x) => set2.has(x))
