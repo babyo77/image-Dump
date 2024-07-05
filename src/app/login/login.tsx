@@ -270,11 +270,11 @@ export function InputOTPForm({
           Please enter the one-time password sent to <br /> your Instagram dm
           from{" "}
           <a
-            href="https://www.instagram.com/circles_verification/"
+            href="https://www.instagram.com/lnkit_verification/"
             target="blank"
             className=" text-zinc-100"
           >
-            @circles_verification
+            @lnkit_verification
           </a>
         </p>
         {/* <div className="flex text-xs -mt-3 cursor-pointer  -mb-2 justify-center items-center w-full">

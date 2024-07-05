@@ -5,25 +5,25 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/store/context";
 export const metadata: Metadata = {
-  title: "Circles",
+  title: "lnkit",
   description: "A link in bio",
   icons: [{ rel: "icon", url: "/favicon.webp" }],
   openGraph: {
     images: [
       {
-        url: "https://your-circles.vercel.app/favicon.webp",
+        url: "https://lnkit.vercel.app/favicon.webp",
         width: 1200,
         height: 630,
-        alt: "Circles OG Image",
+        alt: "lnkit OG Image",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@tanmay11117",
-    title: "Circles",
+    title: "lnkit",
     description: "Find Your Circle",
-    images: "https://your-circles.vercel.app/favicon.webp",
+    images: "https://lnkit.vercel.app/favicon.webp",
   },
 };
 

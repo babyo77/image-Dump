@@ -33,7 +33,7 @@ export const getMetadata = async (link: string) => {
 
 export function replaceInstagramURL(originalURL: string) {
   if (typeof originalURL == "undefined")
-    return "https://your-circles.vercel.app/notFound.jpg";
+    return "https://lnkit.vercel.app/notFound.jpg";
   if (!originalURL.startsWith("https://instagram")) return originalURL;
   const regex = /https:\/\/instagram\.[^/]+/;
   const newBaseURL = "https://instagram.fmdc3-1.fna.fbcdn.net";

@@ -19,19 +19,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "us-east-1.tixte.net",
-      },
-      {
-        protocol: "https",
-        hostname: "scontent-itm1-1.cdninstagram.com",
-      },
-      {
-        protocol: "https",
         hostname: "c.saavncdn.com",
-      },
-      {
-        protocol: "https",
-        hostname: "image-proxy-1a78.onrender.com",
       },
     ],
   },

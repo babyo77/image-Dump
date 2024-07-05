@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: `${user?.usersDoc.fullName} | Profile`,
-    description: `${user?.name} on circles`,
+    description: `${user?.name} on lnkit`,
     icons: [
       {
         rel: "icon",
@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       site: "@tanmay11117",
       title: `${user?.usersDoc.fullName} | Profile`,
-      description: `${user?.name} on circles`,
+      description: `${user?.name} on lnkit`,
       images: replaceInstagramURL(user?.prefs["image"]),
     },
   };
