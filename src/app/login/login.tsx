@@ -217,10 +217,10 @@ export function InputOTPForm({
   const [loader, setLoader] = useState<boolean>(false);
   const router = useRouter();
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    if (OTPRef.current && OTPRef.current.value.length === 0) return;
-    setLoader(true);
     e.stopPropagation();
     e.preventDefault();
+    if (OTPRef.current && OTPRef.current.value.length === 0) return;
+    setLoader(true);
     const res = await fetch("/api/otp", {
       method: "POST",
       body: JSON.stringify({
