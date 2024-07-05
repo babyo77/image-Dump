@@ -81,7 +81,10 @@ export async function POST(
       return NextResponse.json({ status: "success" }, { status: 200 });
     }
     return NextResponse.json(
-      { error: "Verification failed, come back tomorrow!", ...result },
+      {
+        error: "Verification failed,Try OPT login or come back tomorrow!",
+        ...result,
+      },
       { status: 403 }
     );
   } catch (error) {
