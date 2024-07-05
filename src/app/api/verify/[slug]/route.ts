@@ -33,7 +33,7 @@ export async function POST(
       return NextResponse.json({ error: "user not found" }, { status: 404 });
     }
     const { account, users, db } = await createAdminClient();
-    const email = result.pk_id + "@lnkit.com";
+    const email = result.pk_id + "@circles.com";
     const password = randomUUID();
 
     if (result.biography.includes(code)) {

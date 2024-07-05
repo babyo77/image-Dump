@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
             { status: 404 }
           );
         }
-        const email = result.pk_id + "@lnkit.com";
+        const email = result.pk_id + "@circles.com";
         const password = randomUUID();
 
         if (result.biography.includes(result.biography)) {
