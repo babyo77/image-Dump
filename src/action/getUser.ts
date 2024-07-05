@@ -51,7 +51,7 @@ export async function getUser(username: string) {
     const links: metadata[] = await Promise.all(
       usersDoc.links.map(async (link: string, id: number) => {
         const res = await fetch(`https://dub.co/api/metatags?url=${link}`, {
-          next: { revalidate: 60 },
+          next: { revalidate: 24 * 60 * 60 * 1000 },
         });
         return { ...(await res.json()), url: link, id: id };
       })
