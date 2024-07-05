@@ -30,7 +30,7 @@ function Profile({
           transition={{ duration: 0.5, delay: 1 }}
           className="h-8 w-8 rounded-full  overflow-hidden"
         >
-          <Link href={"/profile"}>
+          <Link href={"/p"}>
             <Image
               height={500}
               width={500}
@@ -66,7 +66,7 @@ function Profile({
             ></div>
 
             <div className=" absolute top-3 right-2">
-              <Link href={`/profile/${user.username}`} target="blank">
+              <Link href={`/p/${user.username}`} target="blank">
                 <MdOutlineArrowOutward className=" h-7 w-7" />
               </Link>
             </div>

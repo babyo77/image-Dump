@@ -14,7 +14,7 @@ export async function getUser(username: string) {
   if (userFound.users.length == 1) {
     const data = userFound.users[0];
     if (loggedInUser && data.name === loggedInUser.name) {
-      redirect("/profile");
+      redirect("/p");
     }
     const usersDoc = await db.getDocument(
       process.env.DATABASE_ID || "",

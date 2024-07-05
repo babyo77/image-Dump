@@ -103,7 +103,7 @@ function User({ user }: { user: user }) {
     e.stopPropagation();
     try {
       navigator.share({
-        url: window.location.origin + "/profile/" + user.name,
+        url: window.location.origin + "/p/" + user.name,
       });
     } catch (error) {
       //@ts-expect-error:expected-error

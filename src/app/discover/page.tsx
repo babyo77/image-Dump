@@ -1,5 +1,5 @@
 import { getDiscover } from "@/action/getDiscover";
-import Profile from "./profile";
+import Profile from "./p";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 
 async function page() {

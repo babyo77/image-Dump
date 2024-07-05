@@ -20,7 +20,7 @@ export function Settings() {
     try {
       setLoader(true);
       await account.deleteSession("current");
-      router.push(`/profile/${user?.name}`);
+      router.push(`/p/${user?.name}`);
     } catch (err) {
       toast.error("Something went wrong");
     } finally {

@@ -22,7 +22,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
   const handleShare = () => {
     try {
       navigator.share({
-        url: window.location.origin + "/profile/" + user.name,
+        url: window.location.origin + "/p/" + user.name,
       });
     } catch (error) {
       //@ts-expect-error:expected-error

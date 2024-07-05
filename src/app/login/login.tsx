@@ -68,7 +68,7 @@ function Login() {
       });
       if (response.ok) {
         toast.dismiss("verify");
-        router.push(`/profile`);
+        router.push(`/p`);
         return;
       }
       const message = await response.json();
@@ -233,7 +233,7 @@ export function InputOTPForm({
     });
     if (res.ok) {
       toast.dismiss("verify");
-      router.push(`/profile`);
+      router.push(`/p`);
       return;
     } else {
       toast.error("wrong OTP or invalid username");
