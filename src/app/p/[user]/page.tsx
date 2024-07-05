@@ -14,8 +14,8 @@ export async function generateMetadata({
   const user = await getUser(params.user);
 
   return {
-    title: `${user?.usersDoc.fullName} (${user?.name})`,
-    description: `${user?.name} Link in bio`,
+    title: `${user?.usersDoc.fullName || "404"} (${user?.name || "404"})`,
+    description: `${user?.name || ""} Link in bio`,
     icons: [
       {
         rel: "icon",
