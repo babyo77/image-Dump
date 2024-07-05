@@ -268,7 +268,11 @@ export function InputOTPForm({
         <p className=" text-zinc-400 text-[0.72rem] text-start">
           Please enter the one-time password sent to <br /> your Instagram dm
           from{" "}
-          <a href="" target="blank" className=" text-zinc-100">
+          <a
+            href="https://www.instagram.com/circles_verification/"
+            target="blank"
+            className=" text-zinc-100"
+          >
             @circles_verification
           </a>
         </p>
@@ -276,7 +280,7 @@ export function InputOTPForm({
           <p className="text-neutral-500">Send again?</p>
         </div> */}
         <Button type="submit" size={"sm"} disabled={loader} className=" w-full">
-          {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Done"}
+          {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Confirm"}
         </Button>
       </form>
     </motion.div>
