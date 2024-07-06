@@ -49,7 +49,7 @@ export async function GET(req: Request) {
           width="256"
           height="256"
           alt=""
-          src={"https://lnkit.vercel.app/favicon.webp"}
+          src={"https://1nlink.vercel.app/favicon.webp"}
           style={{
             borderRadius: 128,
           }}

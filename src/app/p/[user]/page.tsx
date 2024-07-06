@@ -33,7 +33,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       site: "@tanmay11117",
       title: `${user?.usersDoc.fullName} (${user?.name})`,
-      description: `${user?.name} on lnkit`,
+      description: `${user?.name} on 1nlink`,
       images: replaceInstagramURL(user?.prefs["image"]),
     },
   };
