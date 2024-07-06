@@ -109,6 +109,19 @@ function User({ user }: { user: user }) {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    fetch("/api/analytics", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "profile",
+        v: user.usersDoc.views,
+        id: user.$id,
+      }),
+    }).catch((error) => {
+      console.error(error);
+    });
+  }, [user]);
   return (
     <>
       {fullImage && (
