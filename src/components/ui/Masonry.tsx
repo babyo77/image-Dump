@@ -334,7 +334,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
   };
   if (isDesktop) {
     return (
-      <Dialog onOpenChange={analytics}>
+      <Dialog open={false}>
         <DialogTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
           <PiCursorClick /> {formatNumber(image.clicks)}
         </DialogTrigger>
@@ -350,7 +350,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
   }
 
   return (
-    <Drawer onOpenChange={analytics}>
+    <Drawer open={false}>
       <DrawerTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
         <PiCursorClick /> {formatNumber(image.clicks)}
       </DrawerTrigger>
