@@ -2,16 +2,15 @@
 import React from "react";
 import { discover, user } from "../types/types";
 import Image from "next/image";
-import { replaceInstagramURL } from "@/lib/utils";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 function Profile({
-  user,
+  loggedIn,
   discover,
 }: {
-  user?: user | null;
+  loggedIn?: user | null;
   discover: discover[];
 }) {
   return (
@@ -76,7 +75,7 @@ function Profile({
             <div className=" absolute top-3 left-2">
               <Link href={`/p`} target="_blank">
                 <Button size={"sm"}>
-                  {user ? "View your profile" : "Get your own"}
+                  {loggedIn ? "View your profile" : "Get your own"}
                 </Button>
               </Link>
             </div>

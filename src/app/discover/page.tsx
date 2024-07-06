@@ -45,7 +45,7 @@ async function page() {
       discover={
         user ? discover.filter((u) => user && u.$id !== user.$id) : discover
       }
-      user={user}
+      loggedIn={user}
     />
   );
 }
