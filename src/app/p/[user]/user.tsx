@@ -247,7 +247,7 @@ function User({ user }: { user: user }) {
               exit={{ y: "5dvh", opacity: 0 }}
               className=" gap-5 flex flex-col"
             >
-              <div className="h-28 w-28 rounded-full overflow-hidden">
+              <div className="h-32 w-32 rounded-full overflow-hidden">
                 <Image
                   onClick={() => setFullImage(true)}
                   height={500}
