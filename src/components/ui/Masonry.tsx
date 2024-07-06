@@ -338,7 +338,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
         <DialogTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
           <PiCursorClick /> {formatNumber(image.clicks)}
         </DialogTrigger>
-        <DialogContent className="w-[100dvw] rounded-xl border-none ">
+        <DialogContent className="w-[100dvw] rounded-xl border-none bg-zinc-950/90">
           <DialogHeader>
             <DialogTitle>Image Analytics</DialogTitle>
             <DialogDescription></DialogDescription>
