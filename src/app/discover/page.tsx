@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://1nlink.vercel.app/api/og?n=discover",
+          url: "https://1nlink.vercel.app/favicon.webp",
           width: 1200,
           height: 630,
           alt: "1nlink OG Image",
@@ -32,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "1nlink - Your Ultimate Bio Link Solution",
       description:
         "Create a personalized bio link page easily with 1nlink. Manage all your social media profiles in one place.",
-      images: "https://1nlink.vercel.app/api/og?n=discover",
+      images: "https://1nlink.vercel.app/favicon.webp",
     },
   };
 }
