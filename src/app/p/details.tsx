@@ -252,7 +252,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
           Query.equal("type", "profile"),
           Query.select(["$createdAt"]),
           Query.greaterThanEqual("$createdAt", date.toISOString()),
-          Query.limit(999),
+          Query.limit(99999),
         ]
       )
       .then((response) => {
