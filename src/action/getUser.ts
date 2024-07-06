@@ -27,7 +27,7 @@ export async function getUser(username: string) {
       process.env.DATABASE_ID || "",
       process.env.GALLERY_ID || "",
       [
-        Query.select(["$id", "data", "clicks", "link", "updatedAt"]),
+        Query.select(["$id", "data", "clicks", "link", "$updatedAt"]),
         Query.equal("for", data.$id),
         Query.orderDesc("$updatedAt"),
       ]
