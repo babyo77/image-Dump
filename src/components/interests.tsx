@@ -130,7 +130,7 @@ function Interests({
       >
         <TiPointOfInterest className="h-7 w-7" />
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[0dvw] rounded-xl ">
+      <AlertDialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
         <AlertDialogHeader>
           <AlertDialogTitle>Add Interests</AlertDialogTitle>
           <AlertDialogDescription>
