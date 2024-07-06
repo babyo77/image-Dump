@@ -64,7 +64,7 @@ function Profile({
                 backgroundImage: `url(${user.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.5,
+                opacity: 0.6,
               }}
             ></div>
 
