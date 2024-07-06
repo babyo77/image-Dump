@@ -197,7 +197,7 @@ function Details({ details }: { details: user }) {
         ref={fullNameRef}
         contentEditable
         translate="no"
-        className="font-semibold outline-none text-2xl w-full py-0.5 pl-1.5 border-none -mt-1"
+        className="font-semibold outline-none text-2xl w-full py-0.5 pl-1.5 border-none -mt-2"
       >
         <p>{details.usersDoc.fullName}</p>
       </motion.div>

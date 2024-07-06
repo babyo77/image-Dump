@@ -271,7 +271,7 @@ function User({ user }: { user: user }) {
                 }}
                 exit={{ y: "5dvh", opacity: 0 }}
                 translate="no"
-                className="font-semibold w-fit outline-none text-2xl py-0.5 pl-1.5 border-none -mt-0.5"
+                className="font-semibold w-fit outline-none text-2xl py-0.5 pl-1.5 border-none -mt-2"
               >
                 <p>{user.usersDoc.fullName}</p>
               </motion.div>
