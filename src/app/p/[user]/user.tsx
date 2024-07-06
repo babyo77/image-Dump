@@ -303,7 +303,15 @@ function User({ user }: { user: user }) {
             </motion.div>
           </div>
         )}
-        <footer
+        <motion.footer
+          initial={{ y: "5dvh", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 1,
+            type: "spring",
+            stiffness: 45,
+          }}
+          exit={{ y: "5dvh", opacity: 0 }}
           key={"footer"}
           className="flex w-full  items-center justify-center bottom-0 pb-11"
         >
@@ -312,7 +320,7 @@ function User({ user }: { user: user }) {
               Create your own 1nlink
             </Button>
           </Link>
-        </footer>
+        </motion.footer>
       </AnimatePresence>
     </>
   );
