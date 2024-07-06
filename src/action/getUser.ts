@@ -20,7 +20,7 @@ export async function getUser(username: string) {
       process.env.DATABASE_ID || "",
       process.env.USERS_ID || "",
       data.$id,
-      [Query.select(["interests", "music", "links", "fullName"])]
+      [Query.select(["interests", "music", "links", "fullName", "bio"])]
     );
 
     const gallery = await db.listDocuments(
