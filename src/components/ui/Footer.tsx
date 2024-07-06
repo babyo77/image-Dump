@@ -36,6 +36,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
     setLinks,
     links,
     setGallery,
+    loader,
   } = useUserContext();
   useEffect(() => {
     setUser(user);
@@ -113,10 +114,11 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
               <Button
                 onClick={handleShare}
                 size={"sm"}
+                disabled={loader}
                 variant={"default"}
-                className="font-medium"
+                className="font-medium w-32"
               >
-                Share my profile
+                {loader ? "Saving..." : "Share my profile"}
               </Button>
             ) : (
               <Link href={"/login"}>
