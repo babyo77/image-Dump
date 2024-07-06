@@ -261,7 +261,7 @@ const ClicksAnalytics = ({ image }: { image: gallery }) => {
           Query.equal("type", "image"),
           Query.select(["$createdAt"]),
           Query.greaterThanEqual("$createdAt", date.toISOString()),
-          Query.limit(999),
+          Query.limit(9999),
         ]
       )
       .then((response) => {
