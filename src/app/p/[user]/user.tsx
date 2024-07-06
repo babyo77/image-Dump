@@ -17,6 +17,8 @@ import Image from "next/image";
 import { HeartHandshake } from "lucide-react";
 import { ID } from "appwrite";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 function User({ user }: { user: user }) {
   const { match, setMatch } = useUserContext();
   const router = useRouter();
@@ -182,10 +184,11 @@ function User({ user }: { user: user }) {
       )}
       <AnimatePresence>
         {!match && (
-          <div className="px-5 pt-11 flex pb-24 justify-start overflow-hidden items-start">
+          <div className="px-7 pt-11 flex pb-11 justify-start overflow-hidden items-start">
             <div className="cursor-pointer absolute flex-col items-center gap-2.5 hover:text-zinc-300 transition-all right-4 duration-300">
               <div className="flex flex-col items-center gap-2 z-20">
                 <motion.div
+                  key={"star"}
                   initial={{ y: "5dvh", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
@@ -213,6 +216,7 @@ function User({ user }: { user: user }) {
                   )}
                 </motion.div>
                 <motion.div
+                  key={"match"}
                   initial={{ y: "5dvh", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
@@ -237,6 +241,7 @@ function User({ user }: { user: user }) {
               </div>
             </div>
             <motion.div
+              key={"image"}
               initial={{ y: "5dvh", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
@@ -262,6 +267,7 @@ function User({ user }: { user: user }) {
               </div>
 
               <motion.div
+                key={"name"}
                 initial={{ y: "5dvh", opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
@@ -276,6 +282,7 @@ function User({ user }: { user: user }) {
                 <p>{user.usersDoc.fullName}</p>
               </motion.div>
               <motion.div
+                key={"bio"}
                 initial={{ y: "5dvh", opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
@@ -296,6 +303,16 @@ function User({ user }: { user: user }) {
             </motion.div>
           </div>
         )}
+        <footer
+          key={"footer"}
+          className="flex w-full  items-center justify-center bottom-0 pb-11"
+        >
+          <Link href={"/login"} target="_blank">
+            <Button size={"sm"} variant={"secondary"}>
+              Create your own 1nlink
+            </Button>
+          </Link>
+        </footer>
       </AnimatePresence>
     </>
   );

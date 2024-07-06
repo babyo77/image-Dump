@@ -167,7 +167,7 @@ function Details({ details }: { details: user }) {
               stiffness: 45,
             }}
             exit={{ y: "5dvh", opacity: 0 }}
-            className="h-28 w-28 rounded-full overflow-hidden"
+            className="h-32 w-32 rounded-full overflow-hidden"
           >
             <Image
               key={"profile"}
