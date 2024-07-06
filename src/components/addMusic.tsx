@@ -325,7 +325,7 @@ const AddMusicButton = ({
         <DialogContent
           aria-description="music"
           aria-describedby="music"
-          className="w-[90dvw] rounded-xl"
+          className="w-[40dvw] rounded-xl"
         >
           <audio
             autoPlay
