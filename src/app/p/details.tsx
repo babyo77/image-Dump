@@ -282,6 +282,15 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
       });
   }, [user]);
 
+  const formatDateTime = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       month: "short",
@@ -306,7 +315,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
             borderRadius: "5px",
           }}
         >
-          <p className="label">{`${label}`}</p>
+          <p className="label">{`${formatDateTime(label)}`}</p>
           <p className="intro">{`Views: ${payload[0].value}`}</p>
         </div>
       );
@@ -336,7 +345,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
           >
             <XAxis dataKey="date" tickFormatter={formatDate} />
             <YAxis />
-            <Tooltip content={<CustomTooltip />} labelFormatter={formatDate} />
+            <Tooltip content={<CustomTooltip />} />
             <Bar type="monotoneX" dataKey="views" fill="#ffffff" />
           </BarChart>
         </ResponsiveContainer>
