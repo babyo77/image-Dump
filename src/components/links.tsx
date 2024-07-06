@@ -158,7 +158,7 @@ export function Links({
                   >
                     <Link
                       href={url}
-                      target="blank"
+                      target="_blank"
                       className=" w-full py-2 flex gap-2 items-center"
                     >
                       <Avatar className="h-10 w-10 border-2 border-zinc-100">
@@ -279,7 +279,7 @@ export function Links({
                 >
                   <Link
                     href={url}
-                    target="blank"
+                    target="_blank"
                     className=" w-full py-2 flex gap-2 items-center"
                   >
                     <Avatar className="h-10 w-10 border-2 border-zinc-100">

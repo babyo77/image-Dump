@@ -82,7 +82,7 @@ const Particles: React.FC<UserProp> = ({ user }) => {
                 stiffness: 45,
               }}
             >
-              <Link href={`https://instagram.com/${user.name}`} target="blank">
+              <Link href={`https://instagram.com/${user.name}`} target="_blank">
                 {user.match && parseInt(user.match.per) > 70 ? (
                   <Button>Let&apos;s Connect 🫂</Button>
                 ) : (

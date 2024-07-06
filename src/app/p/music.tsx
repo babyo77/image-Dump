@@ -69,7 +69,7 @@ function Music({ user }: { user: user }) {
         )}
       </div>
       <Link
-        target="blank"
+        target="_blank"
         href={`https://napster-drx.vercel.app/track/${user.usersDoc.music?.audio}`}
         className=" hover:underline-offset-2 hover:underline cursor-pointer flex text-xs items-center max-w-[70dvw] truncate"
       >

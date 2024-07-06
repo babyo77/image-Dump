@@ -159,7 +159,7 @@ function Login() {
         transition={{ duration: 0.4 }}
         className=" z-20 fixed bottom-2 text-center w-full text-xs text-zinc-400"
       >
-        <a target="blank" href="https://tanmayo7.vercel.app">
+        <a target="_blank" href="https://tanmayo7.vercel.app">
           Made by @babyo7_
         </a>
       </motion.footer>
@@ -271,7 +271,7 @@ export function InputOTPForm({
           from{" "}
           <a
             href="https://www.instagram.com/1nlink_verification/"
-            target="blank"
+            target="_blank"
             className=" text-zinc-100"
           >
             @circles_verification

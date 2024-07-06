@@ -6,6 +6,7 @@ import { replaceInstagramURL } from "@/lib/utils";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MdOutlineArrowOutward } from "react-icons/md";
+import { Button } from "@/components/ui/button";
 function Profile({
   user,
   discover,
@@ -55,7 +56,7 @@ function Profile({
             key={user.$id}
             className={`${i === discover.length - 1 && "mb-5"} ${
               i === 0 && "mt-5"
-            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[21dvw] min-h-[90dvh] w-[90dvw] border`}
+            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[24dvw] min-h-[90dvh] w-[90dvw] border`}
           >
             <div
               className="absolute inset-0"
@@ -68,8 +69,15 @@ function Profile({
             ></div>
 
             <div className=" absolute top-3 right-2">
-              <Link href={`/p/${user.username}`} target="blank">
+              <Link href={`/p/${user.username}`} target="_blank">
                 <MdOutlineArrowOutward className=" h-7 w-7" />
+              </Link>
+            </div>
+            <div className=" absolute top-3 left-2">
+              <Link href={`/p`} target="_blank">
+                <Button size={"sm"}>
+                  {user ? "View your profile" : "Get your own"}
+                </Button>
               </Link>
             </div>
             <div className=" absolute bottom-0 tracking-tight w-full text-start py-4 px-3">
@@ -78,7 +86,7 @@ function Profile({
               </p>
               <Link
                 href={`https://www.instagram.com/${user.username}`}
-                target="blank"
+                target="_blank"
               >
                 <p className="text-sm text-neutral-300 underline underline-offset-2 ">
                   @{user.username}
