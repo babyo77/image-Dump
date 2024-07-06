@@ -28,39 +28,11 @@ export async function GET(req: Request) {
             backgroundClip: "text",
             color: "transparent",
           }}
-        ></div>
-        <div
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgb(121, 40, 202), rgb(255, 0, 128))",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
-        ></div>
-        <div
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgb(255, 77, 77), rgb(249, 203, 40))",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
-        ></div>
-        <img
-          width="256"
-          height="256"
-          alt=""
-          src={"https://1nlink.vercel.app/favicon.webp"}
-          style={{
-            borderRadius: 128,
-          }}
-        />
-        <p style={{ fontWeight: 500 }}>{name}</p>
+        >
+          {name}
+        </div>
       </div>
-    ),
-    {
-      width: 1200,
-      height: 630,
-    }
+    )
   );
 }
 

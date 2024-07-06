@@ -6,9 +6,17 @@ import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/store/context";
 export const metadata: Metadata = {
   title: "1nlink",
-  description: "A link in bio",
+  description:
+    "Create a personalized bio link page easily with 1nlink. Manage all your social media profiles in one place.",
+  keywords:
+    "link in bio, bio link page, social media links, manage profiles, personal branding",
   icons: [{ rel: "icon", url: "/favicon.webp" }],
   openGraph: {
+    title: "1nlink - Your Ultimate Bio Link Solution",
+    description:
+      "Create a personalized bio link page easily with 1nlink. Manage all your social media profiles in one place.",
+    url: "https://1nlink.vercel.app",
+    type: "website",
     images: [
       {
         url: "https://1nlink.vercel.app/favicon.webp",
@@ -21,8 +29,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@tanmay11117",
-    title: "1nlink",
-    description: "Find Your Circle",
+    title: "1nlink - Your Ultimate Bio Link Solution",
+    description:
+      "Create a personalized bio link page easily with 1nlink. Manage all your social media profiles in one place.",
     images: "https://1nlink.vercel.app/favicon.webp",
   },
 };
