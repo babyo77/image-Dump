@@ -14,8 +14,8 @@ function Profile({
   discover: discover[];
 }) {
   return (
-    <div className="py-4 pb-7">
-      <div className=" w-full flex leading-tight tracking-tighter justify-between px-5 pb-4">
+    <div className="">
+      {/* <div className=" w-full flex leading-tight tracking-tighter justify-between px-5 pb-4">
         <motion.p
           initial={{ filter: "blur(10px)", opacity: 0 }}
           animate={{ filter: "blur(0px)", opacity: 1 }}
@@ -45,15 +45,17 @@ function Profile({
             />
           </Link>
         </motion.div>
-      </div>
-      <div className="flex flex-col w-full items-center no-scrollbar h-[100dvh] overflow-scroll justify-start snap-y snap-mandatory scroll-smooth text-center text-neutral-200 gap-4 pb-20">
-        {discover.map((user) => (
+      </div> */}
+      <div className="flex flex-col w-full items-center no-scrollbar h-[100dvh] overflow-scroll justify-start snap-y snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
+        {discover.map((user, i) => (
           <motion.div
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
             transition={{ duration: 0.5, delay: 1 }}
             key={user.$id}
-            className=" relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[21dvw] min-h-[77dvh] w-[90dvw] border"
+            className={`${i === discover.length - 1 && "mb-5"} ${
+              i === 0 && "mt-5"
+            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[21dvw] min-h-[90dvh] w-[90dvw] border`}
           >
             <div
               className="absolute inset-0"
