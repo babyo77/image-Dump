@@ -358,7 +358,7 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         <DialogTrigger className="h-[1.4rem] w-[1.4rem] ml-1 text-zinc-400 hover:text-zinc-200 mt-2">
           <SiSimpleanalytics />
         </DialogTrigger>
-        <DialogContent className="w-[100dvw] rounded-xl border-none bg-zinc-950/90">
+        <DialogContent className="w-[100dvw] rounded-xl border-none ">
           <DialogHeader>
             <DialogTitle>Profile Analytics</DialogTitle>
             <DialogDescription></DialogDescription>

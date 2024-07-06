@@ -138,7 +138,7 @@ export function Links({
             )}
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="w-[40dvw] rounded-xl bg-zinc-950/90">
+        <DialogContent className="w-[40dvw] rounded-xl ">
           <DialogHeader>
             <DialogTitle>Links</DialogTitle>
             <DialogDescription></DialogDescription>

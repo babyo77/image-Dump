@@ -130,7 +130,7 @@ function Interests({
       >
         <TiPointOfInterest className="h-7 w-7" />
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[90dvw] rounded-xl bg-zinc-950/90">
+      <AlertDialogContent className="w-[0dvw] rounded-xl ">
         <AlertDialogHeader>
           <AlertDialogTitle>Add Interests</AlertDialogTitle>
           <AlertDialogDescription>
@@ -193,7 +193,7 @@ function Interests({
             style={{ visibility: "hidden", position: "absolute" }}
           ></AlertDialogCancel>
           <AlertDialogCancel
-            disabled={interested.length <= 2}
+            disabled={interested.length <= 1}
             className={` bg-zinc-900 outline-none ring-0  rounded-xl hover:bg-zinc-800 ${className} text-white`}
           >
             Cancel
