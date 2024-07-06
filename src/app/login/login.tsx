@@ -188,7 +188,7 @@ const BackgroundGrid = ({
     <motion.div
       initial={{ filter: "blur(10px)", opacity: 0 }}
       animate={{ filter: "blur(0px)", opacity: 1 }}
-      transition={{ duration: 0.5, delay: 1 }}
+      transition={{ duration: 0.5 }}
       className={`pointer-events-none absolute inset-0 left-0 top-0 flex h-full w-full ${className}`}
       style={{
         backgroundImage: `url("${svgDataUrl}")`,
