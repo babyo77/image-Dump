@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AiOutlineDelete } from "react-icons/ai";
 import { database } from "@/lib/client/appwrite";
 import { useUserContext } from "@/store/context";
-import { gallery } from "@/app/types/types";
+import { gallery, user } from "@/app/types/types";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { toast } from "sonner";
 import { PiCursorClick } from "react-icons/pi";
@@ -173,7 +173,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
           id: imageObj.$id,
           type: "click",
           c: imageObj.clicks,
-          user: imageObj.users[0].$id,
+          user: user?.$id,
         }),
       });
     } catch (error) {

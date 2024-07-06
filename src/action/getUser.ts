@@ -19,30 +19,18 @@ export async function getUser(username: string) {
     const usersDoc = await db.getDocument(
       process.env.DATABASE_ID || "",
       process.env.USERS_ID || "",
-      data.$id
+      data.$id,
+      [Query.select(["interests", "music", "links", "fullName"])]
     );
-    // await db.updateDocument(
-    //   process.env.DATABASE_ID || "",
-    //   process.env.USERS_ID || "",
-    //   data.$id,
-    //   {
-    //     views: usersDoc.views + 1,
-    //   }
-    // );
-    // await db.createDocument(
-    //   process.env.DATABASE_ID || "",
-    //   process.env.ANALYTICS_ID || "",
-    //   ID.unique(),
-    //   {
-    //     for: data.$id,
-    //     type: "profile",
-    //   },
-    //   [Permission.read(Role.user(data.$id))]
-    // );
+
     const gallery = await db.listDocuments(
       process.env.DATABASE_ID || "",
       process.env.GALLERY_ID || "",
-      [Query.equal("for", data.$id), Query.orderDesc("$updatedAt")]
+      [
+        Query.select(["$id", "data", "clicks", "link"]),
+        Query.equal("for", data.$id),
+        Query.orderDesc("$updatedAt"),
+      ]
     );
     usersDoc.gallery = gallery.documents;
 
@@ -57,25 +45,26 @@ export async function getUser(username: string) {
       })
     );
 
-    // if (loggedInUser && loggedInUser.usersDoc.interests) {
-    //   try {
-    //     const res = await db.getDocument(
-    //       process.env.DATABASE_ID || "",
-    //       process.env.STARRED_ID || "",
-    //       usersDoc.$id + loggedInUser.$id
-    //     );
-    //     isStarred = res.$id ? true : false;
-    //   } catch (error) {
-    //     console.log("not starred");
-    //   }
-    //   match = {
-    //     per: calculatePercentageMatching(
-    //       loggedInUser.usersDoc.interests,
-    //       userInterest
-    //     ),
-    //     image: loggedInUser.prefs["image"],
-    //   };
-    // }
+    if (loggedInUser && loggedInUser.usersDoc.interests) {
+      try {
+        const res = await db.getDocument(
+          process.env.DATABASE_ID || "",
+          process.env.STARRED_ID || "",
+          usersDoc.$id + loggedInUser.$id,
+          [Query.select(["$id"])]
+        );
+        isStarred = res.$id ? true : false;
+      } catch (error) {
+        console.log("not starred");
+      }
+      match = {
+        per: calculatePercentageMatching(
+          loggedInUser.usersDoc.interests,
+          userInterest
+        ),
+        image: loggedInUser.prefs["image"],
+      };
+    }
 
     if (usersDoc.music.length > 0) {
       try {
@@ -97,7 +86,7 @@ export async function getUser(username: string) {
       ...data,
       links: links,
       usersDoc,
-      // match: match,
+      match: match,
       loggedInUser: loggedInUser ? loggedInUser : null,
       isStarred: isStarred,
     };
