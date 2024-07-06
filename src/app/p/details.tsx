@@ -9,17 +9,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { replaceInstagramURL } from "@/lib/utils";
 import Image from "next/image";
 import { useUserContext } from "@/store/context";
-import { ClicksData } from "@/components/ui/Masonry";
 import { Query } from "appwrite";
 import { SiSimpleanalytics } from "react-icons/si";
 import { useMediaQuery } from "@react-hook/media-query";
 import {
-  AreaChart,
-  Area,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  TooltipProps,
 } from "recharts";
 import {
   Dialog,
@@ -290,6 +292,29 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
+  const CustomTooltip: React.FC<TooltipProps<number, string>> = (props) => {
+    const { active, payload, label } = props;
+
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#000",
+            color: "#fff",
+            padding: "10px",
+            borderRadius: "5px",
+          }}
+        >
+          <p className="label">{`${label}`}</p>
+          <p className="intro">{`Views: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   const renderAnalytics = () => {
     return (
       <motion.div
@@ -299,26 +324,21 @@ export const ProfileAnalytics = ({ user }: { user: user }) => {
         style={{ width: "100%", height: "100%", marginBottom: ".7rem" }}
       >
         <ResponsiveContainer>
-          <AreaChart
+          <BarChart
             data={data}
-            className=" text-xs md:text-base"
+            className=" text-xs md:text-base text-black"
             margin={{
-              top: 10,
+              top: 5,
               right: 30,
               left: 0,
-              bottom: 0,
+              bottom: 5,
             }}
           >
             <XAxis dataKey="date" tickFormatter={formatDate} />
             <YAxis />
-            <Tooltip />
-            <Area
-              type="monotoneX"
-              dataKey="views"
-              stroke="#000"
-              fill="#ffffff"
-            />
-          </AreaChart>
+            <Tooltip content={<CustomTooltip />} labelFormatter={formatDate} />
+            <Bar type="monotoneX" dataKey="views" fill="#ffffff" />
+          </BarChart>
         </ResponsiveContainer>
       </motion.div>
     );
