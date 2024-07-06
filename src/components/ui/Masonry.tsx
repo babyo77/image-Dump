@@ -411,7 +411,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
             <DialogDescription></DialogDescription>
 
             <div className="flex flex-col w-full gap-2.5">
-              <Input ref={inputRef} placeholder={link} value={link} />
+              <Input ref={inputRef} placeholder={link} defaultValue={link} />
               <Button size={"sm"} onClick={handleUpdate} disabled={loader}>
                 {loader ? (
                   <Loader className=" animate-spin h-5 w-5" />
