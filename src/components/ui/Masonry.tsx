@@ -205,7 +205,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                 onClick={() => handleClick(imageObj)}
                 src={imageObj.data}
                 onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
-                className={`${"cursor-pointer"} rounded-lg h-auto w-[100%] object-cover relative`}
+                className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 alt={`Image ${rowIndex}-${columnIndex}`}
               />
               {remove && (
@@ -219,15 +219,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   >
                     <AiOutlineDelete />
                   </div>
-                  <UpdateMasonry image={imageObj} />
                 </>
               )}
-              {/* <p
-                onClick={() => handleClick(imageObj)}
-                className=" absolute flex gap-1 items-center text-lg hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2"
-              >
-                <MdOutlineArrowOutward />
-              </p> */}
+              {remove && <UpdateMasonry image={imageObj} />}
               {remove && <ClicksAnalytics image={imageObj} />}
             </motion.div>
           ))}
@@ -373,7 +367,6 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
 
   const handleUpdate = async () => {
     const newLink = inputRef.current;
-
     if (newLink && isValidURL(newLink.value)) {
       setLoader(true);
       try {
@@ -385,6 +378,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
             link: newLink.value,
           }
         );
+
         setLink(newLink.value);
         closeRef.current?.click();
       } catch (error) {
@@ -402,7 +396,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
   if (isDesktop) {
     return (
       <Dialog>
-        <DialogTrigger className=" absolute flex gap-2 items-center text-base hover:text-zinc-500 text-zinc-200 transition-all duration-200 cursor-pointer bottom-6 left-2">
+        <DialogTrigger className=" absolute flex gap-1 items-center text-lg hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2">
           Edit
         </DialogTrigger>
         <DialogContent className=" w-[40dvw] ">
@@ -412,6 +406,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
 
             <div className="flex flex-col w-full gap-2.5">
               <Input ref={inputRef} placeholder={link} defaultValue={link} />
+
               <Button size={"sm"} onClick={handleUpdate} disabled={loader}>
                 {loader ? (
                   <Loader className=" animate-spin h-5 w-5" />
@@ -428,7 +423,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
   }
   return (
     <Drawer>
-      <DrawerTrigger className=" absolute flex gap-2 items-center text-base hover:text-zinc-500 text-zinc-200 transition-all duration-200 cursor-pointer bottom-6 left-2">
+      <DrawerTrigger className=" absolute flex gap-1 items-center text-lg hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2">
         Edit
       </DrawerTrigger>
       <DrawerContent className=" border-none">
@@ -437,11 +432,7 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
           <DrawerDescription></DrawerDescription>
 
           <div className="flex flex-col w-full gap-2.5">
-            <Input
-              ref={inputRef}
-              placeholder={image.link || image.data}
-              defaultValue={image.link || image.data}
-            />
+            <Input ref={inputRef} placeholder={link} defaultValue={link} />
             <Button size={"sm"} onClick={handleUpdate} disabled={loader}>
               {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Update"}
             </Button>

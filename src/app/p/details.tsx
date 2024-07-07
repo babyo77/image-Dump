@@ -48,7 +48,7 @@ function Details({ details }: { details: user }) {
   const handleChange = useCallback(async () => {
     const data = {
       fullName: fullNameRef.current?.textContent,
-      bio: bioRef.current?.textContent,
+      bio: bioRef.current?.innerText,
     };
 
     try {

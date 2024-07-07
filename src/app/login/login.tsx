@@ -109,7 +109,7 @@ function Login() {
               WebkitBackdropFilter: "blur(11px)",
             }}
             onClick={() => setSendOtp(false)}
-            className=" absolute w-full z-40 h-full flex justify-center items-center "
+            className=" absolute w-full z-40 h-full bg-black/90 flex justify-center items-center "
           >
             <InputOTPForm uid={uid} username={username} />
           </motion.div>

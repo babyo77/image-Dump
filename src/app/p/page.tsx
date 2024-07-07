@@ -47,7 +47,7 @@ export default async function page() {
   return (
     <>
       {/* <Interests className="hidden" user={user} /> */}
-      <div className=" px-7 w-full pt-11 flex pb-11 justify-start items-start">
+      <div className=" px-7 w-full pt-11 flex pb-24 justify-start items-start">
         <div className="  cursor-pointer absolute  flex-col items-center gap-2.5 hover:text-zinc-300 transition-all right-4 duration-300">
           <AnimatedInterests user={user} />
         </div>
