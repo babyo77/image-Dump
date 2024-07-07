@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: [{ rel: "icon", url: "/favicon.webp" }],
     openGraph: {
       title: "1nlink ",
-      description: "Get a matching profile with images u upload",
+      description: "Get a matching profile by uploading images with AI",
       url: "https://1nlink.vercel.app",
       type: "website",
       images: [
