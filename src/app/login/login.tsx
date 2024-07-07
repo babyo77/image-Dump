@@ -112,7 +112,7 @@ function Login() {
               WebkitBackdropFilter: "blur(11px)",
             }}
             onClick={() => setSendOtp(false)}
-            className=" absolute w-full border z-40 h-full bg-black/90 flex justify-center items-center "
+            className=" absolute w-full z-40 h-full bg-black/90 flex justify-center items-center "
           >
             <InputOTPForm
               sendingOTP={sendingOTP}
@@ -256,7 +256,7 @@ export function InputOTPForm({
       animate={{ filter: "blur(0px)", opacity: 1 }}
       transition={{ duration: 0.4 }}
       exit={{ filter: "blur(10px)", opacity: 0 }}
-      className=" rounded-xl bg-neutral-900 p-4"
+      className=" rounded-xl bg-neutral-900 p-4 border"
     >
       <form
         onClick={(e) => e.stopPropagation()}
