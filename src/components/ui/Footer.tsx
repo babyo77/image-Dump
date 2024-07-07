@@ -157,7 +157,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                         onClick={handleChange}
                         disabled={loading}
                         size={"sm"}
-                        className="m-0 pl-0 rounded-sm text-zinc-300 hover:text-zinc-100  bg-inherit  hover:bg-primary-foreground/80"
+                        className="m-0 pl-0 rounded-sm text-zinc-300 hover:text-zinc-100  bg-inherit  hover:bg-inherit"
                       >
                         {!loading ? (
                           "Link"
