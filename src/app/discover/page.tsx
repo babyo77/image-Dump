@@ -6,7 +6,7 @@ import { Metadata } from "next";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Discover",
-    description: "Get a matching profile with images you upload",
+    description: "Get a matching profile by uploading images with AI",
     keywords:
       "Upload profile images, Profile image management, Create and manage profiles, Social media links, Personal branding, Bio link page, Profile customization, Image upload feature, Manage social profiles",
     icons: [{ rel: "icon", url: "/favicon.webp" }],
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       site: "@tanmay11117",
       title: "1nlink - Your Ultimate Bio Link Solution",
-      description: "Get a matching profile with images you upload",
+      description: "Get a matching profile by uploading images with AI",
       images: "https://1nlink.vercel.app/favicon.webp",
     },
   };
