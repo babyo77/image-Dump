@@ -21,12 +21,10 @@ import {
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import Image from "next/image";
-import { searchSong } from "napster-info";
 import { SearchSong } from "napster-info/dist/types";
 import useDebounce from "@/app/hooks/useDebounce";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@react-hook/media-query";
-import { MdOutlinePlayCircle } from "react-icons/md";
 import { Loader, PauseCircle, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -41,7 +39,10 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
     if (song.trim().length > 0) {
       try {
         setLoader(true);
-        const songs = await searchSong(song);
+        const getSongs = await fetch(
+          `https://music-player-api-mu.vercel.app/s/${song}`
+        );
+        const songs = await getSongs.json();
         setSearchedSong(songs);
       } catch (error) {
         //@ts-expect-error:expected error
@@ -54,9 +55,11 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   };
   const handleSearch = useDebounce(search, 500);
   useEffect(() => {
-    searchSong("baby").then((music) => {
-      setSearchedSong(music);
-    });
+    fetch(`https://music-player-api-mu.vercel.app/s/baby`)
+      .then((music) => music.json())
+      .then((music) => {
+        setSearchedSong(music);
+      });
   }, []);
   const closeRef = useRef<HTMLButtonElement>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
