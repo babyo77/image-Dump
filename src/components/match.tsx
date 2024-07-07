@@ -83,10 +83,8 @@ const Particles: React.FC<UserProp> = ({ user }) => {
               }}
             >
               <Link href={`https://instagram.com/${user.name}`} target="_blank">
-                {user.match && parseInt(user.match.per) > 70 ? (
+                {user.match && parseInt(user.match.per) > 70 && (
                   <Button>Let&apos;s Connect 🫂</Button>
-                ) : (
-                  <Button>🙉</Button>
                 )}
               </Link>
             </motion.div>
@@ -118,7 +116,14 @@ const Particles: React.FC<UserProp> = ({ user }) => {
             }}
             className=" cursor-pointer hover:text-zinc-100 absolute top-4 flex text-xs gap-1 text-zinc-400 items-center"
           >
-            <Info className=" h-4 w-4" /> based on your interests
+            <Link
+              href={"https://gemini.google.com/"}
+              target="_blank"
+              className="flex gap-1 items-center"
+            >
+              <Info className=" h-4 w-4" />
+              Powered by Google Gemini
+            </Link>
           </motion.div>
         </motion.div>
       )}

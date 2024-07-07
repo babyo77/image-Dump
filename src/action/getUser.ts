@@ -1,5 +1,5 @@
 "use server";
-import { match, metadata, user } from "@/app/types/types";
+import { gallery, match, metadata, user } from "@/app/types/types";
 import { createAdminClient, getLoggedInUser } from "@/lib/server/appwrite";
 import { calculatePercentageMatching } from "@/utils/match";
 import { redirect } from "next/navigation";
@@ -26,7 +26,14 @@ export async function getUser(username: string) {
       process.env.DATABASE_ID || "",
       process.env.GALLERY_ID || "",
       [
-        Query.select(["$id", "data", "clicks", "link", "$updatedAt"]),
+        Query.select([
+          "$id",
+          "data",
+          "clicks",
+          "link",
+          "$updatedAt",
+          "features",
+        ]),
         Query.equal("for", data.$id),
         Query.orderDesc("$updatedAt"),
       ]
@@ -56,10 +63,26 @@ export async function getUser(username: string) {
       } catch (error) {
         console.log("not starred");
       }
+      const allFeaturesOfUser = gallery.documents.flatMap(
+        (item) => item.features
+      );
+      const LoggedInUserGallery = await db.listDocuments(
+        process.env.DATABASE_ID || "",
+        process.env.GALLERY_ID || "",
+        [
+          Query.select(["features"]),
+          Query.equal("for", loggedInUser.$id),
+          Query.orderDesc("$updatedAt"),
+        ]
+      );
+      const allFeaturesOfLoggedInUser = LoggedInUserGallery.documents.flatMap(
+        (item) => item.features
+      );
+
       match = {
         per: calculatePercentageMatching(
-          loggedInUser.usersDoc.interests,
-          userInterest
+          [...loggedInUser.usersDoc.interests, ...allFeaturesOfLoggedInUser],
+          [...userInterest, ...allFeaturesOfUser]
         ),
         image: loggedInUser.prefs["image"],
       };

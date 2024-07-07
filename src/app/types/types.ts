@@ -30,6 +30,7 @@ export interface gallery extends Models.Document {
   del: string;
   link: string | null;
   clicks: number;
+  features: string[];
 }
 export interface starred extends Models.Document {
   username: string;
