@@ -219,13 +219,13 @@ function Details({ details }: { details: user }) {
         translate="no"
         className="dark:text-zinc-100/95 outline-none w-full border-none text-lg pl-1.5 -mt-4"
       >
-        <p suppressHydrationWarning>
+        <div>
           {details.usersDoc.bio.length > 0
             ? details.usersDoc.bio
                 .split("\n")
                 .map((line, index) => <p key={index}>{line}</p>)
             : "bio not set"}
-        </p>
+        </div>
       </motion.div>
       <Links
         key={"links"}

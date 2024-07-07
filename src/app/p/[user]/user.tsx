@@ -293,12 +293,12 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
-                <p suppressHydrationWarning>
+                <div>
                   {" "}
                   {user.usersDoc.bio.split("\n").map((line, index) => (
                     <p key={index}>{line}</p>
                   ))}
-                </p>
+                </div>
               </motion.div>
 
               <Links details={user} loggedIn={false} />
