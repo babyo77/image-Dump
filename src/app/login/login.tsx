@@ -275,18 +275,19 @@ export function InputOTPForm({
           </InputOTPGroup>
         </InputOTP>
 
-        <p className=" text-zinc-400 text-[0.72rem] text-start">
-          Please enter the one-time password sent to <br /> your Instagram dm
-          from{" "}
+        <p className="text-gray-500 text-sm text-left">
+          Please enter the one-time password sent <br /> to your Instagram
+          Direct Message from <br />
           <a
             href="https://www.instagram.com/1nlink_verification/"
             target="_blank"
-            className=" text-zinc-100"
+            className="text-blue-500"
           >
             @circles_verification
           </a>
-          <br /> it take upto 60sec to receive.
+          .It may take up to <br /> 60 seconds to receive.
         </p>
+
         {/* <div className="flex text-xs -mt-3 cursor-pointer  -mb-2 justify-center items-center w-full">
           <p className="text-neutral-500">Send again?</p>
         </div> */}
