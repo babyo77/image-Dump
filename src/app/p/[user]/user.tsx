@@ -139,7 +139,7 @@ function User({ user }: { user: user }) {
             animate={{ filter: "blur(0px)", opacity: 1 }}
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
-              duration: 1,
+              duration: 0.2,
 
               stiffness: 45,
             }}
@@ -159,7 +159,7 @@ function User({ user }: { user: user }) {
             animate={{ filter: "blur(0px)", opacity: 1 }}
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
-              duration: 1,
+              duration: 0.2,
 
               stiffness: 45,
             }}
