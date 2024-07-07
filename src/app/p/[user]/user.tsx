@@ -140,7 +140,6 @@ function User({ user }: { user: user }) {
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
               duration: 1,
-              delay: 1,
 
               stiffness: 45,
             }}
@@ -161,7 +160,6 @@ function User({ user }: { user: user }) {
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
               duration: 1,
-              delay: 1,
 
               stiffness: 45,
             }}
