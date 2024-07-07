@@ -279,7 +279,7 @@ export function InputOTPForm({
           Please enter the one-time password sent <br /> to your Instagram
           Direct Message from <br />
           <a
-            href="https://www.instagram.com/1nlink_verification/"
+            href="https://www.instagram.com/circles_verification/"
             target="_blank"
             className="text-blue-500"
           >
