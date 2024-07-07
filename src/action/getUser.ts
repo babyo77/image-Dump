@@ -70,9 +70,9 @@ export async function getUser(username: string) {
         process.env.DATABASE_ID || "",
         process.env.GALLERY_ID || "",
         [
+          Query.orderDesc("$updatedAt"),
           Query.select(["features"]),
           Query.equal("for", loggedInUser.$id),
-          Query.orderDesc("$updatedAt"),
         ]
       );
       const allFeaturesOfLoggedInUser = LoggedInUserGallery.documents.flatMap(
