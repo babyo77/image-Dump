@@ -158,14 +158,15 @@ function Details({ details }: { details: user }) {
         <label htmlFor="image" className="cursor-pointer">
           <motion.div
             key={"image"}
-            initial={{ y: "5dvh", opacity: 0 }}
+            initial={{ y: 0, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
               duration: 1,
+              delay: 1,
               type: "spring",
               stiffness: 45,
             }}
-            exit={{ y: "5dvh", opacity: 0 }}
+            exit={{ y: 0, opacity: 0 }}
             className="h-32 w-32 rounded-full overflow-hidden"
           >
             <Image
@@ -187,14 +188,15 @@ function Details({ details }: { details: user }) {
       <motion.div
         key={"fullName"}
         suppressContentEditableWarning
-        initial={{ y: "5dvh", opacity: 0 }}
+        initial={{ y: 0, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{
           duration: 1,
+          delay: 1,
           type: "spring",
           stiffness: 45,
         }}
-        exit={{ y: "5dvh", opacity: 0 }}
+        exit={{ y: 0, opacity: 0 }}
         ref={fullNameRef}
         contentEditable
         translate="no"
@@ -205,14 +207,15 @@ function Details({ details }: { details: user }) {
       <motion.div
         suppressContentEditableWarning
         key={"bio"}
-        initial={{ y: "5dvh", opacity: 0 }}
+        initial={{ y: 0, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{
           duration: 1,
+          delay: 1,
           type: "spring",
           stiffness: 45,
         }}
-        exit={{ y: "5dvh", opacity: 0 }}
+        exit={{ y: 0, opacity: 0 }}
         ref={bioRef}
         contentEditable
         translate="no"
