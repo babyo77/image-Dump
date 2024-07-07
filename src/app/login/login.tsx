@@ -82,20 +82,23 @@ function Login() {
       setChecking(false);
     }
   };
-
+  const [sendingOTP, setSendingOTP] = useState<boolean>(false);
   const handleGetOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const MakeUid = getRandom();
     setUID(MakeUid);
     setSendOtp(true);
+    setSendingOTP(true);
     const res = await fetch("/api/otp", {
       method: "POST",
       body: JSON.stringify({ type: "c", uid: MakeUid, username }),
       cache: "no-cache",
     });
     if (res.ok) {
+      setSendingOTP(false);
       return;
     } else {
+      setSendingOTP(false);
       toast.error("can't send OTP");
     }
   };
@@ -109,9 +112,13 @@ function Login() {
               WebkitBackdropFilter: "blur(11px)",
             }}
             onClick={() => setSendOtp(false)}
-            className=" absolute w-full z-40 h-full bg-black/90 flex justify-center items-center "
+            className=" absolute w-full border z-40 h-full bg-black/90 flex justify-center items-center "
           >
-            <InputOTPForm uid={uid} username={username} />
+            <InputOTPForm
+              sendingOTP={sendingOTP}
+              uid={uid}
+              username={username}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -209,9 +216,11 @@ const BackgroundGrid = ({
 export function InputOTPForm({
   uid,
   username,
+  sendingOTP,
 }: {
   uid: string;
   username: string;
+  sendingOTP: boolean;
 }) {
   const OTPRef = useRef<HTMLInputElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
@@ -280,8 +289,19 @@ export function InputOTPForm({
         {/* <div className="flex text-xs -mt-3 cursor-pointer  -mb-2 justify-center items-center w-full">
           <p className="text-neutral-500">Send again?</p>
         </div> */}
-        <Button type="submit" size={"sm"} disabled={loader} className=" w-full">
-          {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Confirm"}
+        <Button
+          type="submit"
+          size={"sm"}
+          disabled={sendingOTP || loader}
+          className=" w-full"
+        >
+          {loader ? (
+            <Loader className=" animate-spin h-5 w-5" />
+          ) : sendingOTP ? (
+            "Sending..."
+          ) : (
+            "Confirm"
+          )}
         </Button>
       </form>
     </motion.div>
