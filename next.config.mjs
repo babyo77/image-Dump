@@ -10,6 +10,7 @@ const nextConfig = {
     USERS_ID: process.env.USERS_ID,
     SITE_KEY: process.env.SITE_KEY,
     UPLOAD_AUTH: process.env.UPLOAD_AUTH,
+    GEMINI_API: process.env.GEMINI_API,
   },
   images: {
     remotePatterns: [

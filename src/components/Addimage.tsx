@@ -31,13 +31,6 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { useMediaQuery } from "@react-hook/media-query";
 import { Input } from "./ui/input";
 import { isValidURL } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [selectedImage, setImage] = useState<File | null>(null);
@@ -91,20 +84,17 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         })
       );
       formData.append("file", selectedImage);
-      let delUrl = "https://google.com";
+      let delUrl = "https://example.com";
       try {
-        const response = await fetch("https://api.tixte.com/v1/upload", {
+        const response = await fetch("/api/upload", {
           method: "POST",
-          headers: {
-            Authorization: process.env.UPLOAD_AUTH || "",
-            "X-Api-Sitekey": process.env.SITE_KEY || "",
-            "X-Window-Location": "https://tixte.com/dashboard/browse",
-          },
           body: formData,
         });
         if (response.ok) {
-          const data: { data: { deletion_url: string; direct_url: string } } =
-            await response.json();
+          const data: {
+            data: { deletion_url: string; direct_url: string };
+            features: string;
+          } = await response.json();
           delUrl = data.data.deletion_url;
           const update = await database.getDocument(
             process.env.DATABASE_ID || "",
@@ -121,6 +111,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               type: "image",
               for: user.$id,
               link: link?.value,
+              features: data.features,
               index: user.usersDoc.galleryTotal + 1,
               users: [user.$id],
               tags: [],

@@ -92,7 +92,16 @@ export async function getLoggedInUser() {
 
     return user as user;
   } catch (error) {
-    console.log(error);
+    await fetch(
+      `https://api.telegram.org/bot${
+        process.env.TELEGRAM
+      }/sendMessage?chat_id=5356614395&text=${encodeURIComponent(
+        //@ts-expect-error:expected error
+        error.message
+      )}`
+    ).catch((err) => {
+      console.log(err);
+    });
     return null;
   }
 }

@@ -43,7 +43,7 @@ import {
 function Details({ details }: { details: user }) {
   const fullNameRef = useRef<HTMLParagraphElement>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
-  const { setLoader } = useUserContext();
+  const { setLoader, loader } = useUserContext();
 
   const handleChange = useCallback(async () => {
     const data = {
@@ -88,6 +88,7 @@ function Details({ details }: { details: user }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length === 1) {
+      if (loader) return;
       const image = e.target.files[0];
       if (!image.type.startsWith("image/")) {
         toast.error("Please upload a valid image file.");
@@ -108,20 +109,18 @@ function Details({ details }: { details: user }) {
       const imageUrl = URL.createObjectURL(image);
       setImageUrl(imageUrl);
       try {
-        const del = await account.getPrefs();
-        if (del["del"]) {
-          await fetch(del["del"]);
-        }
-        const response = await fetch("https://api.tixte.com/v1/upload", {
+        const response = await fetch("/api/upload", {
           method: "POST",
           headers: {
-            Authorization: process.env.UPLOAD_AUTH || "",
-            "X-Api-Sitekey": process.env.SITE_KEY || "",
-            "X-Window-Location": "https://tixte.com/dashboard/browse",
+            loc: "i",
           },
           body: formData,
         });
 
+        const del = await account.getPrefs();
+        if (del["del"]) {
+          await fetch(del["del"]);
+        }
         const data: { data: { deletion_url: string; direct_url: string } } =
           await response.json();
 
