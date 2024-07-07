@@ -66,8 +66,6 @@ async function run(bytes: Buffer, req: NextRequest) {
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const text = response.text();
-    console.log(text);
-
     return text;
   } catch (error) {
     console.log(error);

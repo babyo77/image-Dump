@@ -140,7 +140,8 @@ function User({ user }: { user: user }) {
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
               duration: 1,
-              type: "spring",
+              delay: 1,
+
               stiffness: 45,
             }}
             className="h-48 w-48 rounded-full overflow-hidden"
@@ -160,7 +161,8 @@ function User({ user }: { user: user }) {
             exit={{ filter: "blur(10px)", opacity: 0 }}
             transition={{
               duration: 1,
-              type: "spring",
+              delay: 1,
+
               stiffness: 45,
             }}
             className=" rounded-xl text-base bg-zinc-900/90 overflow-hidden"
@@ -188,14 +190,15 @@ function User({ user }: { user: user }) {
               <div className="flex flex-col items-center gap-2 z-20">
                 <motion.div
                   key={"star"}
-                  initial={{ y: "5dvh", opacity: 0 }}
+                  initial={{ y: 0, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
                     duration: 1,
-                    type: "spring",
+                    delay: 1,
+
                     stiffness: 45,
                   }}
-                  exit={{ y: "5dvh", opacity: 0 }}
+                  exit={{ y: 0, opacity: 0 }}
                   className=" z-20"
                 >
                   {starred ? (
@@ -216,14 +219,15 @@ function User({ user }: { user: user }) {
                 </motion.div>
                 <motion.div
                   key={"match"}
-                  initial={{ y: "5dvh", opacity: 0 }}
+                  initial={{ y: 0, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
                     duration: 1,
-                    type: "spring",
+                    delay: 1,
+
                     stiffness: 45,
                   }}
-                  exit={{ y: "5dvh", opacity: 0 }}
+                  exit={{ y: 0, opacity: 0 }}
                   className=" z-20"
                 >
                   <HeartHandshake
@@ -241,14 +245,14 @@ function User({ user }: { user: user }) {
             </div>
             <motion.div
               key={"image"}
-              initial={{ y: "5dvh", opacity: 0 }}
+              initial={{ y: 0, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
                 duration: 1,
-                type: "spring",
+                delay: 1,
                 stiffness: 45,
               }}
-              exit={{ y: "5dvh", opacity: 0 }}
+              exit={{ y: 0, opacity: 0 }}
               className=" gap-5 flex flex-col"
             >
               <div className="h-32 w-32 rounded-full overflow-hidden">
@@ -267,14 +271,15 @@ function User({ user }: { user: user }) {
 
               <motion.div
                 key={"name"}
-                initial={{ y: "5dvh", opacity: 0 }}
+                initial={{ y: 0, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
                   duration: 1,
-                  type: "spring",
+                  delay: 1,
+
                   stiffness: 45,
                 }}
-                exit={{ y: "5dvh", opacity: 0 }}
+                exit={{ y: 0, opacity: 0 }}
                 translate="no"
                 className="font-semibold w-fit outline-none text-3xl py-0.5 pl-1.5 border-none -mt-2"
               >
@@ -282,14 +287,14 @@ function User({ user }: { user: user }) {
               </motion.div>
               <motion.div
                 key={"bio"}
-                initial={{ y: "5dvh", opacity: 0 }}
+                initial={{ y: 0, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
                   duration: 1,
-                  type: "spring",
+
                   stiffness: 45,
                 }}
-                exit={{ y: "5dvh", opacity: 0 }}
+                exit={{ y: 0, opacity: 0 }}
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
@@ -311,14 +316,15 @@ function User({ user }: { user: user }) {
         )}
         {!match && (
           <motion.footer
-            initial={{ y: "5dvh", opacity: 0 }}
+            initial={{ y: 0, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
               duration: 1,
-              type: "spring",
+              delay: 1,
+
               stiffness: 45,
             }}
-            exit={{ y: "5dvh", opacity: 0 }}
+            exit={{ y: 0, opacity: 0 }}
             key={"footer"}
             className="flex w-full  items-center justify-center bottom-0 pb-11"
           >

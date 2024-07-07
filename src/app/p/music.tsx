@@ -38,14 +38,14 @@ function Music({ user }: { user: user }) {
 
   return (
     <motion.div
-      initial={{ y: "5dvh", opacity: 0 }}
+      initial={{ y: 0, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
         duration: 1,
         type: "spring",
         stiffness: 45,
       }}
-      exit={{ y: "5dvh", opacity: 0 }}
+      exit={{ y: 0, opacity: 0 }}
       className=" flex gap-0.5 ml-[0.257rem] items-center -my-1.5"
     >
       <audio

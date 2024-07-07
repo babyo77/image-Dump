@@ -68,14 +68,14 @@ export function Links({
       <Dialog>
         <DialogTrigger className="w-fit">
           <motion.div
-            initial={{ y: "5dvh", opacity: 0 }}
+            initial={{ y: 0, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{
               duration: 1,
               type: "spring",
               stiffness: 45,
             }}
-            exit={{ y: "5dvh", opacity: 0 }}
+            exit={{ y: 0, opacity: 0 }}
             className="flex -mt-2.5 w-fit cursor-pointer font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
           >
             {!links ? (
@@ -192,14 +192,14 @@ export function Links({
     <Drawer>
       <DrawerTrigger className=" w-fit">
         <motion.div
-          initial={{ y: "5dvh", opacity: 0 }}
+          initial={{ y: 0, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{
             duration: 1,
             type: "spring",
             stiffness: 45,
           }}
-          exit={{ y: "5dvh", opacity: 0 }}
+          exit={{ y: 0, opacity: 0 }}
           className="flex -mt-2.5 cursor-pointer  w-fit font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
         >
           {!links ? (

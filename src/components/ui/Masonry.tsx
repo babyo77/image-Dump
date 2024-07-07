@@ -191,6 +191,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
               animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
               transition={{
                 duration: 1,
+                delay: 1.2,
                 type: "spring",
                 stiffness: 45,
               }}
