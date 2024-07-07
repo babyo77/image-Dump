@@ -116,7 +116,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                 size={"sm"}
                 disabled={loader}
                 variant={"default"}
-                className="font-medium w-32"
+                className="font-medium w-[8.5rem]"
               >
                 {loader ? "Saving..." : "Share my profile"}
               </Button>
