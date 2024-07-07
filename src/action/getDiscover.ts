@@ -1,5 +1,5 @@
 "use server";
-import { discover } from "@/app/types/types";
+import { discover, user, userDoc } from "@/app/types/types";
 import { createAdminClient } from "@/lib/server/appwrite";
 import { Query } from "node-appwrite";
 
@@ -26,7 +26,20 @@ export async function getDiscover() {
     })
   );
 
-  return shuffleArray(newRes) as unknown as discover[];
+  return shuffleArrayWithPriority(newRes, "babyo7_") as unknown as discover[];
+}
+
+function shuffleArrayWithPriority(array: any[], priorityName: string) {
+  const priorityUserIndex = array.findIndex(
+    (user) => user.username === priorityName
+  );
+  if (priorityUserIndex !== -1) {
+    const priorityUser = array.splice(priorityUserIndex, 1)[0];
+    const shuffledArray = shuffleArray(array);
+    shuffledArray.unshift(priorityUser);
+    return shuffledArray;
+  }
+  return shuffleArray(array);
 }
 
 function shuffleArray(array: any[]) {
