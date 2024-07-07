@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: `${user?.usersDoc.fullName} | Profile`,
-    description: `${user?.name} on 1nlink`,
+    description: `Do we have similar taste?`,
     icons: [
       {
         rel: "icon",
