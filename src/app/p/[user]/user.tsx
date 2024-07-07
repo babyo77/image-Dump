@@ -192,7 +192,7 @@ function User({ user }: { user: user }) {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
                     duration: 1,
-                    delay: 1,
+                    delay: 1.1,
 
                     stiffness: 45,
                   }}
@@ -221,7 +221,7 @@ function User({ user }: { user: user }) {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
                     duration: 1,
-                    delay: 1,
+                    delay: 1.1,
 
                     stiffness: 45,
                   }}
@@ -247,7 +247,7 @@ function User({ user }: { user: user }) {
               animate={{ y: 0, opacity: 1 }}
               transition={{
                 duration: 1,
-                delay: 1,
+                delay: 1.1,
                 stiffness: 45,
               }}
               exit={{ y: 0, opacity: 0 }}
@@ -273,7 +273,7 @@ function User({ user }: { user: user }) {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{
                   duration: 1,
-                  delay: 1,
+                  delay: 1.1,
 
                   stiffness: 45,
                 }}
@@ -318,7 +318,7 @@ function User({ user }: { user: user }) {
             animate={{ y: 0, opacity: 1 }}
             transition={{
               duration: 1,
-              delay: 1,
+              delay: 1.1,
 
               stiffness: 45,
             }}
