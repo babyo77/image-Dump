@@ -163,7 +163,7 @@ function Details({ details }: { details: user }) {
             transition={{
               duration: 1,
               delay: 1,
-              type: "spring",
+
               stiffness: 45,
             }}
             exit={{ y: 0, opacity: 0 }}
@@ -193,7 +193,7 @@ function Details({ details }: { details: user }) {
         transition={{
           duration: 1,
           delay: 1,
-          type: "spring",
+
           stiffness: 45,
         }}
         exit={{ y: 0, opacity: 0 }}
@@ -212,7 +212,7 @@ function Details({ details }: { details: user }) {
         transition={{
           duration: 1,
           delay: 1,
-          type: "spring",
+
           stiffness: 45,
         }}
         exit={{ y: 0, opacity: 0 }}
