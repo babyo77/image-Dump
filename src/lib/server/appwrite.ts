@@ -70,7 +70,10 @@ export async function getLoggedInUser() {
     if (usersDoc.music.length > 0) {
       try {
         const getMusic = await fetch(
-          `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`
+          `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`,
+          {
+            cache: "force-cache",
+          }
         );
         const music = await getMusic.json();
         usersDoc.music = {

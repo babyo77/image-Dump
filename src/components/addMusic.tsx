@@ -40,7 +40,10 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
       try {
         setLoader(true);
         const getSongs = await fetch(
-          `https://music-player-api-mu.vercel.app/s/${song}`
+          `https://music-player-api-mu.vercel.app/s/${song}`,
+          {
+            cache: "force-cache",
+          }
         );
         const songs = await getSongs.json();
         setSearchedSong(songs);
@@ -55,7 +58,9 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   };
   const handleSearch = useDebounce(search, 500);
   useEffect(() => {
-    fetch(`https://music-player-api-mu.vercel.app/s/baby`)
+    fetch(`https://music-player-api-mu.vercel.app/s/baby`, {
+      cache: "force-cache",
+    })
       .then((music) => music.json())
       .then((music) => {
         setSearchedSong(music);

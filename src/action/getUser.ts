@@ -1,10 +1,9 @@
 "use server";
-import { match, metadata, user, userDoc } from "@/app/types/types";
+import { match, metadata, user } from "@/app/types/types";
 import { createAdminClient, getLoggedInUser } from "@/lib/server/appwrite";
 import { calculatePercentageMatching } from "@/utils/match";
-import { searchSongWithSuggestion } from "napster-info";
 import { redirect } from "next/navigation";
-import { ID, Permission, Query, Role } from "node-appwrite";
+import { Query } from "node-appwrite";
 export async function getUser(username: string) {
   const { users, db } = await createAdminClient();
   const userFound = await users.list([Query.equal("name", username)], username);
@@ -68,7 +67,13 @@ export async function getUser(username: string) {
 
     if (usersDoc.music.length > 0) {
       try {
-        const music = await searchSongWithSuggestion(usersDoc.music[0]);
+        const getMusic = await fetch(
+          `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`,
+          {
+            cache: "force-cache",
+          }
+        );
+        const music = await getMusic.json();
         usersDoc.music = {
           ...music[0],
           start: Number(usersDoc.music[1]),
