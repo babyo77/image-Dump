@@ -251,7 +251,7 @@ function User({ user }: { user: user }) {
               exit={{ y: "5dvh", opacity: 0 }}
               className=" gap-5 flex flex-col"
             >
-              <div className="h-28 w-28 rounded-full overflow-hidden">
+              <div className="h-32 w-32 rounded-full overflow-hidden">
                 <Image
                   onClick={() => setFullImage(true)}
                   height={500}
@@ -276,7 +276,7 @@ function User({ user }: { user: user }) {
                 }}
                 exit={{ y: "5dvh", opacity: 0 }}
                 translate="no"
-                className="font-semibold w-fit outline-none text-2xl py-0.5 pl-1.5 border-none -mt-2"
+                className="font-semibold w-fit outline-none text-3xl py-0.5 pl-1.5 border-none -mt-2"
               >
                 <p>{user.usersDoc.fullName}</p>
               </motion.div>
