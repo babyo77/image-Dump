@@ -2,7 +2,6 @@
 import { Client, Account, Users, Databases, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 import { metadata, user } from "@/app/types/types";
-import { searchSongWithSuggestion } from "napster-info";
 
 export async function createSessionClient() {
   const client = new Client()
@@ -70,7 +69,10 @@ export async function getLoggedInUser() {
 
     if (usersDoc.music.length > 0) {
       try {
-        const music = await searchSongWithSuggestion(usersDoc.music[0]);
+        const getMusic = await fetch(
+          `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`
+        );
+        const music = await getMusic.json();
         usersDoc.music = {
           ...music[0],
           start: Number(usersDoc.music[1]),
