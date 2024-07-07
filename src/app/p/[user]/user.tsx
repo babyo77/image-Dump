@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-// import { FaInstagram } from "react-icons/fa";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoStar } from "react-icons/io5";
 import { Links } from "@/components/links";
@@ -294,7 +293,12 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
-                <p>{user.usersDoc.bio}</p>
+                <p suppressHydrationWarning>
+                  {" "}
+                  {user.usersDoc.bio.split("\n").map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </p>
               </motion.div>
 
               <Links details={user} loggedIn={false} />
@@ -316,9 +320,7 @@ function User({ user }: { user: user }) {
           className="flex w-full  items-center justify-center bottom-0 pb-11"
         >
           <Link href={"/login"} target="_blank">
-            <Button size={"sm"} variant={"secondary"}>
-              Create your own 1nlink
-            </Button>
+            <Button size={"sm"}>Create your own 1nlink</Button>
           </Link>
         </motion.footer>
       </AnimatePresence>

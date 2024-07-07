@@ -199,7 +199,7 @@ function Details({ details }: { details: user }) {
         ref={fullNameRef}
         contentEditable
         translate="no"
-        className="font-semibold outline-none text-2xl w-full py-0.5 pl-1.5 border-none -mt-2"
+        className="font-semibold outline-none text-3xl w-full py-0.5 pl-1.5 border-none -mt-2"
       >
         <p>{details.usersDoc.fullName}</p>
       </motion.div>
@@ -219,9 +219,11 @@ function Details({ details }: { details: user }) {
         translate="no"
         className="dark:text-zinc-100/95 outline-none w-full border-none text-lg pl-1.5 -mt-4"
       >
-        <p>
+        <p suppressHydrationWarning>
           {details.usersDoc.bio.length > 0
             ? details.usersDoc.bio
+                .split("\n")
+                .map((line, index) => <p key={index}>{line}</p>)
             : "bio not set"}
         </p>
       </motion.div>

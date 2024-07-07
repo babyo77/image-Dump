@@ -1,11 +1,10 @@
 "use client";
 
 import Interests from "@/components/interests";
-import { Compass, Loader } from "lucide-react";
+import { Compass } from "lucide-react";
 import Link from "next/link";
 import { user } from "../types/types";
 import { motion } from "framer-motion";
-import { useUserContext } from "@/store/context";
 import { ProfileAnalytics } from "./details";
 function AnimatedInterests({ user }: { user: user }) {
   return (
