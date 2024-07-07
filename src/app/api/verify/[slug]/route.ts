@@ -67,7 +67,12 @@ export async function POST(
           ]
         );
         if (data) {
-          await account.create(result.pk_id, email, password, result.username);
+          await account.create(
+            result.pk_id,
+            email,
+            password,
+            result.username + "_"
+          );
           await updatePrefs(users, result, code);
         }
       }
