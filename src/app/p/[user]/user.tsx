@@ -296,7 +296,9 @@ function User({ user }: { user: user }) {
                 <div>
                   {" "}
                   {user.usersDoc.bio.split("\n").map((line, index) => (
-                    <p key={index}>{line}</p>
+                    <p className=" w-[75dvw] break-words" key={index}>
+                      {line}
+                    </p>
                   ))}
                 </div>
               </motion.div>
