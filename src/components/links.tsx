@@ -72,7 +72,7 @@ export function Links({
             animate={{ y: 0, opacity: 1 }}
             transition={{
               duration: 1,
-              type: "spring",
+              delay: 1,
               stiffness: 45,
             }}
             exit={{ y: 0, opacity: 0 }}
@@ -196,7 +196,7 @@ export function Links({
           animate={{ y: 0, opacity: 1 }}
           transition={{
             duration: 1,
-            type: "spring",
+            delay: 1,
             stiffness: 45,
           }}
           exit={{ y: 0, opacity: 0 }}
