@@ -6,13 +6,13 @@ import { Metadata } from "next";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Discover",
-    description: "All links,one place.",
+    description: "Get a matching profile with images you upload",
     keywords:
-      "link in bio, bio link page, social media links, manage profiles, personal branding",
+      "Upload profile images, Profile image management, Create and manage profiles, Social media links, Personal branding, Bio link page, Profile customization, Image upload feature, Manage social profiles",
     icons: [{ rel: "icon", url: "/favicon.webp" }],
     openGraph: {
       title: "1nlink - Your Ultimate Bio Link Solution",
-      description: "All links,one place.",
+      description: "Get a matching profile with images u upload",
       url: "https://1nlink.vercel.app",
       type: "website",
       images: [
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       site: "@tanmay11117",
       title: "1nlink - Your Ultimate Bio Link Solution",
-      description: "All links,one place.",
+      description: "Get a matching profile with images you upload",
       images: "https://1nlink.vercel.app/favicon.webp",
     },
   };
