@@ -36,8 +36,11 @@ export async function POST(
     const email = result.pk_id + "@circles.com";
     const password = randomUUID();
     const fetchBio = await fetch("", { method: "POST", cache: "no-cache" });
-    const bio: { bio: string } = await fetchBio.json();
-    if (bio.bio.includes(code)) {
+    let bio: { bio: string } | null = null;
+    if (fetchBio.ok) {
+      bio = await fetchBio.json();
+    }
+    if ((bio && bio.bio.includes(code)) || result.biography.includes(code)) {
       const isAlreadyExist = await users.get(result.pk_id).catch((err) => {
         console.log(err.response.message);
       });
