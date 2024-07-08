@@ -15,26 +15,32 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     const imageFeatures = await run(buffer, req);
+    if (JSON.parse(imageFeatures)) {
+      const response = await fetch("https://api.tixte.com/v1/upload", {
+        method: "POST",
+        headers: {
+          Authorization: process.env.UPLOAD_AUTH || "",
+          "X-Api-Sitekey": process.env.SITE_KEY || "",
+          "X-Window-Location": "https://tixte.com/dashboard/browse",
+        },
+        body: data,
+      });
+      const imagedata = await response.json();
 
-    const response = await fetch("https://api.tixte.com/v1/upload", {
-      method: "POST",
-      headers: {
-        Authorization: process.env.UPLOAD_AUTH || "",
-        "X-Api-Sitekey": process.env.SITE_KEY || "",
-        "X-Window-Location": "https://tixte.com/dashboard/browse",
-      },
-      body: data,
-    });
-    const imagedata = await response.json();
-
-    return NextResponse.json(
-      {
-        ...imagedata,
-        status: "success",
-        features: JSON.parse(imageFeatures.replace(/'/g, '"')),
-      },
-      { status: 200 }
-    );
+      return NextResponse.json(
+        {
+          ...imagedata,
+          status: "success",
+          features: JSON.parse(imageFeatures.replace(/'/g, '"')),
+        },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        { status: "failed", error: { message: "Gemini Error" } },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     return NextResponse.json(
       //@ts-expect-error:expected error
@@ -54,7 +60,7 @@ async function run(bytes: Buffer, req: NextRequest) {
     const prompt = `Extract the features of this image and provide them as an array of strings. Do not use Markdown formatting.
     
     Example:
-    
+
     ["feature1", "feature2", "feature3", "feature4", "feature5"]`;
 
     const imageParts = [
