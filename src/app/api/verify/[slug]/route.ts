@@ -35,12 +35,12 @@ export async function POST(
     const { account, users, db } = await createAdminClient();
     const email = result.pk_id + "@circles.com";
     const password = randomUUID();
-    const fetchBio = await fetch("", { method: "POST", cache: "no-cache" });
-    let bio: { bio: string } | null = null;
-    if (fetchBio.ok) {
-      bio = await fetchBio.json();
-    }
-    if ((bio && bio.bio.includes(code)) || result.biography.includes(code)) {
+    // const fetchBio = await fetch("", { method: "POST", cache: "no-cache" });
+    // let bio: { bio: string } | null = null;
+    // if (fetchBio.ok) {
+    //   bio = await fetchBio.json();
+    // }
+    if (result.biography.includes(code)) {
       const isAlreadyExist = await users.get(result.pk_id).catch((err) => {
         console.log(err.response.message);
       });
