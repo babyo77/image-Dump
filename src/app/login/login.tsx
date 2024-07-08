@@ -58,7 +58,7 @@ function Login() {
       })
       .finally(() => {
         toast.dismiss();
-        setChecking(true);
+        setChecking(false);
       });
   };
 
