@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         process.env.USERS_ID || "",
         userDetails.uid,
         {
-          links: [`https://imagematch.com/${username}`],
+          links: [],
           fullName: userDetails.displayName,
           bio: "",
           phoneNumber: userDetails?.phoneNumber || null,
