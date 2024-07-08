@@ -105,6 +105,6 @@ export async function POST(request: Request) {
 
 async function updatePrefs(users: Users, id: string, imageUrl: string) {
   await users.updatePrefs(id, {
-    image: imageUrl.replace("s91-c", "s540-c"),
+    image: imageUrl.replace("=s96-c", "=s540-c"),
   });
 }
