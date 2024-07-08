@@ -151,7 +151,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                         type="url"
                         ref={linkRef}
                         disabled={loading}
-                        placeholder={loggedInUser?.links[0].url || ""}
+                        placeholder={loggedInUser?.links[0]?.url || ""}
                         className=" bg-primary-foreground/80 rounded-none border-none"
                       />
                       <Button
