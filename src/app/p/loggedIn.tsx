@@ -1,11 +1,12 @@
 "use client";
 
 import Interests from "@/components/interests";
-import { Compass } from "lucide-react";
+import { Compass, Lock } from "lucide-react";
 import Link from "next/link";
 import { user } from "../types/types";
 import { motion } from "framer-motion";
 import { ProfileAnalytics } from "./details";
+import { popup } from "@/components/ui/popup";
 function AnimatedInterests({ user }: { user: user }) {
   return (
     <div className=" flex flex-col items-center gap-1">
@@ -41,6 +42,10 @@ function AnimatedInterests({ user }: { user: user }) {
           <Compass className=" h-[1.4rem] w-[1.4rem] ml-0.5 text-zinc-400 hover:text-zinc-200" />
         </Link>
         <ProfileAnalytics user={user} />
+        <Lock
+          onClick={() => popup.show()}
+          className="text-zinc-400 hover:text-zinc-200 mt-0.5"
+        />
       </motion.div>
     </div>
   );

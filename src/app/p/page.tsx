@@ -46,7 +46,6 @@ export default async function page() {
 
   return (
     <>
-      {/* <Interests className="hidden" user={user} /> */}
       <div className=" px-7 w-full pt-11 flex pb-24 justify-start items-start">
         <div className="  cursor-pointer absolute  flex-col items-center gap-2.5 hover:text-zinc-300 transition-all right-4 duration-300">
           <AnimatedInterests user={user} />
@@ -54,20 +53,6 @@ export default async function page() {
         <div className=" gap-5 flex flex-col w-full">
           <Details details={user} />
           {user.usersDoc.music && <Music user={user} />}
-          {/* <div className=" flex gap-2 overflow-scroll no-scrollbar">
-            <p className=" p-2 px-4 rounded-full bg-zinc-100 text-black w-fit text-xs">
-              #Wallpaper
-            </p>
-            <p className=" p-2 px-4 rounded-full bg-zinc-800 w-fit text-xs">
-              #Wallpaper
-            </p>
-            <p className=" p-2 px-4 rounded-full bg-zinc-800 w-fit text-xs">
-              #Wallpaper
-            </p>
-            <p className=" p-2 px-4 rounded-full bg-zinc-800 w-fit text-xs">
-              #Wallpaper
-            </p>
-          </div> */}
           <Gallery user={user} remove />
         </div>
       </div>

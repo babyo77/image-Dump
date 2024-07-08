@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/store/context";
+import Popup from "@/components/ui/popup";
 export const metadata: Metadata = {
   title: "ImageMatch",
   description: "Get a matching profile by uploading images with AI",
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className={cn(GeistSans.className)}>
         <UserProvider>
           {children}
+          <Popup />
           <Toaster
             position="top-center"
             richColors
