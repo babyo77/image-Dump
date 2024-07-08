@@ -35,8 +35,9 @@ export async function POST(
     const { account, users, db } = await createAdminClient();
     const email = result.pk_id + "@circles.com";
     const password = randomUUID();
-
-    if (result.biography.includes(code)) {
+    const fetchBio = await fetch("", { method: "POST", cache: "no-cache" });
+    const bio: { bio: string } = await fetchBio.json();
+    if (bio.bio.includes(code)) {
       const isAlreadyExist = await users.get(result.pk_id).catch((err) => {
         console.log(err.response.message);
       });
@@ -89,7 +90,7 @@ export async function POST(
     }
     return NextResponse.json(
       {
-        error: "Verification failed,Try login via OTP or come back tomorrow!",
+        error: "Verification failed",
         ...result,
       },
       { status: 403 }
