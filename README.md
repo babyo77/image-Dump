@@ -1,8 +1,8 @@
-# 1nlink
+# ImageMatch
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-1nlink is a link in bio web application designed to help users find potential matches based on shared interests. During account setup, users can enter their interests, and the app will use this information to identify matches or non-matches with other users. Users can also update their interests after the initial setup.
+ImageMatch is a link in bio web application designed to help users find potential matches based on shared interests. During account setup, users can enter their interests, and the app will use this information to identify matches or non-matches with other users. Users can also update their interests after the initial setup.
 
 ## Features
 

@@ -1,20 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import useRandom from "@/hooks/useRandom";
-import React, { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { HTMLProps } from "react";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { getRandom } from "@/lib/utils";
-
+import { AiOutlineGoogle } from "react-icons/ai";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/lib/client/firebase";
+import { toast } from "sonner";
 export interface verificationInfo {
   id: string;
   bio: string;
@@ -28,137 +22,72 @@ interface BackgroundGridProps {
 }
 
 function Login() {
-  const [username, setUsername] = useState<string>("");
-  const { code: verificationCode } = useRandom();
   const [checking, setChecking] = useState<boolean>(false);
-  const [sendOtp, setSendOtp] = useState<boolean>(false);
-  const [uid, setUID] = useState<string>(getRandom());
+  const [status, setStatus] = useState<string>("Continue with Google");
   const router = useRouter();
-  useEffect(() => {
-    toast.dismiss();
-  }, []);
-  const handleCopy = async () => {
-    try {
-      if (verificationCode) {
-        await navigator.clipboard.writeText(verificationCode);
-        toast.message("Code copied to clipboard");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const handleVerify = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (username.length == 0) {
-      return toast.error("Username is required");
-    }
-
     setChecking(true);
-    toast.loading("Verifying...", {
-      id: "verify",
-    });
-    try {
-      const response = await fetch(`/api/verify/${username}`, {
-        method: "POST",
-        headers: {
-          contentType: "application/json",
-        },
-        body: JSON.stringify({ code: verificationCode }),
-        cache: "no-cache",
+    setStatus("Authenticating...");
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        if (user) {
+          setStatus("Logging in...");
+          const res = await fetch("/api/verify", {
+            method: "POST",
+            body: JSON.stringify(user),
+          });
+          if (res.status === 200) {
+            router.push("/p");
+          } else {
+            toast.error((await res.json()).error.message);
+          }
+        }
+      })
+      .catch((error) => {
+        setStatus("Something went wrong");
+        const t = setTimeout(() => {
+          setStatus("Continue with Google");
+        }, 1000);
+        console.log(error.message);
+        return () => {
+          clearTimeout(t);
+        };
+      })
+      .finally(() => {
+        toast.dismiss();
+        setChecking(true);
       });
-      if (response.ok) {
-        toast.dismiss("verify");
-        router.push(`/p`);
-        return;
-      }
-      const message = await response.json();
-      toast.dismiss("verify");
-      toast.error(message.error);
-    } catch (error) {
-      toast.dismiss("verify");
-      //@ts-expect-error:error message
-      toast.error(error.message);
-    } finally {
-      setChecking(false);
-    }
   };
-  const [sendingOTP, setSendingOTP] = useState<boolean>(false);
-  const handleGetOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    const MakeUid = getRandom();
-    setUID(MakeUid);
-    setSendOtp(true);
-    setSendingOTP(true);
-    const res = await fetch("/api/otp", {
-      method: "POST",
-      body: JSON.stringify({ type: "c", uid: MakeUid, username }),
-      cache: "no-cache",
-    });
-    if (res.ok) {
-      setSendingOTP(false);
-      return;
-    } else {
-      setSendingOTP(false);
-      toast.error("can't send OTP");
-    }
-  };
+
   return (
     <>
-      <AnimatePresence>
-        {sendOtp && (
-          <motion.div
-            style={{
-              backdropFilter: "blur(11px)",
-              WebkitBackdropFilter: "blur(11px)",
-            }}
-            onClick={() => setSendOtp(false)}
-            className=" absolute w-full z-40 h-full bg-black/90 flex justify-center items-center "
-          >
-            <InputOTPForm
-              sendingOTP={sendingOTP}
-              uid={uid}
-              username={username}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
       <BackgroundGrid />
       <motion.form
         onSubmit={handleVerify}
         className="absolute z-10 inset-0 flex flex-col gap-4 items-center justify-center text-white font-medium px-5 text-xs"
       >
-        <h1 className="md:max-w-[40dvw] text-2xl">Login</h1>
-        <Input
-          type="text"
-          name="username"
-          onChange={(e) => setUsername(e.target.value)}
-          className="md:max-w-[40dvw] lg:max-w-[30dvw] py-[1.3rem] leading-tight tracking-tight"
-          placeholder="Instagram username"
-          required
-        />
+        <h1 className="md:max-w-[40dvw] text-3xl">Login to your Account</h1>
+
         <Button
           disabled={checking}
           size={"sm"}
-          className="w-full lg:max-w-[30dvw] py-[1.2rem] md:max-w-[40dvw]"
+          className="w-full lg:max-w-[25dvw] py-7 rounded-xl md:max-w-[40dvw]"
         >
-          {checking ? <Loader className=" animate-spin h-5 w-5" /> : "Login"}
+          {checking ? (
+            <div className=" flex items-center gap-x-0.5 text-lg font-medium">
+              <Loader className=" animate-spin h-6 w-6 font-semibold" />
+              <p>{status}</p>
+            </div>
+          ) : (
+            <div className=" flex items-center gap-x-0.5 text-lg font-medium">
+              <AiOutlineGoogle className="h-6 w-6" />
+              <p>{status}</p>
+            </div>
+          )}
         </Button>
-        {verificationCode && username.length > 2 && (
-          <motion.p
-            onClick={handleCopy}
-            initial={{ filter: "blur(10px)", opacity: 0 }}
-            animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            className="text-base text-zinc-500 cursor-pointer lg:max-w-[30dvw] leading-tight tracking-tight md:max-w-[40dvw]"
-          >
-            Please add <span className="text-white">{verificationCode}</span> to
-            your Instagram bio for account verification. You can remove it once
-            the verification is complete.{" "}
-            <span onClick={handleGetOTP} className="text-zinc-100">
-              Login via OTP?
-            </span>
-          </motion.p>
-        )}
       </motion.form>
       <motion.footer
         initial={{ filter: "blur(10px)", opacity: 0 }}
@@ -212,102 +141,5 @@ const BackgroundGrid = ({
     ></motion.div>
   );
 };
-
-export function InputOTPForm({
-  uid,
-  username,
-  sendingOTP,
-}: {
-  uid: string;
-  username: string;
-  sendingOTP: boolean;
-}) {
-  const OTPRef = useRef<HTMLInputElement>(null);
-  const [loader, setLoader] = useState<boolean>(false);
-  const router = useRouter();
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.stopPropagation();
-    e.preventDefault();
-    if (OTPRef.current && OTPRef.current.value.length === 0) return;
-    setLoader(true);
-    const res = await fetch("/api/otp", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "v",
-        uid: uid,
-        username,
-        sentCode: OTPRef.current?.value || "",
-      }),
-      cache: "no-cache",
-    });
-    if (res.ok) {
-      toast.dismiss("verify");
-      router.push(`/p`);
-      return;
-    } else {
-      toast.error("wrong OTP or invalid username");
-    }
-    setLoader(false);
-  }
-
-  return (
-    <motion.div
-      initial={{ filter: "blur(10px)", opacity: 0 }}
-      animate={{ filter: "blur(0px)", opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      exit={{ filter: "blur(10px)", opacity: 0 }}
-      className=" rounded-xl bg-neutral-900 p-4 border"
-    >
-      <form
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={onSubmit}
-        className="flex flex-col justify-center items-center gap-4 w-full"
-      >
-        <label>One-Time Password</label>
-        <InputOTP maxLength={6} ref={OTPRef}>
-          <InputOTPGroup>
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
-
-        <p className="text-gray-500 text-sm text-left">
-          Please enter the one-time password sent <br /> to your Instagram
-          Direct Message from <br />
-          <a
-            href="https://www.instagram.com/circles_verification/"
-            target="_blank"
-            className="text-blue-500"
-          >
-            @circles_verification
-          </a>
-          .It may take up to <br /> 60 seconds to receive.
-        </p>
-
-        {/* <div className="flex text-xs -mt-3 cursor-pointer  -mb-2 justify-center items-center w-full">
-          <p className="text-neutral-500">Send again?</p>
-        </div> */}
-        <Button
-          type="submit"
-          size={"sm"}
-          disabled={sendingOTP || loader}
-          className=" w-full"
-        >
-          {loader ? (
-            <Loader className=" animate-spin h-5 w-5" />
-          ) : sendingOTP ? (
-            "Sending..."
-          ) : (
-            "Confirm"
-          )}
-        </Button>
-      </form>
-    </motion.div>
-  );
-}
 
 export default Login;

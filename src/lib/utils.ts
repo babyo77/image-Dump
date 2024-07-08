@@ -33,7 +33,7 @@ export const getMetadata = async (link: string) => {
 
 export function replaceInstagramURL(originalURL: string) {
   if (typeof originalURL == "undefined")
-    return "https://1nlink.vercel.app/notFound.jpg";
+    return "https://ImageMatch.vercel.app/notFound.jpg";
   if (!originalURL.startsWith("https://instagram")) return originalURL;
   const regex = /https:\/\/instagram\.[^/]+/;
   const newBaseURL = "https://instagram.fmdc3-1.fna.fbcdn.net";
@@ -73,4 +73,11 @@ export function getRandom() {
     .split("")
     .map(() => chars[Math.floor(Math.random() * chars.length)])
     .join("");
+}
+
+export function generateRandomUsername(email: string) {
+  const emailName = email.split("@")[0];
+  const randomNum = Math.floor(Math.random() * 10000);
+  const randomUsername = `${emailName}_${randomNum}`;
+  return randomUsername;
 }

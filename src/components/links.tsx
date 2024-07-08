@@ -76,7 +76,7 @@ export function Links({
               stiffness: 45,
             }}
             exit={{ y: 0, opacity: 0 }}
-            className="flex -mt-2.5 w-fit cursor-pointer font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
+            className="flex -mt-2.5 w-fit cursor-pointer font-normal leading-tight dark:text-zinc-300 items-center pl-[0.4rem] text-sm"
           >
             {!links ? (
               details.links.slice(0, 3).map(({ image }, i) => (

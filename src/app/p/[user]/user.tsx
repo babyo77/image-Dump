@@ -322,7 +322,7 @@ function User({ user }: { user: user }) {
             className="flex w-full  items-center justify-center bottom-0 pb-11"
           >
             <Link href={"/login"} target="_blank">
-              <Button size={"sm"}>Create your own 1nlink</Button>
+              <Button size={"sm"}>Create your own ImageMatch</Button>
             </Link>
           </motion.footer>
         )}

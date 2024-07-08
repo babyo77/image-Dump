@@ -5,31 +5,31 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/store/context";
 export const metadata: Metadata = {
-  title: "1nlink",
+  title: "ImageMatch",
   description: "Get a matching profile by uploading images with AI",
   keywords:
     "Upload profile images, Profile image management, Create and manage profiles, Social media links, Personal branding, Bio link page, Profile customization, Image upload feature, Manage social profiles",
   icons: [{ rel: "icon", url: "/favicon.webp" }],
   openGraph: {
-    title: "1nlink ",
+    title: "ImageMatch ",
     description: "Get a matching profile by uploading images with AI",
-    url: "https://1nlink.vercel.app",
+    url: "https://ImageMatch.vercel.app",
     type: "website",
     images: [
       {
-        url: "https://1nlink.vercel.app/favicon.webp",
+        url: "https://ImageMatch.vercel.app/favicon.webp",
         width: 1200,
         height: 630,
-        alt: "1nlink OG Image",
+        alt: "ImageMatch OG Image",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@tanmay11117",
-    title: "1nlink ",
+    title: "ImageMatch ",
     description: "Get a matching profile by uploading images with AI",
-    images: "https://1nlink.vercel.app/favicon.webp",
+    images: "https://ImageMatch.vercel.app/favicon.webp",
   },
 };
 

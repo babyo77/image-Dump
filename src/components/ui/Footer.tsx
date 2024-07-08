@@ -118,7 +118,14 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                 variant={"default"}
                 className="font-medium w-[8.5rem]"
               >
-                {loader ? "Saving..." : "Share my profile"}
+                {loader ? (
+                  <div className="flex gap-0.5 items-center">
+                    <Loader className=" animate-spin h-4 w-4" />
+                    <p>Saving...</p>
+                  </div>
+                ) : (
+                  "Share my profile"
+                )}
               </Button>
             ) : (
               <Link href={"/login"}>
@@ -141,23 +148,16 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                   <PopoverContent className="mb-[1.35rem] mr-4 p-0 ">
                     <div className="flex items-center">
                       <Input
-                        style={{
-                          WebkitMaskImage:
-                            "linear-gradient(to right, black 90%, transparent 100%)",
-                          maskImage:
-                            "linear-gradient(to right, black 90%, transparent 100%)",
-                        }}
                         type="url"
                         ref={linkRef}
                         disabled={loading}
                         placeholder={loggedInUser?.links[0].url || ""}
-                        className=" bg-primary-foreground/80 rounded-md border-none"
+                        className=" bg-primary-foreground/80 rounded-none border-none"
                       />
                       <Button
                         onClick={handleChange}
                         disabled={loading}
-                        size={"sm"}
-                        className="m-0 pl-0 rounded-sm text-zinc-300 hover:text-zinc-100  bg-inherit  hover:bg-inherit"
+                        className="m-0 pl-0 rounded-none text-zinc-300 hover:text-zinc-100  bg-primary-foreground/80 shadow-none hover:bg-primary-foreground/80"
                       >
                         {!loading ? (
                           "Link"
