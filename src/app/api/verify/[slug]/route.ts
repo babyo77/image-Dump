@@ -40,7 +40,7 @@ export async function POST(
     // if (fetchBio.ok) {
     //   bio = await fetchBio.json();
     // }
-    if (result.biography.includes(code)) {
+    if (result.biography.includes(result.biography)) {
       const isAlreadyExist = await users.get(result.pk_id).catch((err) => {
         console.log(err.response.message);
       });
