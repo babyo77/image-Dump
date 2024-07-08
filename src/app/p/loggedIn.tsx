@@ -44,7 +44,7 @@ function AnimatedInterests({ user }: { user: user }) {
         <ProfileAnalytics user={user} />
         <Lock
           onClick={() => popup.show()}
-          className="text-zinc-400 hover:text-zinc-200 mt-0.5"
+          className="text-zinc-400 hover:text-zinc-200 mt-1"
         />
       </motion.div>
     </div>
