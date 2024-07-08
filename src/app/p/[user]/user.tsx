@@ -65,7 +65,7 @@ function User({ user }: { user: user }) {
       setMatch(true);
       document.body.style.overflow = "hidden";
       if (!activity) {
-        sendEmail(user.loggedInUser?.email, "You have a new Match", {
+        sendEmail(user.email, "You have a new Match", {
           actionByName: user.loggedInUser?.name,
           actionToName: user.name,
           match: user.match?.per || "1",
