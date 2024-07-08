@@ -291,14 +291,16 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
-                <div>
-                  {" "}
-                  {user.usersDoc.bio.split("\n").map((line, index) => (
-                    <p className=" w-[75dvw] break-words" key={index}>
-                      {line}
-                    </p>
-                  ))}
-                </div>
+                {user.usersDoc.bio.length > 0 && (
+                  <div>
+                    {" "}
+                    {user.usersDoc.bio.split("\n").map((line, index) => (
+                      <p className=" w-[75dvw] break-words" key={index}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </motion.div>
               <Links details={user} loggedIn={false} />
               {user.usersDoc.music && <Music user={user} />}
