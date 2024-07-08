@@ -18,6 +18,7 @@ import { ID } from "appwrite";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import sendEmail from "@/lib/sendMail";
 function User({ user }: { user: user }) {
   const { match, setMatch } = useUserContext();
   const router = useRouter();
@@ -64,6 +65,12 @@ function User({ user }: { user: user }) {
       setMatch(true);
       document.body.style.overflow = "hidden";
       if (!activity) {
+        sendEmail(user.loggedInUser?.email, "You have a new Match", {
+          actionByName: user.loggedInUser?.name,
+          actionToName: user.name,
+          match: user.match?.per || "1",
+        });
+
         try {
           const res = await database.createDocument(
             process.env.DATABASE_ID || "",

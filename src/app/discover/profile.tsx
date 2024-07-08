@@ -83,14 +83,11 @@ function Profile({
               <p className=" text-4xl font-semibold break-words">
                 {user.fullName}
               </p>
-              <Link
-                href={`https://www.instagram.com/${user.username}`}
-                target="_blank"
-              >
-                <p className="text-sm text-neutral-300 underline underline-offset-2 ">
-                  @{user.username}
-                </p>
-              </Link>
+
+              <p className="text-sm text-neutral-300 underline underline-offset-2 ">
+                @{user.username}
+              </p>
+
               <p className=" text-base mt-0.5 text-neutral-200  font-medium break-words">
                 {user.bio}
               </p>
