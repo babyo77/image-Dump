@@ -66,9 +66,7 @@ export function Links({
   if (isDesktop) {
     return (
       <Dialog>
-        <DialogTrigger
-          className={`${details?.links?.length === 0 && "hidden"} w-fit`}
-        >
+        <DialogTrigger className={`${links?.length === 0 && "hidden"} w-fit`}>
           <motion.div
             initial={{ y: 0, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -192,9 +190,7 @@ export function Links({
   }
   return (
     <Drawer>
-      <DrawerTrigger
-        className={`${details?.links?.length === 0 && "hidden"} w-fit`}
-      >
+      <DrawerTrigger className={`${links?.length === 0 && "hidden"} w-fit`}>
         <motion.div
           initial={{ y: 0, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
