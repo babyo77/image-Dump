@@ -12,8 +12,7 @@ import {
 import React, { useCallback, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { Models } from "node-appwrite";
-import { database } from "@/lib/client/appwrite";
+import { account, database } from "@/lib/client/appwrite";
 import { TiPointOfInterest } from "react-icons/ti";
 import { user } from "@/app/types/types";
 import { motion } from "framer-motion";
@@ -26,14 +25,12 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
-interface search extends Models.Document {
-  text: string;
-}
+import { Input } from "./ui/input";
+
 function Interests({
   isOpen,
   user,
@@ -46,86 +43,46 @@ function Interests({
   const [interested, setInterest] = useState<string[]>(user.usersDoc.interests);
   const CloseRef = useRef<HTMLButtonElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>(user.name);
 
-  /**
-   * search will add later
-   */
-
-  // const interestRef = useRef<HTMLInputElement>(null);
-  // const [defaultInterests, setDefaultInterest] = useState<search[] | null>(
-  //   null
-  // );
-
-  // const addInterest = () => {
-  //   const interestValue = interestRef.current?.value;
-  //   if (interestValue && interestValue.trim().length > 0) {
-  //     if (interested.includes(capitalizeWords(interestValue))) {
-  //       toast.error("already added");
-  //       return;
-  //     }
-  //     setInterest((prev) => [capitalizeWords(interestValue), ...prev]);
-  //     interestRef.current.value = "";
-  //     setDefaultInterest(null);
-  //   }
-  // };
-
-  // const removeInterest = (interestToRemove: string) => {
-  //   setInterest((prev) =>
-  //     prev.filter((interest) => interest !== interestToRemove)
-  //   );
-  //   setDefaultInterest(null);
-  // };
-
-  // const Search = async () => {
-  //   if (interestRef.current) {
-  //     const search = interestRef.current.value;
-  //     if (search.trim().length > 0) {
-  //       const data = await database.listDocuments(
-  //         process.env.DATABASE_ID || "",
-  //         "6676ce740002d504bc6f",
-  //         [Query.startsWith("text", search)]
-  //       );
-  //       setDefaultInterest(data.documents as search[]);
-  //     } else {
-  //       setDefaultInterest(null);
-  //     }
-  //   }
-  // };
-
-  // const handleSet = (e: React.MouseEvent<HTMLSpanElement>) => {
-  //   if (interestRef.current) {
-  //     interestRef.current.value = e.currentTarget.textContent || "";
-  //     addInterest();
-  //   }
-  // };
-
-  // const handleSearch = useDebounce(Search, 400);
-
-  const handleContinue = useCallback(async () => {
-    if (interested.length <= 1) {
-      toast.error("Minimum 2 interest required to continue");
-      return;
-    }
-    try {
-      setLoader(true);
-      await database.updateDocument(
-        process.env.DATABASE_ID || "",
-        process.env.USERS_ID || "",
-        user.$id,
-        {
-          interests: interested,
-        }
-      );
-      if (CloseRef.current) {
-        confettiAnimation();
-        CloseRef.current.click();
+  const handleContinue = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (interested.length <= 1) {
+        toast.error("Minimum 2 interest required to continue");
+        return;
       }
-    } catch (error) {
-      toast.error("Failed to save interest");
-    } finally {
-      setLoader(false);
-    }
-  }, [interested, user]);
+      try {
+        setLoader(true);
+        const isExist = await fetch(`/api/check?u=${username}`, {
+          cache: "no-cache",
+        });
+        if (isExist.status === 404) {
+          await account.updateName(username);
+        } else {
+          toast.error("username already in taken");
+          return;
+        }
+        await database.updateDocument(
+          process.env.DATABASE_ID || "",
+          process.env.USERS_ID || "",
+          user.$id,
+          {
+            interests: interested,
+          }
+        );
+        if (CloseRef.current) {
+          confettiAnimation();
+          CloseRef.current.click();
+        }
+      } catch (error) {
+        toast.error("Failed to save interest");
+      } finally {
+        setLoader(false);
+      }
+    },
+    [interested, user, username]
+  );
 
   const handleKeywordsChange = (newKeywords: string[]) => {
     setInterest(newKeywords);
@@ -146,79 +103,47 @@ function Interests({
         </AlertDialogTrigger>
         <AlertDialogContent className="w-[90dvw] rounded-xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Add Interests</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will be used to discover people with similar interests.
-            </AlertDialogDescription>
+            <AlertDialogTitle>Details</AlertDialogTitle>
           </AlertDialogHeader>
-          <motion.div
+          <motion.form
+            onSubmit={handleContinue}
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <div className=" relative mb-3">
+            <div className=" relative mb-3  space-y-3">
+              <Input
+                placeholder="Username"
+                defaultValue={username}
+                onChange={(e) => setUsername(e.target.value)}
+                name="username"
+              />
+
               <TagsInput
-                // onChange={handleSearch}
                 initialKeywords={interested}
                 onKeywordsChange={handleKeywordsChange}
                 placeholder="Type interest and hit enter"
               />
-              {/* {defaultInterests && defaultInterests.length > 0 && (
-              <div className=" absolute bg-zinc-900/95 border-2 max-h-32 overflow-x-hidden  overflow-y-scroll no-scrollbar w-full z-10 text-sm rounded-xl mt-1 flex flex-col">
-                <>
-                  {defaultInterests.map(({ text }, i) => (
-                    <span
-                      onClick={handleSet}
-                      key={text + i}
-                      className={`${
-                        i === defaultInterests.length - 1 ? "" : "border-b"
-                      } px-5 py-1.5 hover:bg-zinc-800 cursor-pointer`}
-                    >
-                      {text}
-                    </span>
-                  ))}
-                </>
-              </div>
-            )} */}
-              {/* <div className=" flex bottom-1.5 right-1 absolute gap-1">
-              <Button
-                onClick={() => setInterest([])}
-                size={"sm"}
-                disabled={interested.length === 0}
-                variant={"secondary"}
-                className="  border text-xs px-4 h-7 rounded-lg"
-              >
-                Remove all
-              </Button>
-              <Button
-                onClick={addInterest}
-                size={"sm"}
-                variant={"secondary"}
-                className="  border text-xs px-4 h-7 rounded-lg"
-              >
-                Add
-              </Button>
-            </div> */}
             </div>
-          </motion.div>
-          <AlertDialogFooter>
-            <AlertDialogCancel
-              ref={CloseRef}
-              style={{ visibility: "hidden", position: "absolute" }}
-            ></AlertDialogCancel>
-            <AlertDialogCancel
-              disabled={interested.length <= 1}
-              className={` bg-zinc-900 outline-none ring-0  rounded-xl hover:bg-zinc-800 ${className} text-white`}
-            >
-              Cancel
-            </AlertDialogCancel>
-            <Button
-              className=" bg-zinc-900 border rounded-xl text-white hover:bg-zinc-800"
-              onClick={handleContinue}
-            >
-              {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Save"}
-            </Button>
-          </AlertDialogFooter>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                ref={CloseRef}
+                style={{ visibility: "hidden", position: "absolute" }}
+              ></AlertDialogCancel>
+              <AlertDialogCancel
+                disabled={interested.length <= 1}
+                className={` bg-zinc-900 outline-none ring-0  rounded-xl hover:bg-zinc-800 ${className} text-white`}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <Button
+                disabled={loader}
+                className=" bg-zinc-900 border rounded-xl text-white hover:bg-zinc-800"
+              >
+                {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Save"}
+              </Button>
+            </AlertDialogFooter>
+          </motion.form>
         </AlertDialogContent>
       </AlertDialog>
     );
@@ -237,79 +162,41 @@ function Interests({
       </DrawerTrigger>
       <DrawerContent className=" border-none">
         <DrawerHeader>
-          <DrawerTitle>Add Interests</DrawerTitle>
-          <DrawerDescription>
-            This will be used to discover people with similar interests.
-          </DrawerDescription>
+          <DrawerTitle>Details</DrawerTitle>
+          <DrawerDescription></DrawerDescription>
 
-          <motion.div
+          <motion.form
+            onSubmit={handleContinue}
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <div className=" relative mb-3">
+            <div className=" relative mb-3 mt-1 space-y-3">
+              <Input
+                placeholder="Username"
+                defaultValue={username}
+                onChange={(e) => setUsername(e.target.value)}
+                name="username"
+              />
               <TagsInput
-                // onChange={handleSearch}
                 initialKeywords={interested}
                 onKeywordsChange={handleKeywordsChange}
                 placeholder="Type interest and hit enter"
               />
-              {/* {defaultInterests && defaultInterests.length > 0 && (
-            <div className=" absolute bg-zinc-900/95 border-2 max-h-32 overflow-x-hidden  overflow-y-scroll no-scrollbar w-full z-10 text-sm rounded-xl mt-1 flex flex-col">
-              <>
-                {defaultInterests.map(({ text }, i) => (
-                  <span
-                    onClick={handleSet}
-                    key={text + i}
-                    className={`${
-                      i === defaultInterests.length - 1 ? "" : "border-b"
-                    } px-5 py-1.5 hover:bg-zinc-800 cursor-pointer`}
-                  >
-                    {text}
-                  </span>
-                ))}
-              </>
             </div>
-          )} */}
-              {/* <div className=" flex bottom-1.5 right-1 absolute gap-1">
             <Button
-              onClick={() => setInterest([])}
-              size={"sm"}
-              disabled={interested.length === 0}
-              variant={"secondary"}
-              className="  border text-xs px-4 h-7 rounded-lg"
+              disabled={loader}
+              className=" bg-zinc-900 w-full border rounded-xl text-white hover:bg-zinc-800"
             >
-              Remove all
+              {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Save"}
             </Button>
-            <Button
-              onClick={addInterest}
-              size={"sm"}
-              variant={"secondary"}
-              className="  border text-xs px-4 h-7 rounded-lg"
-            >
-              Add
-            </Button>
-          </div> */}
-            </div>
-          </motion.div>
-          <Button
-            className=" bg-zinc-900 border rounded-xl text-white hover:bg-zinc-800"
-            onClick={handleContinue}
-          >
-            {loader ? <Loader className=" animate-spin h-5 w-5" /> : "Save"}
-          </Button>
+          </motion.form>
         </DrawerHeader>
 
         <DrawerClose
           ref={CloseRef}
           style={{ visibility: "hidden", position: "absolute" }}
         ></DrawerClose>
-        {/* <DrawerClose
-            disabled={interested.length <= 1}
-            className={` bg-zinc-900 outline-none ring-0  rounded-xl hover:bg-zinc-800 ${className} text-white`}
-          >
-            Cancel
-          </DrawerClose> */}
       </DrawerContent>
     </Drawer>
   );
