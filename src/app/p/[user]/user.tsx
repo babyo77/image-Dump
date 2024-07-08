@@ -300,8 +300,9 @@ function User({ user }: { user: user }) {
                   ))}
                 </div>
               </motion.div>
-
-              <Links details={user} loggedIn={false} />
+              {user.links.length > 0 && (
+                <Links details={user} loggedIn={false} />
+              )}
               {user.usersDoc.music && <Music user={user} />}
               <Gallery user={user} />
             </motion.div>
