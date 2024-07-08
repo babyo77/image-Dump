@@ -51,9 +51,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
   column = {
     xs: 2,
     sm: 2,
-    md: 6,
+    md: 5,
     lg: 4,
-    xl: 6,
+    xl: 5,
     xxl: 6,
   },
   remove,
