@@ -3,6 +3,7 @@ const nextConfig = {
   env: {
     PROJECT_ID: process.env.PROJECT_ID,
     DATABASE_ID: process.env.DATABASE_ID,
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
     ACTIVITY_ID: process.env.ACTIVITY_ID,
     ANALYTICS_ID: process.env.ANALYTICS_ID,
     GALLERY_ID: process.env.GALLERY_ID,

@@ -2,7 +2,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB3V98h92PUToCbI70TOYMZEAlGnCnSk5M",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "image--match.firebaseapp.com",
   projectId: "image--match",
   storageBucket: "image--match.appspot.com",
