@@ -214,9 +214,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
               )}
               {remove && <UpdateMasonry image={imageObj} />}
               {remove && (
-                <DialogTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
+                <div className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
                   <PiCursorClick /> {formatNumber(imageObj.clicks)}
-                </DialogTrigger>
+                </div>
               )}
             </motion.div>
           ))}
