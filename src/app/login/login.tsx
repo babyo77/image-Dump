@@ -57,7 +57,6 @@ function Login() {
         };
       })
       .finally(() => {
-        toast.dismiss();
         setChecking(false);
       });
   };
