@@ -100,7 +100,7 @@ class Popup extends Component<PopupProps, PopupState> {
                   className="w-full"
                   onClick={() => alert("Remind me clicked")}
                 >
-                  Flip <Lock className="h-3.5" />
+                  Coming soon <Lock className="h-3.5" />
                 </Button>
                 <Button
                   size="sm"
