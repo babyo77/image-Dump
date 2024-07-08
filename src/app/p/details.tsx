@@ -226,13 +226,11 @@ function Details({ details }: { details: user }) {
             : "bio not set"}
         </div>
       </motion.div>
-      {details.links.length > 0 && (
-        <Links
-          key={"links"}
-          details={details}
-          loggedIn={details ? true : false}
-        />
-      )}
+      <Links
+        key={"links"}
+        details={details}
+        loggedIn={details ? true : false}
+      />
     </AnimatePresence>
   );
 }
