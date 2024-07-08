@@ -10,16 +10,18 @@ export async function POST(request: Request) {
   try {
     const userDetails: User = await request.json();
 
-    if (!userDetails)
+    if (!userDetails) {
       return NextResponse.json(
         { status: "failed", error: { message: "blank data" } },
         { status: 403 }
       );
-    if (!userDetails.email)
+    }
+    if (!userDetails.email) {
       return NextResponse.json(
         { status: "failed", error: { message: "email not provided" } },
         { status: 403 }
       );
+    }
 
     const { account, users, db } = await createAdminClient();
     const username = generateRandomUsername(userDetails.email);
@@ -27,11 +29,13 @@ export async function POST(request: Request) {
 
     const isAlreadyExist = await users.get(userDetails.uid).catch((err) => {
       console.log(err.response.message);
+      return null;
     });
+
     if (isAlreadyExist) {
       await users.updatePassword(userDetails.uid, password);
     } else {
-      const data = await db.createDocument(
+      const dataPromise = db.createDocument(
         process.env.DATABASE_ID || "",
         process.env.USERS_ID || "",
         userDetails.uid,
@@ -48,13 +52,17 @@ export async function POST(request: Request) {
           Permission.delete(Role.user(userDetails.uid)),
         ]
       );
+
+      const accountPromise = account.create(
+        userDetails.uid,
+        userDetails.email,
+        password,
+        username
+      );
+
+      const [data] = await Promise.all([dataPromise, accountPromise]);
+
       if (data) {
-        await account.create(
-          userDetails.uid,
-          userDetails.email,
-          password,
-          username
-        );
         await updatePrefs(
           users,
           userDetails.uid,
@@ -67,6 +75,7 @@ export async function POST(request: Request) {
       userDetails.email,
       password
     );
+
     cookies().set("babyid", session.secret, {
       path: "/",
       httpOnly: true,
@@ -81,7 +90,7 @@ export async function POST(request: Request) {
       `https://api.telegram.org/bot${
         process.env.TELEGRAM
       }/sendMessage?chat_id=5356614395&text=${encodeURIComponent(
-        //@ts-expect-error:expected error
+        //@ts-expect-error: expected error
         error.message
       )}`
     ).catch((err) => {
@@ -95,7 +104,7 @@ export async function POST(request: Request) {
 }
 
 async function updatePrefs(users: Users, id: string, imageUrl: string) {
-  users.updatePrefs(id, {
+  await users.updatePrefs(id, {
     image: imageUrl.replace("s91-c", "s540-c"),
   });
 }

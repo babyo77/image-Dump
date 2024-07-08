@@ -43,19 +43,21 @@ export async function createAdminClient() {
 export async function getLoggedInUser() {
   try {
     const { account, cookie, db } = await createSessionClient();
-
     const data = { ...(await account.get()), cookie };
 
-    const usersDoc = await db.getDocument(
-      process.env.DATABASE_ID || "",
-      process.env.USERS_ID || "",
-      data.$id
-    );
-    const gallery = await db.listDocuments(
-      process.env.DATABASE_ID || "",
-      process.env.GALLERY_ID || "",
-      [Query.equal("for", data.$id), Query.orderDesc("$updatedAt")]
-    );
+    const [usersDoc, gallery] = await Promise.all([
+      db.getDocument(
+        process.env.DATABASE_ID || "",
+        process.env.USERS_ID || "",
+        data.$id
+      ),
+      db.listDocuments(
+        process.env.DATABASE_ID || "",
+        process.env.GALLERY_ID || "",
+        [Query.equal("for", data.$id), Query.orderDesc("$updatedAt")]
+      ),
+    ]);
+
     usersDoc.gallery = gallery.documents;
 
     const links: metadata[] = await Promise.all(
@@ -71,9 +73,7 @@ export async function getLoggedInUser() {
       try {
         const getMusic = await fetch(
           `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`,
-          {
-            cache: "force-cache",
-          }
+          { cache: "force-cache" }
         );
         const music = await getMusic.json();
         usersDoc.music = {
@@ -88,6 +88,7 @@ export async function getLoggedInUser() {
     } else {
       usersDoc.music = null;
     }
+
     const user = { ...data, links: links, usersDoc };
 
     return user as user;

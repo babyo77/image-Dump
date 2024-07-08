@@ -6,23 +6,36 @@ export async function GET(req: NextRequest) {
   try {
     const search = req.nextUrl.searchParams;
     const username = search.get("u");
-    const { users } = await createAdminClient();
-    const user = await getLoggedInUser();
-    if (username && user) {
-      const userFound = await users.list(
-        [Query.equal("name", username)],
-        username
+
+    if (!username) {
+      return NextResponse.json(
+        { user: "missing username parameter" },
+        { status: 400 }
       );
-      if (userFound.total > 0 && user.name !== userFound.users[0].name) {
-        return NextResponse.json({ user: true }, { status: 200 });
-      } else {
-        return NextResponse.json({ user: false }, { status: 404 });
-      }
-    } else {
+    }
+
+    const [adminClient, loggedInUser] = await Promise.all([
+      createAdminClient(),
+      getLoggedInUser(),
+    ]);
+
+    if (!loggedInUser) {
       return NextResponse.json({ user: "not logged in" }, { status: 403 });
     }
+
+    const userFound = await adminClient.users.list([
+      Query.equal("name", username),
+    ]);
+
+    if (userFound.total > 0 && loggedInUser.name !== userFound.users[0].name) {
+      return NextResponse.json({ user: true }, { status: 200 });
+    } else {
+      return NextResponse.json({ user: false }, { status: 404 });
+    }
   } catch (error) {
-    //@ts-expect-error:expected error
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message },
+      { status: 500 }
+    );
   }
 }

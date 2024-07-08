@@ -4,25 +4,29 @@ import { createAdminClient, getLoggedInUser } from "@/lib/server/appwrite";
 import { calculatePercentageMatching } from "@/utils/match";
 import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
+
 export async function getUser(username: string) {
   const { users, db } = await createAdminClient();
-  const userFound = await users.list([Query.equal("name", username)], username);
-  const loggedInUser = await getLoggedInUser();
-  let match: match | null = null;
-  let isStarred = false;
-  if (userFound.users.length == 1) {
+  const [userFound, loggedInUser] = await Promise.all([
+    users.list([Query.equal("name", username)], username),
+    getLoggedInUser(),
+  ]);
+
+  if (userFound.users.length === 1) {
     const data = userFound.users[0];
     if (loggedInUser && data.name === loggedInUser.name) {
       redirect("/p");
+      return null;
     }
-    const usersDoc = await db.getDocument(
+
+    const usersDocPromise = db.getDocument(
       process.env.DATABASE_ID || "",
       process.env.USERS_ID || "",
       data.$id,
       [Query.select(["interests", "music", "links", "fullName", "bio"])]
     );
 
-    const gallery = await db.listDocuments(
+    const galleryPromise = db.listDocuments(
       process.env.DATABASE_ID || "",
       process.env.GALLERY_ID || "",
       [
@@ -38,11 +42,16 @@ export async function getUser(username: string) {
         Query.orderDesc("$updatedAt"),
       ]
     );
+
+    const [usersDoc, gallery] = await Promise.all([
+      usersDocPromise,
+      galleryPromise,
+    ]);
     usersDoc.gallery = gallery.documents;
 
     const userInterest = usersDoc.interests;
 
-    const links: metadata[] = await Promise.all(
+    const linksPromise = Promise.all(
       usersDoc.links.map(async (link: string, id: number) => {
         const res = await fetch(`https://dub.co/api/metatags?url=${link}`, {
           next: { revalidate: 24 * 60 * 60 * 1000 },
@@ -51,22 +60,20 @@ export async function getUser(username: string) {
       })
     );
 
+    let match: match | null = null;
+    let isStarred = false;
+
     if (loggedInUser && loggedInUser.usersDoc.interests) {
-      try {
-        const res = await db.getDocument(
+      const starPromise = db
+        .getDocument(
           process.env.DATABASE_ID || "",
           process.env.STARRED_ID || "",
           usersDoc.$id + loggedInUser.$id,
           [Query.select(["$id"])]
-        );
-        isStarred = res.$id ? true : false;
-      } catch (error) {
-        console.log("not starred");
-      }
-      const allFeaturesOfUser = gallery.documents.flatMap(
-        (item) => item.features
-      );
-      const LoggedInUserGallery = await db.listDocuments(
+        )
+        .catch(() => null);
+
+      const loggedInUserGalleryPromise = db.listDocuments(
         process.env.DATABASE_ID || "",
         process.env.GALLERY_ID || "",
         [
@@ -75,7 +82,17 @@ export async function getUser(username: string) {
           Query.equal("for", loggedInUser.$id),
         ]
       );
-      const allFeaturesOfLoggedInUser = LoggedInUserGallery.documents.flatMap(
+
+      const [starDoc, loggedInUserGallery] = await Promise.all([
+        starPromise,
+        loggedInUserGalleryPromise,
+      ]);
+      isStarred = starDoc ? true : false;
+
+      const allFeaturesOfUser = gallery.documents.flatMap(
+        (item) => item.features
+      );
+      const allFeaturesOfLoggedInUser = loggedInUserGallery.documents.flatMap(
         (item) => item.features
       );
 
@@ -92,9 +109,7 @@ export async function getUser(username: string) {
       try {
         const getMusic = await fetch(
           `https://music-player-api-mu.vercel.app/ss?s=${usersDoc.music[0]}`,
-          {
-            cache: "force-cache",
-          }
+          { cache: "force-cache" }
         );
         const music = await getMusic.json();
         usersDoc.music = {
@@ -109,6 +124,9 @@ export async function getUser(username: string) {
     } else {
       usersDoc.music = null;
     }
+
+    const links = await linksPromise;
+
     data.password = "";
     const user = {
       ...data,
