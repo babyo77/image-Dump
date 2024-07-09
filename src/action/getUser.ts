@@ -8,9 +8,11 @@ import { Query } from "node-appwrite";
 export async function getUser(username: string) {
   const { users, db } = await createAdminClient();
   const [userFound, loggedInUser] = await Promise.all([
-    users.list([Query.equal("name", username)], username),
+    users.list([], username),
     getLoggedInUser(),
   ]);
+
+  console.log(userFound);
 
   if (userFound.users.length === 1) {
     const data = userFound.users[0];
