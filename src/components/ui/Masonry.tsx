@@ -189,16 +189,31 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
               key={columnIndex}
               className="  pb-4"
             >
-              <Image
-                priority
-                height={500}
-                width={500}
-                onClick={() => handleClick(imageObj)}
-                src={imageObj.data}
-                onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
-                className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
-                alt={`Image ${rowIndex}-${columnIndex}`}
-              />
+              {imageObj.type === "image" ? (
+                <Image
+                  priority
+                  height={500}
+                  width={500}
+                  onClick={() => handleClick(imageObj)}
+                  src={imageObj.data}
+                  onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
+                  className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
+                  alt={`Image ${rowIndex}-${columnIndex}`}
+                />
+              ) : (
+                <video
+                  autoPlay
+                  playsInline
+                  muted
+                  height={500}
+                  loop
+                  width={500}
+                  onClick={() => handleClick(imageObj)}
+                  src={imageObj.data}
+                  onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
+                  className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
+                />
+              )}
               {remove && (
                 <>
                   <div

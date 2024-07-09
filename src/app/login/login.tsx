@@ -73,7 +73,7 @@ function Login() {
             key={"loginForm"}
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5 }}
             exit={{ filter: "blur(10px)", opacity: 0 }}
             onSubmit={handleVerify}
             className="absolute z-10 inset-0 flex flex-col gap-4 items-center justify-center text-white font-medium px-5 text-xs"
@@ -107,7 +107,7 @@ function Login() {
             key={"footer"}
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5 }}
             exit={{ filter: "blur(10px)", opacity: 0 }}
             className=" z-20 fixed bottom-2 text-center w-full text-xs text-zinc-400"
           >

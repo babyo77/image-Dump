@@ -38,6 +38,7 @@ export async function getUser(username: string) {
           "clicks",
           "link",
           "$updatedAt",
+          "type",
           "features",
         ]),
         Query.equal("for", data.$id),

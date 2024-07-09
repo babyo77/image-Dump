@@ -22,7 +22,7 @@ export interface metadata {
 }
 
 export interface gallery extends Models.Document {
-  type: "image" | "video" | "music" | "note";
+  type: "image" | "video";
   index: number;
   for: string;
   tags: string[];
