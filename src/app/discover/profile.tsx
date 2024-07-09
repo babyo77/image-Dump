@@ -110,11 +110,21 @@ function Profile({
           </Button>
         </motion.div>
       </header>
-      {loader && (
-        <div className=" w-full flex items-center justify-center h-[80dvh]">
-          <p className="font-semibold text-xl flex items-center">Finding...</p>
-        </div>
-      )}
+      <AnimatePresence>
+        {loader && (
+          <motion.div
+            initial={{ filter: "blur(10px)", opacity: 0 }}
+            animate={{ filter: "blur(0px)", opacity: 1 }}
+            exit={{ filter: "blur(10px)", opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className=" w-full flex items-center justify-center h-[80dvh]"
+          >
+            <p className="font-semibold text-xl flex items-center">
+              Finding...
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[90dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
         <AnimatePresence onExitComplete={fetchProfiles}>
           {!isExiting &&
