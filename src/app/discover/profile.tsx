@@ -57,15 +57,17 @@ function Profile({
               i === 0 && "mt-5"
             } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[24dvw] min-h-[90dvh] w-[90dvw] border`}
           >
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${user.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: 0.6,
-              }}
-            ></div>
+            <Link href={`/p/${user.username}`} target="_blank">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url(${user.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: 0.6,
+                }}
+              ></div>
+            </Link>
 
             <div className=" absolute top-3 right-2">
               <Link href={`/p/${user.username}`} target="_blank">
@@ -83,10 +85,11 @@ function Profile({
               <p className=" text-4xl font-semibold break-words">
                 {user.fullName}
               </p>
-
-              <p className="text-sm text-neutral-300 underline underline-offset-2 ">
-                @{user.username}
-              </p>
+              <Link href={`/p/${user.username}`} target="_blank">
+                <p className="text-sm text-neutral-300 underline underline-offset-2 ">
+                  @{user.username}
+                </p>
+              </Link>
 
               <p className=" text-base mt-0.5 text-neutral-200  font-medium break-words">
                 {user.bio}
