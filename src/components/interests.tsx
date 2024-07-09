@@ -68,7 +68,7 @@ function Interests({
           process.env.USERS_ID || "",
           user.$id,
           {
-            interests: interested,
+            interests: interested.map((interest) => interest.toLowerCase()),
           }
         );
         if (CloseRef.current) {
