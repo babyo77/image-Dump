@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getDiscover } from "@/action/getDiscover";
+import { User } from "lucide-react";
+import { useRouter } from "next/router";
 
 function Profile({
   loggedIn,
@@ -24,10 +26,15 @@ function Profile({
   loggedIn?: user | null;
   discover: discover[];
 }) {
+  const router = useRouter();
   const [profiles, setProfiles] = useState<discover[]>(discover);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const handleMode = async (mode: string) => {
     try {
+      if (mode === "for" && !User) {
+        router.push("/login");
+        return;
+      }
       setProfiles([]);
       const data = await getDiscover(mode as "pop" | "for");
       setProfiles(data);
