@@ -39,7 +39,7 @@ function Profile({
         const data = await getDiscover(mode as "pop" | "for");
         const t = setTimeout(() => {
           setProfiles(data);
-        }, 1000);
+        }, discover.length * 100);
         return () => {
           clearTimeout(t);
         };
@@ -47,26 +47,28 @@ function Profile({
         console.error(error);
       }
     },
-    [router, loggedIn]
+    [router, loggedIn, discover]
   );
 
   return (
     <>
       <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5">
-        <motion.p
-          initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
-          animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
-          transition={{
-            duration: 0.5,
-            delay: 0.7,
-            stiffness: 45,
-          }}
-          exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
-          className=" font-semibold text-3xl pl-1.5 gap-0.5 flex items-center"
-        >
-          <PiStack />
-          DUMP
-        </motion.p>
+        <Link href={"/"}>
+          <motion.p
+            initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
+            animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.7,
+              stiffness: 45,
+            }}
+            exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
+            className=" font-semibold text-3xl pl-1.5 gap-0.5 flex items-center"
+          >
+            <PiStack />
+            DUMP
+          </motion.p>
+        </Link>
         <motion.div
           initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
