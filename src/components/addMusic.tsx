@@ -93,7 +93,8 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               <div className=" relative">
                 <Input
                   onChange={handleSearch}
-                  type="text"
+                  type="search"
+                  className="remove"
                   placeholder="Search song"
                 />
                 {loader && (
@@ -179,7 +180,8 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             <div className=" relative">
               <Input
                 onChange={handleSearch}
-                type="text"
+                type="search"
+                className="remove"
                 placeholder="Search song"
               />
               {loader && (
