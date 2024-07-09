@@ -60,7 +60,7 @@ function Interests({
         if (isExist.status === 404) {
           await account.updateName(username);
         } else {
-          toast.error("username already in taken");
+          toast.error("username already taken");
           return;
         }
         await database.updateDocument(
