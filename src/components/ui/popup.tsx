@@ -93,7 +93,7 @@ class Popup extends Component<PopupProps, PopupState> {
             exit="hidden"
           >
             <motion.div
-              className="bg-neutral-900 p-8 rounded-xl max-w-md shadow-lg border"
+              className="bg-neutral-900 max-md:w-[90dvw] p-8 rounded-xl max-w-md shadow-lg border"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
@@ -103,12 +103,7 @@ class Popup extends Component<PopupProps, PopupState> {
               <div className="flex flex-col items-center text-pretty gap-2.5 max-w-xs">
                 <Lock className="h-11 w-11" />
                 <p>{popup.message}</p>
-                <Button
-                  size="sm"
-                  disabled
-                  className="w-full"
-                  onClick={() => alert("Remind me clicked")}
-                >
+                <Button size="sm" disabled className="w-full">
                   Coming soon <Lock className="h-3.5" />
                 </Button>
                 <Button
