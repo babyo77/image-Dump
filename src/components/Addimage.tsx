@@ -93,7 +93,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         if (response.ok) {
           const data: {
             data: { deletion_url: string; direct_url: string };
-            features: string;
+            features: string[];
           } = await response.json();
           delUrl = data.data.deletion_url;
           const update = await database.getDocument(
@@ -111,7 +111,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               type: "image",
               for: user.$id,
               link: link?.value,
-              features: data.features,
+              features: data.features.map((r) => r.toLowerCase()),
               index: user.usersDoc.galleryTotal + 1,
               users: [user.$id],
               tags: [],
