@@ -29,6 +29,7 @@ function Profile({
   const [profiles, setProfiles] = useState<discover[]>(discover);
   const [isExiting, setIsExiting] = useState(false);
   const [currentMode, setCurrentMode] = useState<"pop" | "for" | null>(null);
+  const [loader, setLoader] = useState<boolean>(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleMode = useCallback(
@@ -46,11 +47,14 @@ function Profile({
   const fetchProfiles = useCallback(async () => {
     if (currentMode) {
       try {
+        setLoader(true);
         const data = await getDiscover(currentMode);
         setProfiles(data);
-        setIsExiting(false);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsExiting(false);
+        setLoader(false);
       }
     }
   }, [currentMode]);
@@ -106,7 +110,12 @@ function Profile({
           </Button>
         </motion.div>
       </header>
-      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
+      {loader && (
+        <div className=" w-full flex items-center justify-center h-[80dvh]">
+          <p className="font-semibold text-xl flex items-center">Finding...</p>
+        </div>
+      )}
+      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[90dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
         <AnimatePresence onExitComplete={fetchProfiles}>
           {!isExiting &&
             profiles.map((user, i) => (
@@ -125,7 +134,7 @@ function Profile({
                 }}
                 exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
                 key={user.$id}
-                className={`${i === profiles.length - 1 && "max-md:mb-24"} ${
+                className={`${i === profiles.length - 1 && ""} ${
                   i === 0 && ""
                 } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh] min-h-[80dvh] border w-full`}
               >
