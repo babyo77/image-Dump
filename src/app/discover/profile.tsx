@@ -7,6 +7,7 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { PiStack } from "react-icons/pi";
 import { popup } from "@/components/ui/popup";
+import { useMediaQuery } from "@react-hook/media-query";
 
 function Profile({
   loggedIn,
@@ -15,22 +16,34 @@ function Profile({
   loggedIn?: user | null;
   discover: discover[];
 }) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   return (
     <div className="p-5">
       <div className=" w-full flex leading-tight tracking-tighter justify-between pb-5 md:px-10">
         <motion.p
-          initial={{ filter: "blur(10px)", opacity: 0 }}
-          animate={{ filter: "blur(0px)", opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
+          initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
+          animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.7,
+            stiffness: 45,
+          }}
+          exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           className=" font-semibold text-3xl gap-0.5 flex items-center"
         >
           <PiStack />
           DUMP
         </motion.p>
         <motion.div
-          initial={{ filter: "blur(10px)", opacity: 0 }}
-          animate={{ filter: "blur(0px)", opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
+          initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
+          animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.7,
+            stiffness: 45,
+          }}
+          exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           className="flex items-center gap-2"
         >
           <Button
@@ -47,7 +60,11 @@ function Profile({
       <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
         {discover.map((user, i) => (
           <motion.div
-            initial={{ y: "5dvh", opacity: 0, filter: "blur(10px)" }}
+            initial={{
+              y: isDesktop ? "5dvh" : 0,
+              opacity: 0,
+              filter: "blur(10px)",
+            }}
             animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
             transition={{
               duration: 1,
@@ -55,7 +72,7 @@ function Profile({
               type: "spring",
               stiffness: 45,
             }}
-            exit={{ y: "5dvh", opacity: 0 }}
+            exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
             key={user.$id}
             className={`${i === discover.length - 1 && "max-md:mb-24"} ${
               i === 0 && ""
