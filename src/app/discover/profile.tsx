@@ -61,7 +61,7 @@ function Profile({
 
   return (
     <>
-      <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5">
+      <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5 items-center">
         <Link href={"/"}>
           <motion.p
             initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
