@@ -39,7 +39,7 @@ function Profile({
         const data = await getDiscover(mode as "pop" | "for");
         const t = setTimeout(() => {
           setProfiles(data);
-        }, 1000);
+        }, 700);
         return () => {
           clearTimeout(t);
         };
