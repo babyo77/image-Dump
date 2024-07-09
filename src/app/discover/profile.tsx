@@ -44,7 +44,7 @@ function Profile({
           </Button>
         </motion.div>
       </div>
-      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
+      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
         {discover.map((user, i) => (
           <motion.div
             initial={{ y: "5dvh", opacity: 0, filter: "blur(10px)" }}
@@ -57,9 +57,9 @@ function Profile({
             }}
             exit={{ y: "5dvh", opacity: 0 }}
             key={user.$id}
-            className={`${i === discover.length - 1 && ""} ${
+            className={`${i === discover.length - 1 && "max-md:mb-24"} ${
               i === 0 && ""
-            } relative rounded-xl snap-start scroll-smooth overflow-hidden md:w-[22dvw] min-h-[80dvh] w-[90dvw] border`}
+            } relative rounded-xl snap-start scroll-smooth overflow-hidden md:w-[22dvw] min-h-[80dvh] border w-full`}
           >
             <Link href={`/p/${user.username}`} target="_blank">
               <div
