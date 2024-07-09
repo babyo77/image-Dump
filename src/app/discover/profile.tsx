@@ -111,7 +111,7 @@ function Profile({
                 }}
                 animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                 transition={{
-                  duration: 1,
+                  duration: 0.5,
                   delay: Number(`1.${i}`),
                   type: "spring",
                   stiffness: 45,
