@@ -92,7 +92,7 @@ function Profile({
           className="flex items-center gap-2"
         >
           <Select onValueChange={(e) => handleMode(e)}>
-            <SelectTrigger className="w-[110px]">
+            <SelectTrigger className="w-[110px] md:w-[180px]">
               <SelectValue placeholder="Preference" />
             </SelectTrigger>
             <SelectContent>
