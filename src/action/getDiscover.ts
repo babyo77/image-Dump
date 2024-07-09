@@ -8,11 +8,7 @@ export async function getDiscover() {
   const usersList = await db.listDocuments(
     process.env.DATABASE_ID || "",
     process.env.USERS_ID || "",
-    [
-      Query.select(["fullName", "bio", "$id"]),
-      Query.orderDesc("views"),
-      Query.limit(70),
-    ]
+    [Query.select(["fullName", "bio", "$id"]), Query.orderDesc("views")]
   );
 
   const newRes = await Promise.all(
@@ -26,7 +22,7 @@ export async function getDiscover() {
     })
   );
 
-  return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+  return newRes as unknown as discover[];
 }
 
 function shuffleArrayWithPriority(array: any[], priorityName: string) {
