@@ -27,28 +27,33 @@ function Profile({
 }) {
   const router = useRouter();
   const [profiles, setProfiles] = useState<discover[]>(discover);
+  const [isExiting, setIsExiting] = useState(false);
+  const [currentMode, setCurrentMode] = useState<"pop" | "for" | null>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const handleMode = useCallback(
-    async (mode: string) => {
-      try {
-        if (mode === "for" && !loggedIn) {
-          router.push("/login");
-          return;
-        }
-        setProfiles([]);
-        const data = await getDiscover(mode as "pop" | "for");
-        const t = setTimeout(() => {
-          setProfiles(data);
-        }, data.length * 100);
-        return () => {
-          clearTimeout(t);
-        };
-      } catch (error) {
-        console.error(error);
+    (mode: string) => {
+      if (mode === "for" && !loggedIn) {
+        router.push("/login");
+        return;
       }
+      setIsExiting(true);
+      setCurrentMode(mode as "pop" | "for");
     },
     [router, loggedIn]
   );
+
+  const fetchProfiles = useCallback(async () => {
+    if (currentMode) {
+      try {
+        const data = await getDiscover(currentMode);
+        setProfiles(data);
+        setIsExiting(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [currentMode]);
 
   return (
     <>
@@ -102,8 +107,8 @@ function Profile({
         </motion.div>
       </header>
       <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
-        <AnimatePresence>
-          {profiles.length > 0 &&
+        <AnimatePresence onExitComplete={fetchProfiles}>
+          {!isExiting &&
             profiles.map((user, i) => (
               <motion.div
                 initial={{
@@ -120,9 +125,9 @@ function Profile({
                 }}
                 exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
                 key={user.$id}
-                className={`${i === discover.length - 1 && "max-md:mb-24"} ${
+                className={`${i === profiles.length - 1 && "max-md:mb-24"} ${
                   i === 0 && ""
-                } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh]  min-h-[80dvh] border w-full`}
+                } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh] min-h-[80dvh] border w-full`}
               >
                 <div
                   className="absolute inset-0"
