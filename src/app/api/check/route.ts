@@ -23,9 +23,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ user: "not logged in" }, { status: 403 });
     }
 
-    const userFound = await adminClient.users.list([
-      Query.equal("name", username),
-    ]);
+    const userFound = await adminClient.users.list([], username);
 
     if (userFound.total > 0 && loggedInUser.name !== userFound.users[0].name) {
       return NextResponse.json({ user: true }, { status: 200 });
