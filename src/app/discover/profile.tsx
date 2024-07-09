@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { PiStack } from "react-icons/pi";
 import { popup } from "@/components/ui/popup";
 import { useMediaQuery } from "@react-hook/media-query";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Profile({
   loggedIn,
@@ -46,6 +53,18 @@ function Profile({
           exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           className="flex items-center gap-2"
         >
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Preference" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light" defaultChecked>
+                Popular
+              </SelectItem>
+              <SelectItem value="dark">For you</SelectItem>
+            </SelectContent>
+          </Select>
+
           <Button
             size={"sm"}
             onClick={() => (
