@@ -22,7 +22,7 @@ export async function getDiscover() {
     })
   );
 
-  return newRes as unknown as discover[];
+  return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
 }
 
 function shuffleArrayWithPriority(array: any[], priorityName: string) {
