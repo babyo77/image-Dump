@@ -74,7 +74,7 @@ function Profile({
             }}
             exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
             key={user.$id}
-            className={`${i === discover.length - 1 && ""} ${
+            className={`${i === discover.length - 1 && "max-md:mb-24"} ${
               i === 0 && ""
             } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh]  min-h-[80dvh] border w-full`}
           >
