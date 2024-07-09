@@ -55,7 +55,7 @@ function Profile({
             stiffness: 45,
           }}
           exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
-          className=" font-semibold text-3xl gap-0.5 flex items-center"
+          className=" font-semibold text-3xl pl-1.5 gap-0.5 flex items-center"
         >
           <PiStack />
           DUMP
