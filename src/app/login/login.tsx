@@ -9,6 +9,7 @@ import { AiOutlineGoogle } from "react-icons/ai";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/lib/client/firebase";
 import { toast } from "sonner";
+import Link from "next/link";
 export interface verificationInfo {
   id: string;
   bio: string;
@@ -87,6 +88,11 @@ function Login() {
             </div>
           )}
         </Button>
+        <Link href={"/discover"} className="-my-2">
+          <span className=" underline underline-offset-4 hover:text-neutral-200 text-neutral-400">
+            Discover
+          </span>
+        </Link>
       </motion.form>
       <motion.footer
         initial={{ filter: "blur(10px)", opacity: 0 }}
