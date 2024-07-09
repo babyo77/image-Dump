@@ -60,7 +60,7 @@ function Profile({
             key={user.$id}
             className={`${i === discover.length - 1 && "max-md:mb-5"} ${
               i === 0 && "max-md:mt-5"
-            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[21dvw] min-h-[90dvh] w-[90dvw] border`}
+            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[22dvw] min-h-[90dvh] w-[90dvw] border`}
           >
             <Link href={`/p/${user.username}`} target="_blank">
               <div
