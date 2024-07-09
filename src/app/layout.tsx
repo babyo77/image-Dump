@@ -6,31 +6,31 @@ import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/store/context";
 import Popup from "@/components/ui/popup";
 export const metadata: Metadata = {
-  title: "ImageMatch",
+  title: "imageDump",
   description: "Get a matching profile by uploading images with AI",
   keywords:
     "Upload profile images, Profile image management, Create and manage profiles, Social media links, Personal branding, Bio link page, Profile customization, Image upload feature, Manage social profiles",
   icons: [{ rel: "icon", url: "/favicon.webp" }],
   openGraph: {
-    title: "ImageMatch ",
+    title: "imageDump ",
     description: "Get a matching profile by uploading images with AI",
-    url: "https://ImageMatch.vercel.app",
+    url: "https://imageDump.vercel.app",
     type: "website",
     images: [
       {
-        url: "https://ImageMatch.vercel.app/favicon.webp",
+        url: "https://imageDump.vercel.app/favicon.webp",
         width: 1200,
         height: 630,
-        alt: "ImageMatch OG Image",
+        alt: "imageDump OG Image",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@tanmay11117",
-    title: "ImageMatch ",
+    title: "imageDump ",
     description: "Get a matching profile by uploading images with AI",
-    images: "https://ImageMatch.vercel.app/favicon.webp",
+    images: "https://imageDump.vercel.app/favicon.webp",
   },
 };
 

@@ -23,12 +23,12 @@ async function sendEmail(email: string, message: string, data: MailData) {
     const matchEmoji = parseFloat(data.match) > 70 ? "😍" : "😔";
     const matchMessage =
       parseFloat(data.match) > 70
-        ? `<a href="https://imagematch.vercel.app/p/${encodeURIComponent(
+        ? `<a href="https://imageDump.vercel.app/p/${encodeURIComponent(
             data.actionByName
           )}" style="text-decoration: none; font-weight: bold;">${
             data.actionByName
           }</a> thinks you're a perfect match with a compatibility score of ${matchPercentage}%!`
-        : `Oops! <a href="https://imagematch.vercel.app/p/${encodeURIComponent(
+        : `Oops! <a href="https://imageDump.vercel.app/p/${encodeURIComponent(
             data.actionByName
           )}" style="text-decoration: none; font-weight: bold;">${
             data.actionByName
@@ -109,17 +109,17 @@ async function sendEmail(email: string, message: string, data: MailData) {
     <h1>${matchPercentage}% Match! ${matchEmoji}</h1>
     <p>Hey ${data.actionToName},</p>
     <p>${matchMessage}</p>
-    <a href="https://imagematch.vercel.app/discover" class="discover-button">Discover</a>
+    <a href="https://imageDump.vercel.app/discover" class="discover-button">Discover</a>
   </div>
   <div class="footer">
-    <p>❤️ From imageMatch</p>
+    <p>❤️ From imageDump</p>
   </div>
 </body>
 </html>
 `;
 
     const mailOptions = {
-      from: '"imageMatch" <yfw111realone@gmail.com>',
+      from: '"imageDump" <yfw111realone@gmail.com>',
       to: email,
       subject: message,
       html: htmlContent,

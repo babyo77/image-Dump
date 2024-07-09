@@ -1,8 +1,8 @@
-# ImageMatch
+# imageDump
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-ImageMatch is a link in bio web application designed to help users find potential matches based on shared interests. During account setup, users can enter their interests, and the app will use this information to identify matches or non-matches with other users. Users can also update their interests after the initial setup.
+imageDump is a link in bio web application designed to help users find potential matches based on shared interests. During account setup, users can enter their interests, and the app will use this information to identify matches or non-matches with other users. Users can also update their interests after the initial setup.
 
 ## Features
 
