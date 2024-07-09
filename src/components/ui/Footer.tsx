@@ -9,7 +9,7 @@ import {
 import { Input } from "./input";
 import { Settings } from "@/app/login/settings";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { client, database } from "@/lib/client/appwrite";
+import { account, client, database } from "@/lib/client/appwrite";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { useUserContext } from "@/store/context";
@@ -19,14 +19,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import AddGalleryItems from "../addGalleryitems";
 import Link from "next/link";
 function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
-  const handleShare = () => {
+  const { setLoader } = useUserContext();
+  const handleShare = async () => {
     try {
-      navigator.share({
-        url: window.location.origin + "/p/" + user.name,
-      });
+      setLoader(true);
+      const name = (await account.get()).name;
+      if (name) {
+        navigator.share({
+          url: window.location.origin + "/p/" + name,
+        });
+      } else {
+        toast.error("something went wrong");
+      }
     } catch (error) {
       //@ts-expect-error:expected-error
       toast.error(error.message);
+    } finally {
+      setLoader(false);
     }
   };
 

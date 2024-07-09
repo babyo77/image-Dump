@@ -260,12 +260,11 @@ const AddMusicButton = ({
 }) => {
   const [adding, setAdding] = useState<boolean>(false);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [playing, setPlaying] = useState<boolean>(false);
-
   const [localValues, setLocalValues] = useState<number[]>([0, 27]);
 
   const handleAdd = async () => {
@@ -284,6 +283,22 @@ const AddMusicButton = ({
             ],
           }
         );
+
+        setUser({
+          ...user,
+          usersDoc: {
+            ...user.usersDoc,
+            music: {
+              youtubeId: music.youtubeId,
+              audio: music.audio,
+              title: music?.title,
+              start: localValues[0],
+              end: localValues[1],
+              artists: music?.artists,
+              thumbnailUrl: music.thumbnailUrl,
+            },
+          },
+        });
         closeRef.current?.click();
         close.current?.click();
       } catch (error) {

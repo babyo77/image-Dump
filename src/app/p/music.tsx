@@ -5,7 +5,9 @@ import { MdOutlinePlayCircle, MdPauseCircleOutline } from "react-icons/md";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { user } from "../types/types";
+import { useUserContext } from "@/store/context";
 function Music({ user }: { user: user }) {
+  const { user: contextUser } = useUserContext();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState<boolean>(false);
   const handlePlay = async () => {
@@ -24,7 +26,11 @@ function Music({ user }: { user: user }) {
         if (
           user.usersDoc.music &&
           Math.floor(music.currentTime) ==
-            Math.floor(Number(user.usersDoc.music.end))
+            Math.floor(
+              Number(
+                contextUser?.usersDoc.music?.end || user.usersDoc.music.end
+              )
+            )
         ) {
           music.pause();
         }
@@ -34,7 +40,7 @@ function Music({ user }: { user: user }) {
         music.removeEventListener("timeupdate", handleEnd);
       };
     }
-  }, [user]);
+  }, [user, contextUser]);
 
   return (
     <motion.div
@@ -49,7 +55,10 @@ function Music({ user }: { user: user }) {
       className=" flex gap-0.5 ml-[0.257rem] items-center -my-1.5"
     >
       <audio
-        src={user.usersDoc.music?.youtubeId}
+        src={
+          contextUser?.usersDoc.music?.youtubeId ||
+          user.usersDoc.music?.youtubeId
+        }
         onPlaying={() => setPlaying(true)}
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
@@ -70,13 +79,21 @@ function Music({ user }: { user: user }) {
       </div>
       <Link
         target="_blank"
-        href={`https://napster-drx.vercel.app/track/${user.usersDoc.music?.audio}`}
+        href={`https://napster-drx.vercel.app/track/${
+          contextUser?.usersDoc.music?.audio || user.usersDoc.music?.audio
+        }`}
         className=" hover:underline-offset-2 hover:underline cursor-pointer flex text-xs items-center max-w-[70dvw] truncate"
       >
-        <span>{user.usersDoc.music?.title}</span>
+        <span>
+          {contextUser?.usersDoc.music?.title ||
+            user.usersDoc.music?.title ||
+            "unknown"}
+        </span>
         <Dot size={17} className="-mx-0.5" />{" "}
         <span className="text-zinc-400">
-          {user.usersDoc.music?.artists[0].name}
+          {contextUser?.usersDoc.music?.artists[0]?.name ||
+            user.usersDoc.music?.artists[0]?.name ||
+            "unknown"}
         </span>
       </Link>
     </motion.div>
