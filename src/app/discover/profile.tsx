@@ -51,7 +51,7 @@ function Profile({
           <motion.div
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.5, delay: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
             key={user.$id}
             className={`${i === discover.length - 1 && "mb-5"} ${
               i === 0 && "mt-5"
