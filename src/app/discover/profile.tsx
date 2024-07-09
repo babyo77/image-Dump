@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { discover, user } from "../types/types";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getDiscover } from "@/action/getDiscover";
-import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 function Profile({
@@ -29,19 +28,27 @@ function Profile({
   const router = useRouter();
   const [profiles, setProfiles] = useState<discover[]>(discover);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const handleMode = async (mode: string) => {
-    try {
-      if (mode === "for" && !User) {
-        router.push("/login");
-        return;
+  const handleMode = useCallback(
+    async (mode: string) => {
+      try {
+        if (mode === "for" && !loggedIn) {
+          router.push("/login");
+          return;
+        }
+        setProfiles([]);
+        const data = await getDiscover(mode as "pop" | "for");
+        const t = setTimeout(() => {
+          setProfiles(data);
+        }, 1000);
+        return () => {
+          clearTimeout(t);
+        };
+      } catch (error) {
+        console.error(error);
       }
-      setProfiles([]);
-      const data = await getDiscover(mode as "pop" | "for");
-      setProfiles(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+    [router, loggedIn]
+  );
 
   return (
     <>
