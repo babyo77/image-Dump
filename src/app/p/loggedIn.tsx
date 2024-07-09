@@ -1,7 +1,7 @@
 "use client";
 
 import Interests from "@/components/interests";
-import { Compass, Lock } from "lucide-react";
+import { Bell, Compass, Lock } from "lucide-react";
 import Link from "next/link";
 import { user } from "../types/types";
 import { motion } from "framer-motion";
@@ -42,8 +42,11 @@ function AnimatedInterests({ user }: { user: user }) {
           <Compass className=" h-[1.4rem] w-[1.4rem] ml-0.5 text-zinc-400 hover:text-zinc-200" />
         </Link>
         <ProfileAnalytics user={user} />
-        <Lock
-          onClick={() => popup.show()}
+        <Bell
+          onClick={() => (
+            popup.show(),
+            popup.updateMessage("Know who saw your profile and more!")
+          )}
           className="text-zinc-400 hover:text-zinc-200 mt-1"
         />
       </motion.div>
