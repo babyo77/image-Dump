@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { discover, user } from "../types/types";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getDiscover } from "@/action/getDiscover";
 
 function Profile({
   loggedIn,
@@ -23,7 +24,18 @@ function Profile({
   loggedIn?: user | null;
   discover: discover[];
 }) {
+  const [profiles, setProfiles] = useState<discover[]>(discover);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const handleMode = async (mode: string) => {
+    if (mode == "pop") {
+      try {
+        const data = await getDiscover("pop");
+        setProfiles(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -53,15 +65,13 @@ function Profile({
           exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           className="flex items-center gap-2"
         >
-          <Select>
+          <Select onValueChange={(e) => handleMode(e)}>
             <SelectTrigger className="w-[110px]">
               <SelectValue placeholder="Preference" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Popular" defaultChecked>
-                Popular
-              </SelectItem>
-              <SelectItem value="For you">For you</SelectItem>
+              <SelectItem value="pop">Popular</SelectItem>
+              <SelectItem value="for">For you</SelectItem>
             </SelectContent>
           </Select>
 
@@ -77,7 +87,7 @@ function Profile({
         </motion.div>
       </header>
       <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
-        {discover.map((user, i) => (
+        {profiles.map((user, i) => (
           <motion.div
             initial={{
               y: isDesktop ? "5dvh" : 0,

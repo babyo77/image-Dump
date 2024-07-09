@@ -1,9 +1,9 @@
 "use server";
-import { discover, user, userDoc } from "@/app/types/types";
+import { discover } from "@/app/types/types";
 import { createAdminClient } from "@/lib/server/appwrite";
 import { Query } from "node-appwrite";
 
-export async function getDiscover() {
+export async function getDiscover(mode?: "pop" | "for") {
   const { db, users } = await createAdminClient();
   const usersList = await db.listDocuments(
     process.env.DATABASE_ID || "",
@@ -21,8 +21,13 @@ export async function getDiscover() {
       };
     })
   );
-
-  return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+  if (mode === "pop") {
+    return newRes as unknown as discover[];
+  } else if (mode === "for") {
+    return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+  } else {
+    return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+  }
 }
 
 function shuffleArrayWithPriority(array: any[], priorityName: string) {
