@@ -39,7 +39,7 @@ function Profile({
         const data = await getDiscover(mode as "pop" | "for");
         const t = setTimeout(() => {
           setProfiles(data);
-        }, profiles.length * 100);
+        }, data.length * 100);
         return () => {
           clearTimeout(t);
         };
@@ -47,7 +47,7 @@ function Profile({
         console.error(error);
       }
     },
-    [router, loggedIn, profiles]
+    [router, loggedIn]
   );
 
   return (
