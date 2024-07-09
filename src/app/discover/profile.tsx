@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { getDiscover } from "@/action/getDiscover";
 import { User } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function Profile({
   loggedIn,
