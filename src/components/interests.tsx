@@ -68,7 +68,7 @@ function Interests({
           process.env.USERS_ID || "",
           user.$id,
           {
-            interests: interested.map((interest) => interest.toLowerCase()),
+            interests: interested,
           }
         );
         if (CloseRef.current) {
@@ -85,7 +85,7 @@ function Interests({
   );
 
   const handleKeywordsChange = (newKeywords: string[]) => {
-    setInterest(newKeywords);
+    setInterest(newKeywords.map((i) => i.toLowerCase()));
   };
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
