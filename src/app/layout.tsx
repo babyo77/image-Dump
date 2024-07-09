@@ -7,13 +7,13 @@ import { UserProvider } from "@/store/context";
 import Popup from "@/components/ui/popup";
 export const metadata: Metadata = {
   title: "imageDump",
-  description: "Get a matching profile by uploading images with AI",
+  description: "Dump all of your images ",
   keywords:
     "Upload profile images, Profile image management, Create and manage profiles, Social media links, Personal branding, Bio link page, Profile customization, Image upload feature, Manage social profiles",
   icons: [{ rel: "icon", url: "/favicon.webp" }],
   openGraph: {
     title: "imageDump ",
-    description: "Get a matching profile by uploading images with AI",
+    description: "Dump all of your images ",
     url: "https://imageDump.vercel.app",
     type: "website",
     images: [
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@tanmay11117",
     title: "imageDump ",
-    description: "Get a matching profile by uploading images with AI",
+    description: "Dump all of your images ",
     images: "https://imageDump.vercel.app/favicon.webp",
   },
 };

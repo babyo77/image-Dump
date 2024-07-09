@@ -15,7 +15,7 @@ export async function generateMetadata({
 
   return {
     title: `${user?.usersDoc.fullName || "404"} (${user?.name || "404"})`,
-    description: `Do we have similar taste?`,
+    description: `${user?.usersDoc.fullName || "404"}'s Dump`,
     icons: [
       {
         rel: "icon",
