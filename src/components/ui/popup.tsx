@@ -17,7 +17,7 @@ class PopupManager {
 
   setInstance(instance: PopupInstance, message: string) {
     this.instance = instance;
-    this.message = message;
+    this.message = message || this.message;
   }
 
   show() {
