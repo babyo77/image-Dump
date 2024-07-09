@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useEffect,
+} from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { gallery, metadata, user } from "@/app/types/types";
 const queryClient = new QueryClient();
@@ -15,6 +21,7 @@ interface useUserContextType {
   setGallery: React.Dispatch<React.SetStateAction<gallery[] | null>>;
   loader: boolean;
   setLoader: React.Dispatch<React.SetStateAction<boolean>>;
+  ip: string | null;
 }
 
 const userContext = createContext<useUserContextType | undefined>(undefined);
@@ -25,6 +32,19 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [gallery, setGallery] = useState<gallery[] | null>(null);
   const [match, setMatch] = useState<boolean>(false);
   const [loader, setLoader] = useState(false);
+  const [ip, setIp] = useState<string | null>(null);
+  useEffect(() => {
+    fetch("https://api.ipify.org/", {
+      cache: "force-cache",
+    })
+      .then(async (response) => {
+        const ip = await response.text();
+        setIp(ip);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <userContext.Provider
@@ -39,6 +59,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           gallery,
           loader,
           setLoader,
+          ip,
         }}
       >
         {children}
