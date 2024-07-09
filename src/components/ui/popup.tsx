@@ -10,7 +10,10 @@ interface PopupInstance {
 
 class PopupManager {
   private instance: PopupInstance | null = null;
-  public message: string = "Add exclusive content and control who can access";
+  public message: string;
+  constructor() {
+    this.message = "Add exclusive content and control who can access";
+  }
 
   setInstance(instance: PopupInstance, message: string) {
     this.instance = instance;
