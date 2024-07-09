@@ -54,14 +54,14 @@ function Profile({
           className="flex items-center gap-2"
         >
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[110px]">
               <SelectValue placeholder="Preference" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light" defaultChecked>
+              <SelectItem value="Popular" defaultChecked>
                 Popular
               </SelectItem>
-              <SelectItem value="dark">For you</SelectItem>
+              <SelectItem value="For you">For you</SelectItem>
             </SelectContent>
           </Select>
 
@@ -72,7 +72,7 @@ function Profile({
               popup.updateMessage("A place to chill with friends and stranger.")
             )}
           >
-            Switch to Space
+            Spaces
           </Button>
         </motion.div>
       </header>
@@ -97,18 +97,15 @@ function Profile({
               i === 0 && ""
             } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh]  min-h-[80dvh] border w-full`}
           >
-            <Link href={`/p/${user.username}`} target="_blank">
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${user.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  opacity: 0.6,
-                }}
-              ></div>
-            </Link>
-
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${user.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: 0.6,
+              }}
+            ></div>
             <div className=" absolute top-3 right-2">
               <Link href={`/p/${user.username}`} target="_blank">
                 <MdOutlineArrowOutward className=" h-7 w-7" />
