@@ -149,7 +149,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         <DialogContent className="w-[40dvw] rounded-xl ">
           <DialogHeader>
             <DialogTitle>Upload</DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogDescription>Analyzed by AI</DialogDescription>
             <motion.div
               initial={{ filter: "blur(10px)", opacity: 0 }}
               animate={{ filter: "blur(0px)", opacity: 1 }}
@@ -266,7 +266,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               </p>
             </div>
           </DrawerTitle>
-          <DrawerDescription></DrawerDescription>
+          <DrawerDescription>Analyzed by AI</DrawerDescription>
           <motion.div
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
