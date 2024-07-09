@@ -19,8 +19,8 @@ function Profile({
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <div className="p-5">
-      <div className=" w-full flex leading-tight tracking-tighter justify-between pb-5 md:px-10">
+    <>
+      <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5">
         <motion.p
           initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
           animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
@@ -56,8 +56,8 @@ function Profile({
             Switch to Space
           </Button>
         </motion.div>
-      </div>
-      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
+      </header>
+      <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-y-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center px-5 text-neutral-200 pb-5 gap-4 gap-y-5">
         {discover.map((user, i) => (
           <motion.div
             initial={{
@@ -74,9 +74,9 @@ function Profile({
             }}
             exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
             key={user.$id}
-            className={`${i === discover.length - 1 && "max-md:mb-24"} ${
+            className={`${i === discover.length - 1 && ""} ${
               i === 0 && ""
-            } relative rounded-xl snap-start scroll-smooth overflow-hidden md:w-[22dvw] min-h-[80dvh] border w-full`}
+            } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh]  min-h-[80dvh] border w-full`}
           >
             <Link href={`/p/${user.username}`} target="_blank">
               <div
@@ -118,9 +118,8 @@ function Profile({
             </div>
           </motion.div>
         ))}
-        {/* <Profile user={user} /> */}
       </div>
-    </div>
+    </>
   );
 }
 
