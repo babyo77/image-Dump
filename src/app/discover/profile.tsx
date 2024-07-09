@@ -49,15 +49,9 @@ function Profile({
       <div className="flex flex-col w-full items-center no-scrollbar h-[100dvh] overflow-scroll justify-start snap-y snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
         {discover.map((user, i) => (
           <motion.div
-            initial={{ y: "-100dvh", opacity: 0, filter: "blur(10px)" }}
-            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-            transition={{
-              duration: 1,
-              delay: Number(`1.${i}`),
-              type: "spring",
-              stiffness: 45,
-            }}
-            exit={{ y: "-100dvh", opacity: 0 }}
+            initial={{ filter: "blur(10px)", opacity: 0 }}
+            animate={{ filter: "blur(0px)", opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1 }}
             key={user.$id}
             className={`${i === discover.length - 1 && "mb-5"} ${
               i === 0 && "mt-5"
