@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { Button } from "@/components/ui/button";
+import { PiStack } from "react-icons/pi";
+import { popup } from "@/components/ui/popup";
+
 function Profile({
   loggedIn,
   discover,
@@ -13,38 +16,34 @@ function Profile({
   discover: discover[];
 }) {
   return (
-    <div className="md:p-5">
-      {/* <div className=" w-full flex leading-tight tracking-tighter justify-between px-5 pb-4">
+    <div className="p-5">
+      <div className=" w-full flex leading-tight tracking-tighter justify-between pb-5 md:px-10">
         <motion.p
           initial={{ filter: "blur(10px)", opacity: 0 }}
           animate={{ filter: "blur(0px)", opacity: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
-          className=" font-semibold text-3xl"
+          className=" font-semibold text-3xl gap-0.5 flex items-center"
         >
-          Discover
+          <PiStack />
+          DUMP
         </motion.p>
         <motion.div
           initial={{ filter: "blur(10px)", opacity: 0 }}
           animate={{ filter: "blur(0px)", opacity: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
-          className="h-8 w-8 rounded-full  overflow-hidden"
+          className="flex items-center gap-2"
         >
-          <Link href={"/p"}>
-            <Image
-              height={500}
-              width={500}
-              alt="profile"
-              src={
-                user
-                  ? replaceInstagramURL(user.prefs["image"])
-                  : "/notFound.jpg"
-              }
-              onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
-              className=" h-[100%] w-[100%] object-cover"
-            />
-          </Link>
+          <Button
+            size={"sm"}
+            onClick={() => (
+              popup.show(),
+              popup.updateMessage("A place to chill with friends and stranger.")
+            )}
+          >
+            Switch to Space
+          </Button>
         </motion.div>
-      </div> */}
+      </div>
       <div className="flex max-md:flex-col md:flex-wrap w-full items-center no-scrollbar h-[100dvh] overflow-scroll md:justify-center max-md:snap-y max-md:snap-mandatory scroll-smooth text-center text-neutral-200 gap-4">
         {discover.map((user, i) => (
           <motion.div
@@ -58,9 +57,9 @@ function Profile({
             }}
             exit={{ y: "5dvh", opacity: 0 }}
             key={user.$id}
-            className={`${i === discover.length - 1 && "max-md:mb-5"} ${
-              i === 0 && "max-md:mt-5"
-            } relative rounded-xl snap-center scroll-smooth overflow-hidden md:w-[22dvw] min-h-[90dvh] w-[90dvw] border`}
+            className={`${i === discover.length - 1 && ""} ${
+              i === 0 && ""
+            } relative rounded-xl snap-start scroll-smooth overflow-hidden md:w-[22dvw] min-h-[80dvh] w-[90dvw] border`}
           >
             <Link href={`/p/${user.username}`} target="_blank">
               <div

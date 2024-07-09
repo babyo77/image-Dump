@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./button";
-import { BellRing, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 
 interface PopupInstance {
   setState: React.Component<any, { isOpen: boolean }>["setState"];
@@ -10,9 +10,11 @@ interface PopupInstance {
 
 class PopupManager {
   private instance: PopupInstance | null = null;
+  public message: string = "Add exclusive content and control who can access";
 
-  setInstance(instance: PopupInstance) {
+  setInstance(instance: PopupInstance, message: string) {
     this.instance = instance;
+    this.message = message;
   }
 
   show() {
@@ -27,6 +29,10 @@ class PopupManager {
       document.body.style.overflow = "";
       this.instance.setState({ isOpen: false });
     }
+  }
+
+  updateMessage(msg: string) {
+    this.message = msg;
   }
 }
 
@@ -58,7 +64,7 @@ class Popup extends Component<PopupProps, PopupState> {
   }
 
   componentDidMount() {
-    popup.setInstance(this as PopupInstance);
+    popup.setInstance(this as PopupInstance, "");
   }
 
   render() {
@@ -84,7 +90,7 @@ class Popup extends Component<PopupProps, PopupState> {
             exit="hidden"
           >
             <motion.div
-              className="bg-neutral-900 p-8 rounded-xl max-md:w-[90dvw] shadow-lg border"
+              className="bg-neutral-900 p-8 rounded-xl max-w-md shadow-lg border"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
@@ -93,7 +99,7 @@ class Popup extends Component<PopupProps, PopupState> {
             >
               <div className="flex flex-col items-center text-pretty gap-2.5 max-w-xs">
                 <Lock className="h-11 w-11" />
-                <p>Add exclusive content and control who can access</p>
+                <p>{popup.message}</p>
                 <Button
                   size="sm"
                   disabled
