@@ -53,10 +53,15 @@ function Interests({
         return;
       }
       try {
+        if (username.length > 20) {
+          toast.error("Username exceeds 20 characters");
+          return;
+        }
         setLoader(true);
         const isExist = await fetch(`/api/check?u=${username}`, {
           cache: "no-cache",
         });
+
         if (isExist.status === 404) {
           await account.updateName(username.trim());
         } else {
@@ -115,6 +120,7 @@ function Interests({
               <Input
                 placeholder="Username"
                 defaultValue={username}
+                max={20}
                 onChange={(e) => setUsername(e.target.value.toLowerCase())}
                 name="username"
               />

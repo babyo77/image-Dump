@@ -94,3 +94,11 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.remove::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.remove::-ms-clear {
+  display: none;
+}
