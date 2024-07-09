@@ -49,7 +49,9 @@ function Profile({
       try {
         setLoader(true);
         const data = await getDiscover(currentMode);
-        setProfiles(data);
+        setProfiles(
+          loggedIn ? data.filter((u) => u.$id !== loggedIn.$id) : data
+        );
       } catch (error) {
         console.error(error);
       } finally {
@@ -57,7 +59,7 @@ function Profile({
         setLoader(false);
       }
     }
-  }, [currentMode]);
+  }, [currentMode, loggedIn]);
 
   return (
     <>
