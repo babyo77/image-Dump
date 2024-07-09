@@ -24,23 +24,10 @@ export async function getDiscover(mode?: "pop" | "for") {
   if (mode === "pop") {
     return newRes as unknown as discover[];
   } else if (mode === "for") {
-    return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+    return shuffleArray(newRes) as unknown as discover[];
   } else {
-    return shuffleArrayWithPriority(newRes, "") as unknown as discover[];
+    return shuffleArray(newRes) as unknown as discover[];
   }
-}
-
-function shuffleArrayWithPriority(array: any[], priorityName: string) {
-  const priorityUserIndex = array.findIndex(
-    (user) => user.username === priorityName
-  );
-  if (priorityUserIndex !== -1) {
-    const priorityUser = array.splice(priorityUserIndex, 1)[0];
-    const shuffledArray = shuffleArray(array);
-    shuffledArray.unshift(priorityUser);
-    return shuffledArray;
-  }
-  return shuffleArray(array);
 }
 
 function shuffleArray(array: any[]) {
