@@ -70,6 +70,7 @@ function Profile({
           <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5 items-center">
             <Link href={"/"}>
               <motion.p
+                key={"spaces"}
                 initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
                 animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
                 transition={{
@@ -86,6 +87,7 @@ function Profile({
             </Link>
 
             <motion.div
+              key={"spaceOptions"}
               initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
               animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
               transition={{
@@ -113,10 +115,11 @@ function Profile({
           <div>
             <AnimatePresence>
               <motion.div
+                key={"soon"}
                 initial={{ filter: "blur(10px)", opacity: 0 }}
                 animate={{ filter: "blur(0px)", opacity: 1 }}
                 exit={{ filter: "blur(10px)", opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
                 className=" w-full flex items-center justify-center h-[80dvh]"
               >
                 <p className="font-semibold text-xl flex items-center">
@@ -131,6 +134,7 @@ function Profile({
           <header className=" w-full flex leading-tight tracking-tighter justify-between py-5 md:px-14 px-5 items-center">
             <Link href={"/"}>
               <motion.p
+                key={"dumps"}
                 initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
                 animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
                 transition={{
@@ -146,6 +150,7 @@ function Profile({
               </motion.p>
             </Link>
             <motion.div
+              key={"dumpOptions"}
               initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
               animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
               transition={{
@@ -174,6 +179,7 @@ function Profile({
           <AnimatePresence>
             {loader && (
               <motion.div
+                key={"finding"}
                 initial={{ filter: "blur(10px)", opacity: 0 }}
                 animate={{ filter: "blur(0px)", opacity: 1 }}
                 exit={{ filter: "blur(10px)", opacity: 0 }}
@@ -204,7 +210,7 @@ function Profile({
                       stiffness: 45,
                     }}
                     exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
-                    key={user.$id}
+                    key={user.$id + i}
                     className={`${i === profiles.length - 1 && ""} ${
                       i === 0 && ""
                     } relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh] min-h-[80dvh] border w-full`}
