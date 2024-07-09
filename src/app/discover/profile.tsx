@@ -28,14 +28,9 @@ function Profile({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const handleMode = async (mode: string) => {
     try {
-      const data = await getDiscover(mode as "pop" | "for");
       setProfiles([]);
-      const t = setTimeout(() => {
-        setProfiles(data);
-      }, 1000);
-      return () => {
-        clearTimeout(t);
-      };
+      const data = await getDiscover(mode as "pop" | "for");
+      setProfiles(data);
     } catch (error) {
       console.error(error);
     }
