@@ -58,7 +58,7 @@ function Interests({
           cache: "no-cache",
         });
         if (isExist.status === 404) {
-          await account.updateName(username);
+          await account.updateName(username.trim());
         } else {
           toast.error("username already taken");
           return;
