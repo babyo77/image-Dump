@@ -194,6 +194,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   muted
                   height={500}
                   loop
+                  preload="true"
                   controls={remove ? false : true}
                   width={500}
                   onClick={() => handleClick(imageObj)}
