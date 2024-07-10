@@ -212,7 +212,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                 />
               )}
 
-              {imageObj.type === "video" && (
+              {!remove && imageObj.type === "video" && (
                 <div
                   onClick={() => handleClick(imageObj)}
                   className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2"
