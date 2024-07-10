@@ -208,11 +208,8 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         });
 
         const completed = await Promise.all(uploadPromises);
-        console.log(completed);
 
-        if (!completed.includes(undefined)) {
-          if (closeRef.current) closeRef.current.click();
-        }
+        if (closeRef.current) closeRef.current.click();
       } else {
         toast.error("Failed to fetch Instagram link");
       }
