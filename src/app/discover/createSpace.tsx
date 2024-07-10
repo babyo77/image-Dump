@@ -49,8 +49,8 @@ function CreateSpace() {
         <p className="mb-2 text-center text-sm text-neutral-400">
           Start a space, open to everyone
         </p>
-        <Button size={"sm"} className="w-full">
-          Create Space
+        <Button size={"sm"} disabled className="w-full">
+          Coming soon
         </Button>
       </div>
     );

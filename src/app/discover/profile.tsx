@@ -150,7 +150,7 @@ function Profile({
             </motion.div>
           </div>
           <div className=" flex md:flex-wrap max-md:flex-col w-full md:px-14 gap-5 px-4 py-4">
-            {Array.from(Array(7)).map((_, i) => (
+            {/* {Array.from(Array(7)).map((_, i) => (
               <motion.div
                 initial={{
                   y: isDesktop ? "5dvh" : 0,
@@ -209,7 +209,7 @@ function Profile({
                   <MapPinned className="h-4" /> India
                 </div>
               </motion.div>
-            ))}
+            ))} */}
           </div>
         </AnimatePresence>
       ) : (
