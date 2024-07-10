@@ -54,7 +54,11 @@ export async function getLoggedInUser() {
       db.listDocuments(
         process.env.DATABASE_ID || "",
         process.env.GALLERY_ID || "",
-        [Query.equal("for", data.$id), Query.orderDesc("$updatedAt")]
+        [
+          Query.equal("for", data.$id),
+          Query.orderDesc("$updatedAt"),
+          Query.limit(40),
+        ]
       ),
     ]);
 
