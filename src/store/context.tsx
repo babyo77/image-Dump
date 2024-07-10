@@ -40,7 +40,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       .then(async (response) => {
         const ip = await response.text();
         try {
-          const res = await fetch(`/api/location${ip}`);
+          const res = await fetch(`/api/location/${ip}`);
           const country = (await res.json()).country;
           setCountry(country);
         } catch (error) {
