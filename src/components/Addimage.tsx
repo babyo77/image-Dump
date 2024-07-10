@@ -123,7 +123,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 del: data.data.deletion_url,
                 type: file.type.startsWith("image") ? "image" : "video",
                 for: user.$id,
-                link: optionalLink || link?.value,
+                link: link?.value || optionalLink,
                 features:
                   data.features.length > 0
                     ? data.features.map((r) => r.toLowerCase())
