@@ -78,7 +78,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   };
 
   const handleUploadHelper = useCallback(
-    async (file: File) => {
+    async (file: File, optionalLink?: string) => {
       if (file && user) {
         setUploading(true);
         const formData = new FormData();
@@ -123,7 +123,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 del: data.data.deletion_url,
                 type: file.type.startsWith("image") ? "image" : "video",
                 for: user.$id,
-                link: link?.value,
+                link: optionalLink || link?.value,
                 features:
                   data.features.length > 0
                     ? data.features.map((r) => r.toLowerCase())
@@ -183,13 +183,13 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           const file = new File([blob], fileName, { type: blob.type });
           if (file.type.startsWith("image")) {
             if (file.size <= 7 * 1024 * 1024) {
-              await handleUploadHelper(file);
+              await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Image size exceeds 7 MB");
             }
           } else if (file.type.startsWith("video")) {
             if (file.size <= 17 * 1024 * 1024) {
-              await handleUploadHelper(file);
+              await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Video size exceeds 17 MB");
             }
