@@ -191,7 +191,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             if (file.size <= 14 * 1024 * 1024) {
               await handleUploadHelper(file, instaLink);
             } else {
-              toast.error("Video size exceeds 17 MB");
+              toast.error("Video size exceeds 14 MB");
             }
           } else {
             toast.error("Unsupported file type");

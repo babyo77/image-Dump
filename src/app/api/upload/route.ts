@@ -11,6 +11,30 @@ export async function POST(req: NextRequest) {
         { error: { message: "no file" } },
         { status: 403 }
       );
+    if (
+      !formData.type.startsWith("image") ||
+      formData.type.startsWith("video")
+    ) {
+      return NextResponse.json(
+        { error: { message: "Type not valid" } },
+        { status: 403 }
+      );
+    }
+    if (
+      formData.type.startsWith("video") &&
+      formData.size <= 14 * 1024 * 1024
+    ) {
+      return NextResponse.json(
+        { error: { message: "Video size exceeds 14 MB" } },
+        { status: 403 }
+      );
+    }
+    if (formData.type.startsWith("image") && formData.size <= 7 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: { message: "Image size exceeds 7 MB" } },
+        { status: 403 }
+      );
+    }
     const bytes = await formData.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
