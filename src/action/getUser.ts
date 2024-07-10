@@ -41,7 +41,7 @@ export async function getUser(username: string) {
         ]),
         Query.equal("for", data.$id),
         Query.orderDesc("$updatedAt"),
-        Query.limit(30),
+        Query.limit(40),
       ]
     );
 
