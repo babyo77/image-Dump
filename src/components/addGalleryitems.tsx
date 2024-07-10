@@ -28,7 +28,7 @@ function AddGalleryItems() {
               <IoMdAdd className="h-5 w-5" />
             </div>
           </MenubarTrigger>
-          <MenubarContent className="w-56 mb-2.5 mr-7 bg-primary-foreground/95 rounded-md">
+          <MenubarContent className="w-56 mb-3 mr-7 bg-primary-foreground/95 rounded-md">
             <MenubarItem
               onClick={() => imageRef.current && imageRef.current.click()}
             >

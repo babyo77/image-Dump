@@ -205,6 +205,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
                   onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
+                  onPlay={(e) => (e.currentTarget.poster = "")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
               )}
