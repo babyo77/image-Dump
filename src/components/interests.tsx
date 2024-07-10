@@ -53,8 +53,8 @@ function Interests({
         return;
       }
       try {
-        if (username.length > 20) {
-          toast.error("Username exceeds 20 characters");
+        if (username.length > 40) {
+          toast.error("Username exceeds 40 characters");
           return;
         }
         setLoader(true);
@@ -120,7 +120,6 @@ function Interests({
               <Input
                 placeholder="Username"
                 defaultValue={username}
-                max={20}
                 onChange={(e) => setUsername(e.target.value.toLowerCase())}
                 name="username"
               />
