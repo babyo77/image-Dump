@@ -139,7 +139,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             return newImage;
           } else {
             const res = await response.json();
-            throw new Error(res);
+            throw new Error(res.error.message);
           }
         } catch (error) {
           fetch(delUrl);
@@ -164,46 +164,57 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         const data: { thumbnail_link: string; download_link: string }[] =
           await res.json();
 
-        const uploadPromises = data.map(async (data) => {
-          let r = null;
+        const uploadPromises = data.map(async (item) => {
+          let response = null;
           try {
-            r = await fetch(data.download_link, {
-              cache: "no-cache",
-            });
+            response = await fetch(item.download_link);
+            if (!response.ok) throw new Error("Failed to fetch directly");
           } catch (error) {
-            r = await fetch("https://image-proxy-1a78.onrender.com/", {
+            response = await fetch("https://image-proxy-1a78.onrender.com/", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ img: data.download_link }),
+              body: JSON.stringify({ img: item.download_link }),
             });
+            if (!response.ok) {
+              toast.error("Failed to fetch via proxy");
+              return undefined;
+            }
           }
 
-          const blob = await r.blob();
-
+          const blob = await response.blob();
           const fileName = getRandom() + Date.now();
           const file = new File([blob], fileName, { type: blob.type });
+
           if (file.type.startsWith("image")) {
             if (file.size <= 7 * 1024 * 1024) {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Image size exceeds 7 MB");
+              return undefined;
             }
           } else if (file.type.startsWith("video")) {
             if (file.size <= 14 * 1024 * 1024) {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Video size exceeds 14 MB");
+              return undefined;
             }
           } else {
             toast.error("Unsupported file type");
+            return undefined;
           }
+          return true;
         });
 
-        await Promise.all(uploadPromises);
-        if (closeRef.current) closeRef.current.click();
-        confettiAnimation();
+        const completed = await Promise.all(uploadPromises);
+        console.log(completed);
+
+        if (!completed.includes(undefined)) {
+          if (closeRef.current) closeRef.current.click();
+          confettiAnimation();
+        }
       } else {
         toast.error("Something went wrong");
       }
