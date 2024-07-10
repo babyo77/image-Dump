@@ -203,12 +203,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   controls={remove ? false : true}
                   width={500}
                   src={imageObj.data}
-                  onMouseEnter={(e) => (
-                    (e.currentTarget.muted = false), e.currentTarget.play()
-                  )}
+                  onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
                   onError={(e) => e.currentTarget.classList.add("hidden")}
-                  onLoad={(e) => (e.currentTarget.poster = "")}
                   onPlay={(e) => (e.currentTarget.poster = "")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
