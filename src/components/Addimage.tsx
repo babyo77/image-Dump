@@ -162,22 +162,16 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           await res.json();
 
         const uploadPromises = data.map(async (data) => {
-          let r = null;
-          try {
-            r = await fetch(data.download_link);
-          } catch (error) {
-            console.log(error);
-          }
-          r = await fetch("https://image-proxy-1a78.onrender.com/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ img: data.thumbnail_link }),
-          });
-          if (!res.ok) {
-            return;
-          }
+          const r = await fetch(data.download_link);
+          // } catch (error) {
+          //   r = await fetch("https://image-proxy-1a78.onrender.com/", {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({ img: data.thumbnail_link }),
+          //   });
+          // }
 
           const blob = await r.blob();
           const fileName = getRandom();
