@@ -135,7 +135,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             );
             setFile(file);
             fileRef.current = URL.createObjectURL(file);
-            setGallery((prev) => [...(prev || []), newImage]);
+            setGallery((prev) => [newImage, ...(prev || [])]);
             return newImage;
           }
         } catch (error) {
@@ -182,18 +182,20 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           const blob = await r.blob();
           const fileName = getRandom();
           const file = new File([blob], fileName, { type: blob.type });
-          if (
-            (file.size <= 17 * 1024 * 1024 && file.type.startsWith("image")) ||
-            file.type.startsWith("video")
-          ) {
-            await handleUploadHelper(file);
-          } else {
-            if (file.type.startsWith("image")) {
-              toast.error("File size exceeds 7 MB or unknown type");
+          if (file.type.startsWith("image")) {
+            if (file.size <= 7 * 1024 * 1024) {
+              await handleUploadHelper(file);
             } else {
-              toast.error("File size exceeds 17 MB or unknown type");
+              toast.error("Image size exceeds 7 MB");
             }
-            throw new Error("File size exceeds or unknown file type");
+          } else if (file.type.startsWith("video")) {
+            if (file.size <= 17 * 1024 * 1024) {
+              await handleUploadHelper(file);
+            } else {
+              toast.error("Video size exceeds 17 MB");
+            }
+          } else {
+            toast.error("Unsupported file type");
           }
         });
 
@@ -206,8 +208,6 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
-      setInstaLink("");
-      setFile(null);
       setUploading(false);
     }
   }, [instaLink, handleUploadHelper]);
