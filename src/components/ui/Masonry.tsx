@@ -205,7 +205,10 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   src={imageObj.data}
                   onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
-                  onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
+                  onError={(e) =>
+                    (e.currentTarget.src =
+                      "https://i.pinimg.com/564x/ad/cc/78/adcc78565b5a28df785d8c904574c21d.jpg")
+                  }
                   onLoad={(e) => (e.currentTarget.poster = "")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
