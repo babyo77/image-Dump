@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     if (
       !formData.type.startsWith("image") ||
-      formData.type.startsWith("video")
+      !formData.type.startsWith("video")
     ) {
       return NextResponse.json(
         { error: { message: "Type not valid" } },
