@@ -299,10 +299,12 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               <Input
                 placeholder="Custom Redirect Link (optional)"
                 type="text"
+                disabled={uploading}
                 ref={linkRef}
               />
               <Input
                 value={instaLink}
+                disabled={uploading}
                 onChange={(e) => setInstaLink(e.target.value)}
                 placeholder="Upload from instagram (paste instagram link)"
                 type="text"
@@ -432,10 +434,12 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             <Input
               placeholder="Custom Redirect Link (optional)"
               type="text"
+              disabled={uploading}
               ref={linkRef}
             />
             <Input
               value={instaLink}
+              disabled={uploading}
               onChange={(e) => setInstaLink(e.target.value)}
               placeholder="Upload from instagram (paste instagram link)"
               type="text"
