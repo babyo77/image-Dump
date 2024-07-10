@@ -57,7 +57,7 @@ export async function getLoggedInUser() {
         [
           Query.equal("for", data.$id),
           Query.orderDesc("$updatedAt"),
-          Query.limit(40),
+          Query.limit(30),
         ]
       ),
     ]);
