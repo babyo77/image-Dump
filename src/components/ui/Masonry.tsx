@@ -207,7 +207,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   onPlay={(e) => (e.currentTarget.poster = "")}
                   onCanPlayThrough={(e) => (
                     (e.currentTarget.controls = remove ? false : true),
-                    (e.currentTarget.poster = "")
+                    ((e.currentTarget.poster = ""), e.currentTarget.play())
                   )}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
