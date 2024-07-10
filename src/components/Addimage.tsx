@@ -162,18 +162,23 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           await res.json();
 
         const uploadPromises = data.map(async (data) => {
-          const r = await fetch(data.download_link);
-          // } catch (error) {
-          //   r = await fetch("https://image-proxy-1a78.onrender.com/", {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ img: data.thumbnail_link }),
-          //   });
-          // }
+          let r = null;
+          try {
+            r = await fetch(data.download_link, {
+              cache: "no-cache",
+            });
+          } catch (error) {
+            r = await fetch("https://image-proxy-1a78.onrender.com/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ img: data.thumbnail_link }),
+            });
+          }
 
           const blob = await r.blob();
+
           const fileName = getRandom();
           const file = new File([blob], fileName, { type: blob.type });
           if (file.type.startsWith("image")) {
@@ -183,7 +188,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               toast.error("Image size exceeds 7 MB");
             }
           } else if (file.type.startsWith("video")) {
-            if (file.size <= 17 * 1024 * 1024) {
+            if (file.size <= 11 * 1024 * 1024) {
               await handleUploadHelper(file);
             } else {
               toast.error("Video size exceeds 17 MB");
