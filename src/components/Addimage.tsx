@@ -137,6 +137,9 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             fileRef.current = URL.createObjectURL(file);
             setGallery((prev) => [newImage, ...(prev || [])]);
             return newImage;
+          } else {
+            const res = await response.json();
+            throw new Error(res);
           }
         } catch (error) {
           fetch(delUrl);

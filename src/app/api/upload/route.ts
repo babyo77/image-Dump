@@ -11,15 +11,15 @@ export async function POST(req: NextRequest) {
         { error: { message: "no file" } },
         { status: 403 }
       );
-    if (
-      !formData.type.startsWith("image") ||
-      !formData.type.startsWith("video")
-    ) {
-      return NextResponse.json(
-        { error: { message: "Type not valid" } },
-        { status: 403 }
-      );
+    if (!formData.type.startsWith("image")) {
+      if (!formData.type.startsWith("video")) {
+        return NextResponse.json(
+          { error: { message: "Type not valid" } },
+          { status: 403 }
+        );
+      }
     }
+
     if (
       formData.type.startsWith("video") &&
       formData.size <= 14 * 1024 * 1024
