@@ -199,6 +199,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   preload="auto"
                   poster="https://i.pinimg.com/564x/ad/cc/78/adcc78565b5a28df785d8c904574c21d.jpg"
                   width={500}
+                  onClick={(e) => e.currentTarget.play()}
                   src={imageObj.data}
                   onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
