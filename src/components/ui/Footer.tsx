@@ -117,7 +117,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
               delay: 1.2,
             }}
             exit={{ y: "100dvh", opacity: 0 }}
-            className="fixed p-2.5 px-4 flex gap-4 backdrop-blur-md dark:bg-primary-foreground/95 border items-center rounded-xl bottom-6"
+            className="fixed p-2.5 px-2.5 flex gap-4 backdrop-blur-md dark:bg-primary-foreground/95 border items-center rounded-xl bottom-6"
           >
             {loggedIn ? (
               <Button

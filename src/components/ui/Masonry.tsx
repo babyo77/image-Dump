@@ -195,6 +195,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   height={500}
                   loop
                   preload="true"
+                  poster={
+                    "https://i.pinimg.com/564x/ad/cc/78/adcc78565b5a28df785d8c904574c21d.jpg"
+                  }
                   controls={remove ? false : true}
                   width={500}
                   src={imageObj.data}
