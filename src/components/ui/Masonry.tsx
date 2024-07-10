@@ -204,10 +204,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   src={imageObj.data}
                   onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
-                  onPlay={(e) => (
-                    (e.currentTarget.poster = ""),
-                    (e.currentTarget.controls = remove ? false : true)
-                  )}
+                  onPlay={(e) => (e.currentTarget.poster = "")}
                   onCanPlayThrough={(e) => (
                     (e.currentTarget.controls = remove ? false : true),
                     (e.currentTarget.poster = "")
