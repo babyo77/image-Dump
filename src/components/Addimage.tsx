@@ -173,7 +173,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ img: data.thumbnail_link }),
+              body: JSON.stringify({ img: data.download_link }),
             });
           }
 
