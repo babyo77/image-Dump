@@ -22,7 +22,6 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { confettiAnimation } from "./ui/confettiAnimation";
 import { database } from "@/lib/client/appwrite";
 import { ID } from "appwrite";
 import { useUserContext } from "@/store/context";
@@ -36,7 +35,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   const [selectedFile, setFile] = useState<File | null>(null);
   const fileRef = useRef<string>("");
   const closeRef = useRef<HTMLButtonElement>(null);
-  const { user, gallery, setGallery } = useUserContext();
+  const { user, setGallery } = useUserContext();
   const [instaLink, setInstaLink] = useState<string>("");
   const linkRef = useRef<HTMLInputElement>(null);
 
@@ -192,12 +191,14 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Image size exceeds 7 MB");
+              return undefined;
             }
           } else if (file.type.startsWith("video")) {
             if (file.size <= 7 * 1024 * 1024) {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Video size exceeds 7 MB");
+              return undefined;
             }
           } else {
             toast.error("Unsupported file type");
@@ -211,7 +212,6 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
 
         if (!completed.includes(undefined)) {
           if (closeRef.current) closeRef.current.click();
-          confettiAnimation();
         }
       } else {
         toast.error("Failed to fetch Instagram link");
@@ -233,7 +233,6 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
     } else if (selectedFile) {
       await handleUploadHelper(selectedFile);
       if (closeRef.current) closeRef.current.click();
-      confettiAnimation();
     }
   }, [instaLink, selectedFile, handleInstaUpload, handleUploadHelper]);
 
