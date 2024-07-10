@@ -30,6 +30,7 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Loader } from "lucide-react";
 import { useMediaQuery } from "@react-hook/media-query";
+import { MdArrowOutward } from "react-icons/md";
 
 interface MasonryType {
   column?: Breakpoint;
@@ -208,6 +209,15 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   onPlay={(e) => (e.currentTarget.poster = "")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
+              )}
+
+              {imageObj.type === "video" && (
+                <div
+                  onClick={() => handleClick(imageObj)}
+                  className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 right-2"
+                >
+                  <MdArrowOutward />
+                </div>
               )}
               {remove && (
                 <>
