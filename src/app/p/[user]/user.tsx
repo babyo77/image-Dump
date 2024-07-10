@@ -283,7 +283,9 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="font-semibold w-fit outline-none text-3xl py-0.5 pl-1.5 border-none -mt-2"
               >
-                <p>{user.usersDoc.fullName}</p>
+                <p className="w-[75dvw] break-words">
+                  {user.usersDoc.fullName}
+                </p>
               </motion.div>
               <motion.div
                 key={"bio"}

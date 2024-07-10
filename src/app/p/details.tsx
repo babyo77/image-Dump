@@ -200,7 +200,7 @@ function Details({ details }: { details: user }) {
         translate="no"
         className="font-semibold outline-none text-3xl w-full py-0.5 pl-1.5 border-none -mt-2"
       >
-        <p>{details.usersDoc.fullName}</p>
+        <p className="w-[75dvw] break-words">{details.usersDoc.fullName}</p>
       </motion.div>
       <motion.div
         suppressContentEditableWarning
@@ -220,9 +220,11 @@ function Details({ details }: { details: user }) {
       >
         <div>
           {details.usersDoc.bio.length > 0
-            ? details.usersDoc.bio
-                .split("\n")
-                .map((line, index) => <p key={index}>{line}</p>)
+            ? details.usersDoc.bio.split("\n").map((line, index) => (
+                <p className=" w-[75dvw] break-words" key={index}>
+                  {line}
+                </p>
+              ))
             : "bio not set"}
         </div>
       </motion.div>
