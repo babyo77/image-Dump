@@ -196,21 +196,19 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   muted
                   height={500}
                   loop
-                  preload="true"
-                  poster={
-                    "https://i.pinimg.com/564x/ad/cc/78/adcc78565b5a28df785d8c904574c21d.jpg"
-                  }
+                  preload="auto"
+                  poster="https://i.pinimg.com/564x/ad/cc/78/adcc78565b5a28df785d8c904574c21d.jpg"
                   width={500}
                   src={imageObj.data}
                   onMouseEnter={(e) => (e.currentTarget.muted = false)}
                   onMouseLeave={(e) => (e.currentTarget.muted = true)}
                   onPlay={(e) => (e.currentTarget.poster = "")}
-                  onLoad={(e) => (e.currentTarget.poster = "")}
-                  onCanPlayThrough={(e) => (
-                    (e.currentTarget.controls = remove ? false : true),
-                    ((e.currentTarget.poster = ""), e.currentTarget.play())
-                  )}
-                  className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
+                  onCanPlayThrough={(e) => {
+                    e.currentTarget.controls = !remove;
+                    e.currentTarget.poster = "";
+                    e.currentTarget.play();
+                  }}
+                  className="cursor-pointer rounded-xl h-auto w-full object-cover relative"
                 />
               )}
 
