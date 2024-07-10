@@ -192,14 +192,12 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Image size exceeds 7 MB");
-              
             }
           } else if (file.type.startsWith("video")) {
             if (file.size <= 17 * 1024 * 1024) {
               await handleUploadHelper(file, instaLink);
             } else {
               toast.error("Video size exceeds 17 MB");
-              
             }
           } else {
             toast.error("Unsupported file type");
@@ -216,7 +214,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           confettiAnimation();
         }
       } else {
-        toast.error("Something went wrong");
+        toast.error("Failed to fetch Instagram link");
       }
     } catch (error) {
       toast.error("Something went wrong");

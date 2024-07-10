@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AiOutlineDelete } from "react-icons/ai";
 import { database } from "@/lib/client/appwrite";
 import { useUserContext } from "@/store/context";
-import { gallery, user } from "@/app/types/types";
+import { gallery } from "@/app/types/types";
 import { toast } from "sonner";
 import { PiCursorClick } from "react-icons/pi";
 import {
@@ -247,134 +247,6 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
     </main>
   );
 };
-
-// export interface ClicksData {
-//   date: string;
-//   clicks: number;
-// }
-// const ClicksAnalytics = ({ image }: { image: gallery }) => {
-//   const [data, setData] = useState<ClicksData[]>([
-//     {
-//       date: new Date().toISOString().split("T")[0],
-//       clicks: 0,
-//     },
-//   ]);
-//   const analytics = useCallback(() => {
-//     const offset = 7 * 24 * 60 * 60 * 1000;
-//     const date = new Date();
-//     date.setTime(date.getTime() - offset);
-//     database
-//       .listDocuments(
-//         process.env.DATABASE_ID || "",
-//         process.env.ANALYTICS_ID || "",
-//         [
-//           Query.equal("for", image.$id),
-//           Query.equal("type", "image"),
-//           Query.select(["$createdAt"]),
-//           Query.greaterThanEqual("$createdAt", date.toISOString()),
-//           Query.limit(9999),
-//         ]
-//       )
-//       .then((response) => {
-//         const aggregatedData: ClicksData[] = [];
-//         response.documents.forEach((doc) => {
-//           const createdAtDate = new Date(doc.$createdAt)
-//             .toISOString()
-//             .split("T")[0];
-//           const existingData = aggregatedData.find(
-//             (item) => item.date === createdAtDate
-//           );
-
-//           if (existingData) {
-//             existingData.clicks += 1;
-//           } else {
-//             aggregatedData.push({
-//               date: createdAtDate,
-//               clicks: 0,
-//             });
-//           }
-//         });
-//         if (response.total > 0) {
-//           setData(aggregatedData);
-//         }
-//       });
-//   }, [image]);
-
-//   const formatDate = (dateString: string) => {
-//     const options: Intl.DateTimeFormatOptions = {
-//       month: "short",
-//       day: "numeric",
-//     };
-//     return new Date(dateString).toLocaleDateString(undefined, options);
-//   };
-
-//   const isDesktop = useMediaQuery("(min-width: 768px)");
-
-//   const renderAnalytics = () => {
-//     return (
-//       <motion.div
-//         initial={{ filter: "blur(10px)", opacity: 0 }}
-//         animate={{ filter: "blur(0px)", opacity: 1 }}
-//         transition={{ duration: 1 }}
-//         style={{ width: "100%", height: "100%", marginBottom: ".7rem" }}
-//       >
-//         <ResponsiveContainer>
-//           <AreaChart
-//             data={data}
-//             className=" text-xs md:text-base"
-//             margin={{
-//               top: 10,
-//               right: 30,
-//               left: 0,
-//               bottom: 0,
-//             }}
-//           >
-//             <XAxis dataKey="date" tickFormatter={formatDate} />
-//             <YAxis />
-//             <Tooltip />
-//             <Area
-//               type="monotoneX"
-//               dataKey="clicks"
-//               stroke="#000"
-//               fill="#ffffff"
-//             />
-//           </AreaChart>
-//         </ResponsiveContainer>
-//       </motion.div>
-//     );
-//   };
-//   if (isDesktop) {
-//     return (
-//       <Dialog open={false}>
-//         <DialogTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
-//           <PiCursorClick /> {formatNumber(image.clicks)}
-//         </DialogTrigger>
-//         <DialogContent className="w-[100dvw] rounded-xl border-none bg-zinc-950/90">
-//           <DialogHeader>
-//             <DialogTitle>Image Analytics</DialogTitle>
-//             <DialogDescription></DialogDescription>
-//           </DialogHeader>
-//           <div className=" h-[87dvh] ">{renderAnalytics()}</div>
-//         </DialogContent>
-//       </Dialog>
-//     );
-//   }
-
-//   return (
-//     <Drawer open={false}>
-//       <DrawerTrigger className=" absolute flex gap-1 items-center text-base hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer top-2 left-2">
-//         <PiCursorClick /> {formatNumber(image.clicks)}
-//       </DrawerTrigger>
-//       <DrawerContent className=" border-none">
-//         <DrawerHeader>
-//           <DrawerTitle>Image Analytics</DrawerTitle>
-//           <DrawerDescription></DrawerDescription>
-//         </DrawerHeader>
-//         <div style={{ width: "100%", height: 200 }}>{renderAnalytics()}</div>
-//       </DrawerContent>
-//     </Drawer>
-//   );
-// };
 
 const UpdateMasonry = ({ image }: { image: gallery }) => {
   const [loader, setLoader] = useState<boolean>(false);
