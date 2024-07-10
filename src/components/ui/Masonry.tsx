@@ -198,6 +198,8 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   controls={remove ? false : true}
                   width={500}
                   src={imageObj.data}
+                  onMouseEnter={(e) => (e.currentTarget.muted = false)}
+                  onMouseLeave={(e) => (e.currentTarget.muted = true)}
                   onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
                 />
