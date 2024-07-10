@@ -197,7 +197,6 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   preload="true"
                   controls={remove ? false : true}
                   width={500}
-                  onClick={() => handleClick(imageObj)}
                   src={imageObj.data}
                   onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
                   className={`${"cursor-pointer"} rounded-xl h-auto w-[100%] object-cover relative`}
