@@ -138,7 +138,7 @@ export function Links({
             )}
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="w-[40dvw] rounded-xl ">
+        <DialogContent className="max-w-xl rounded-xl ">
           <DialogHeader>
             <DialogTitle>Links</DialogTitle>
             <DialogDescription></DialogDescription>

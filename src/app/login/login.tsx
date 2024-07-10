@@ -67,55 +67,59 @@ function Login() {
   return (
     <AnimatePresence>
       {!login && (
-        <AnimatePresence>
+        <>
           <BackgroundGrid />
-          <motion.form
-            key={"loginForm"}
-            initial={{ filter: "blur(10px)", opacity: 0 }}
-            animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            exit={{ filter: "blur(10px)", opacity: 0 }}
-            onSubmit={handleVerify}
-            className="absolute z-10 inset-0 flex flex-col gap-4 items-center justify-center text-white font-medium px-5 text-xs"
-          >
-            <h1 className="md:max-w-[40dvw] text-3xl">Login to your Account</h1>
-
-            <Button
-              disabled={checking}
-              size={"sm"}
-              className="w-full lg:max-w-[25dvw] py-7 rounded-xl md:max-w-[40dvw]"
+          <AnimatePresence>
+            <motion.form
+              key={"loginForm"}
+              initial={{ filter: "blur(10px)", opacity: 0 }}
+              animate={{ filter: "blur(0px)", opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              exit={{ filter: "blur(10px)", opacity: 0 }}
+              onSubmit={handleVerify}
+              className="absolute z-10 inset-0 flex flex-col gap-4 items-center justify-center text-white font-medium px-5 text-xs"
             >
-              {checking ? (
-                <div className=" flex items-center gap-x-0.5 text-lg font-medium">
-                  <Loader className=" animate-spin h-6 w-6 font-semibold" />
-                  <p>{status}</p>
-                </div>
-              ) : (
-                <div className=" flex items-center gap-x-0.5 text-lg font-medium">
-                  <AiOutlineGoogle className="h-6 w-6" />
-                  <p>{status}</p>
-                </div>
-              )}
-            </Button>
-            <Link href={"/discover"} className="-my-2">
-              <span className=" underline underline-offset-4 hover:text-neutral-200 text-neutral-400">
-                Discover
-              </span>
-            </Link>
-          </motion.form>
-          <motion.footer
-            key={"footer"}
-            initial={{ filter: "blur(10px)", opacity: 0 }}
-            animate={{ filter: "blur(0px)", opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            exit={{ filter: "blur(10px)", opacity: 0 }}
-            className=" z-20 fixed bottom-2 text-center w-full text-xs text-zinc-400"
-          >
-            <a target="_blank" href="https://tanmayo7.vercel.app">
-              Made by @babyo7_
-            </a>
-          </motion.footer>
-        </AnimatePresence>
+              <h1 className="md:max-w-[40dvw] text-3xl">
+                Login to your Account
+              </h1>
+
+              <Button
+                disabled={checking}
+                size={"sm"}
+                className="w-full lg:max-w-[25dvw] py-7 rounded-xl md:max-w-[40dvw]"
+              >
+                {checking ? (
+                  <div className=" flex items-center gap-x-0.5 text-lg font-medium">
+                    <Loader className=" animate-spin h-6 w-6 font-semibold" />
+                    <p>{status}</p>
+                  </div>
+                ) : (
+                  <div className=" flex items-center gap-x-0.5 text-lg font-medium">
+                    <AiOutlineGoogle className="h-6 w-6" />
+                    <p>{status}</p>
+                  </div>
+                )}
+              </Button>
+              <Link href={"/discover"} className="-my-2">
+                <span className=" underline underline-offset-4 hover:text-neutral-200 text-neutral-400">
+                  Discover
+                </span>
+              </Link>
+            </motion.form>
+            <motion.footer
+              key={"footer"}
+              initial={{ filter: "blur(10px)", opacity: 0 }}
+              animate={{ filter: "blur(0px)", opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              exit={{ filter: "blur(10px)", opacity: 0 }}
+              className=" z-20 fixed bottom-2 text-center w-full text-xs text-zinc-400"
+            >
+              <a target="_blank" href="https://tanmayo7.vercel.app">
+                Made by @babyo7_
+              </a>
+            </motion.footer>
+          </AnimatePresence>
+        </>
       )}
     </AnimatePresence>
   );

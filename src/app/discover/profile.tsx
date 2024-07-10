@@ -1,12 +1,11 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { discover, user } from "../types/types";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { PiStack } from "react-icons/pi";
-import { popup } from "@/components/ui/popup";
 import { useMediaQuery } from "@react-hook/media-query";
 import {
   Select,
@@ -20,8 +19,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { BiSolidUserVoice } from "react-icons/bi";
-import { Map, MapPinned, User } from "lucide-react";
+import { MapPinned, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import UserSettings from "./navigation";
+import CreateSpace from "./createSpace";
+import { useUserContext } from "@/store/context";
+import { client } from "@/lib/client/appwrite";
 function Profile({
   loggedIn,
   discover,
@@ -36,7 +39,7 @@ function Profile({
   const [currentMode, setCurrentMode] = useState<"pop" | "for" | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
+  const { setUser } = useUserContext();
   const handleMode = useCallback(
     (mode: string) => {
       if (mode === "for" && !loggedIn) {
@@ -65,6 +68,13 @@ function Profile({
       }
     }
   }, [currentMode, loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn && loggedIn.cookie) {
+      client.setSession(loggedIn.cookie.value);
+      setUser(loggedIn);
+    }
+  }, [loggedIn, setUser]);
 
   return (
     <>
@@ -101,17 +111,7 @@ function Profile({
               exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
               className="flex items-center gap-2"
             >
-              <Link href={"/p"}>
-                <div className=" h-10 w-10 rounded-full overflow-hidden">
-                  <Image
-                    alt="profile-image"
-                    src={loggedIn ? loggedIn.prefs["image"] : "/notFound.jpg"}
-                    height={200}
-                    width={200}
-                    className=" h-[100%] w-[100%] object-cover"
-                  />
-                </div>
-              </Link>
+              <UserSettings loggedIn={loggedIn} />
               <Button size={"sm"} onClick={() => setSpace(false)}>
                 Dumps
               </Button>
@@ -146,14 +146,7 @@ function Profile({
               }}
               exit={{ y: 0, filter: "blur(10px)", opacity: 0 }}
             >
-              <Button
-                size={"sm"}
-                variant={"secondary"}
-                className=" flex gap-1 py-5 items-center"
-              >
-                <BiSolidUserVoice className="h-5 w-5" />
-                Create your space
-              </Button>
+              <CreateSpace />
             </motion.div>
           </div>
           <div className=" flex md:flex-wrap max-md:flex-col w-full md:px-14 gap-5 px-4 py-4">
