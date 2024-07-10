@@ -179,7 +179,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
 
           const blob = await r.blob();
 
-          const fileName = getRandom();
+          const fileName = getRandom() + Date.now();
           const file = new File([blob], fileName, { type: blob.type });
           if (file.type.startsWith("image")) {
             if (file.size <= 7 * 1024 * 1024) {
