@@ -32,7 +32,7 @@ function AddGalleryItems() {
             <MenubarItem
               onClick={() => imageRef.current && imageRef.current.click()}
             >
-              Upload image
+              Upload File
               <MenubarShortcut>
                 <RiImageAddLine />
               </MenubarShortcut>

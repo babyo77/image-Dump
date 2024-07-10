@@ -4,7 +4,7 @@ import { user } from "../types/types";
 import { useUserContext } from "@/store/context";
 
 import Masonry from "@/components/ui/Masonry";
-function Gallery({ user, remove }: { user: user; remove?: boolean }) {
+function Gallery({ user, remove = false }: { user: user; remove?: boolean }) {
   const { gallery } = useUserContext();
 
   if (gallery) {

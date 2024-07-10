@@ -30,17 +30,22 @@ import { gallery } from "@/app/types/types";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useMediaQuery } from "@react-hook/media-query";
 import { Input } from "./ui/input";
-import { isValidURL } from "@/lib/utils";
+import { getRandom, isValidURL } from "@/lib/utils";
 const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
   const [uploading, setUploading] = useState<boolean>(false);
-  const [selectedImage, setImage] = useState<File | null>(null);
-  const imageRef = useRef<string>("");
+  const [selectedFile, setFile] = useState<File | null>(null);
+  const fileRef = useRef<string>("");
   const closeRef = useRef<HTMLButtonElement>(null);
   const { user, gallery, setGallery } = useUserContext();
+  const [instaLink, setInstaLink] = useState<string>("");
+  const linkRef = useRef<HTMLInputElement>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLLabelElement>
   ) => {
     e.preventDefault();
+    if (instaLink.length > 0) return toast.error("Remove instagram link");
+
     let image: FileList | null = null;
 
     if ("files" in e.target) {
@@ -51,95 +56,154 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
 
     if (image && image.length === 1) {
       const file = image[0];
-      const maxSize = 7 * 1024 * 1024;
+      const maxSize = file.type.startsWith("video")
+        ? 10 * 1024 * 1024
+        : 7 * 1024 * 1024;
 
       if (file.size <= maxSize) {
-        if (file.type.startsWith("image")) {
-          setImage(file);
-          imageRef.current = URL.createObjectURL(file);
+        if (file.type.startsWith("image") || file.type.startsWith("video")) {
+          setFile(file);
+          fileRef.current = URL.createObjectURL(file);
         } else {
-          toast.error("Invalid image");
+          toast.error("Invalid file");
         }
       } else {
-        toast.error("File size exceeds 7 MB");
+        if (file.type.startsWith("image")) {
+          toast.error("File size exceeds 7 MB");
+        } else {
+          toast.error("File size exceeds 10 MB");
+        }
       }
     }
   };
-  const linkRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadHelper = useCallback(
+    async (file: File) => {
+      if (file && user) {
+        setUploading(true);
+        const formData = new FormData();
+        const link = linkRef.current;
+        if (link && link.value.length > 0 && !isValidURL(link.value)) {
+          toast.error("Invalid URL");
+          setUploading(false);
+          return;
+        }
+        formData.append(
+          "payload_json",
+          JSON.stringify({
+            upload_source: "dashboard",
+            domain: "the-chiefly-lasagna.tixte.co",
+            type: 1,
+            name: file.name,
+          })
+        );
+        formData.append("file", file);
+        let delUrl = "https://example.com";
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+            headers: {
+              loc: file.type.startsWith("video") ? "i" : "v",
+            },
+          });
+          if (response.ok) {
+            const data: {
+              data: { deletion_url: string; direct_url: string };
+              features: string[];
+            } = await response.json();
+            delUrl = data.data.deletion_url;
+
+            const newImage: gallery = await database.createDocument(
+              process.env.DATABASE_ID || "",
+              process.env.GALLERY_ID || "",
+              ID.unique(),
+              {
+                data: data.data.direct_url,
+                del: data.data.deletion_url,
+                type: file.type.startsWith("image") ? "image" : "video",
+                for: user.$id,
+                link: link?.value,
+                features:
+                  data.features.length > 0
+                    ? data.features.map((r) => r.toLowerCase())
+                    : [],
+                index: user.usersDoc.galleryTotal + 1,
+                users: [user.$id],
+                tags: [],
+              }
+            );
+
+            setGallery([newImage, ...(gallery || [])]);
+          }
+        } catch (error) {
+          fetch(delUrl);
+          //@ts-expect-error:expected error
+          toast.error(error.message);
+        } finally {
+          setInstaLink("");
+          setUploading(false);
+        }
+      }
+    },
+    [user, setGallery, gallery]
+  );
+
+  const handleInstaUpload = useCallback(async () => {
+    setUploading(true);
+    try {
+      const res = await fetch(
+        `https://instx-api.vercel.app/api/v1?link=${instaLink}`
+      );
+      if (res.ok) {
+        const data: { thumbnail_link: string; download_link: string }[] =
+          await res.json();
+
+        const uploadPromises = data.map(async (data) => {
+          const r = await fetch(data.download_link);
+          const blob = await r.blob();
+          const fileName = getRandom();
+          const file = new File([blob], fileName, { type: blob.type });
+          if (file.size <= 17 * 1024 * 1024) {
+            setFile(file);
+            fileRef.current = URL.createObjectURL(file);
+            await handleUploadHelper(file);
+          } else {
+            if (file.type.startsWith("image")) {
+              toast.error("File size exceeds 7 MB");
+            } else {
+              toast.error("File size exceeds 17 MB");
+            }
+          }
+        });
+
+        await Promise.all(uploadPromises);
+        if (closeRef.current) closeRef.current.click();
+        confettiAnimation();
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setInstaLink("");
+      setUploading(false);
+    }
+  }, [instaLink, handleUploadHelper]);
 
   const handleUpload = useCallback(async () => {
-    if (selectedImage && user) {
-      setUploading(true);
-      const formData = new FormData();
-      const link = linkRef.current;
-      if (link && link.value.length > 0 && !isValidURL(link.value))
-        return toast.error("invalid URL");
-      formData.append(
-        "payload_json",
-        JSON.stringify({
-          upload_source: "dashboard",
-          domain: "the-chiefly-lasagna.tixte.co",
-          type: 1,
-          name: selectedImage.name,
-        })
-      );
-      formData.append("file", selectedImage);
-      let delUrl = "https://example.com";
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-        if (response.ok) {
-          const data: {
-            data: { deletion_url: string; direct_url: string };
-            features: string[];
-          } = await response.json();
-          delUrl = data.data.deletion_url;
-          const update = await database.getDocument(
-            process.env.DATABASE_ID || "",
-            process.env.USERS_ID || "",
-            user.$id
-          );
-          const newImage: gallery = await database.createDocument(
-            process.env.DATABASE_ID || "",
-            process.env.GALLERY_ID || "",
-            ID.unique(),
-            {
-              data: data.data.direct_url,
-              del: data.data.deletion_url,
-              type: "image",
-              for: user.$id,
-              link: link?.value,
-              features: data.features.map((r) => r.toLowerCase()),
-              index: user.usersDoc.galleryTotal + 1,
-              users: [user.$id],
-              tags: [],
-            }
-          );
-          await database.updateDocument(
-            process.env.DATABASE_ID || "",
-            process.env.USERS_ID || "",
-            user.$id,
-            {
-              galleryTotal: update.galleryTotal + 1,
-            }
-          );
-
-          setGallery([newImage, ...(gallery || [])]);
-          if (closeRef.current) closeRef.current.click();
-          setImage(null);
-          confettiAnimation();
-        }
-      } catch (error) {
-        fetch(delUrl);
-        //@ts-expect-error:expected error
-        toast.error(error.message);
-      } finally {
-        setUploading(false);
+    if (instaLink.length > 0) {
+      if (isValidURL(instaLink)) {
+        await handleInstaUpload();
+      } else {
+        toast.error("Invalid link");
       }
+    } else if (selectedFile) {
+      await handleUploadHelper(selectedFile);
+      if (closeRef.current) closeRef.current.click();
+      confettiAnimation();
     }
-  }, [selectedImage, user, setGallery, gallery]);
+  }, [instaLink, selectedFile, handleInstaUpload, handleUploadHelper]);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
   if (isDesktop) {
@@ -162,7 +226,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 name="galleryImage"
                 disabled={uploading}
                 hidden
-                accept="image/*"
+                accept="image/*,video/*"
                 id="galleryImage"
               />
 
@@ -173,14 +237,28 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 onDrop={handleChange}
               >
                 <div className="border mt-1.5 opacity-95 cursor-pointer leading-tight w-full gap-1 flex-col h-48 border-dashed  rounded-sm flex items-center justify-center">
-                  {selectedImage && imageRef.current ? (
-                    <Image
-                      height={500}
-                      width={500}
-                      alt="image"
-                      className=" h-[100%] w-[100%] object-contain py-2"
-                      src={imageRef.current}
-                    />
+                  {selectedFile && fileRef.current ? (
+                    <>
+                      {selectedFile.type.startsWith("image") ? (
+                        <Image
+                          height={500}
+                          width={500}
+                          alt="image"
+                          className=" h-[100%] w-[100%] object-contain py-2"
+                          src={fileRef.current}
+                        />
+                      ) : (
+                        <video
+                          height={500}
+                          autoPlay
+                          muted
+                          playsInline
+                          width={500}
+                          className=" h-[100%] w-[100%] object-contain py-2"
+                          src={fileRef.current}
+                        />
+                      )}
+                    </>
                   ) : (
                     <>
                       <div className=" border p-2 rounded-md">
@@ -188,10 +266,10 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                       </div>
                       <div className=" text-center">
                         <span className="text-sm text-zinc-200">
-                          Drag an image
+                          Drag an image/video
                         </span>
                         <p className=" text-zinc-400 text-xs">
-                          Select a image or drag here to upload directly
+                          Select a image/video or drag here to upload directly
                         </p>
                       </div>
                     </>
@@ -203,6 +281,12 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 type="text"
                 ref={linkRef}
               />
+              <Input
+                value={instaLink}
+                onChange={(e) => setInstaLink(e.target.value)}
+                placeholder="Upload from instagram (paste instagram link)"
+                type="text"
+              />
               {/* <Select>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Add to collection (optional)" />
@@ -213,7 +297,6 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                   <SelectItem value="system">System</SelectItem>
                 </SelectContent>
               </Select> */}
-
               <DialogClose ref={closeRef} className=""></DialogClose>
               <Button
                 variant={"secondary"}
@@ -279,7 +362,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               name="galleryImage"
               disabled={uploading}
               hidden
-              accept="image/*"
+              accept="image/*,video/*"
               id="galleryImage"
             />
 
@@ -290,14 +373,28 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               onDrop={handleChange}
             >
               <div className="border opacity-95 cursor-pointer leading-tight w-full gap-1 flex-col h-48 border-dashed  rounded-sm flex items-center justify-center">
-                {selectedImage && imageRef.current ? (
-                  <Image
-                    height={500}
-                    width={500}
-                    alt="image"
-                    className=" h-[100%] w-[100%] object-contain py-2"
-                    src={imageRef.current}
-                  />
+                {selectedFile && fileRef.current ? (
+                  <>
+                    {selectedFile.type.startsWith("image") ? (
+                      <Image
+                        height={500}
+                        width={500}
+                        alt="image"
+                        className=" h-[100%] w-[100%] object-contain py-2"
+                        src={fileRef.current}
+                      />
+                    ) : (
+                      <video
+                        height={500}
+                        autoPlay
+                        muted
+                        playsInline
+                        width={500}
+                        className=" h-[100%] w-[100%] object-contain py-2"
+                        src={fileRef.current}
+                      />
+                    )}
+                  </>
                 ) : (
                   <>
                     <div className=" border p-2 rounded-md">
@@ -305,7 +402,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                     </div>
                     <div className=" text-center">
                       <p className=" text-zinc-400 pt-1 text-xs">
-                        Select a image to upload
+                        Select a image/video to upload
                       </p>
                     </div>
                   </>
@@ -316,6 +413,12 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               placeholder="Custom Redirect Link (optional)"
               type="text"
               ref={linkRef}
+            />
+            <Input
+              value={instaLink}
+              onChange={(e) => setInstaLink(e.target.value)}
+              placeholder="Upload from instagram (paste instagram link)"
+              type="text"
             />
             {/* <Select>
               <SelectTrigger className="w-full">

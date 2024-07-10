@@ -120,24 +120,11 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
         setLoader(true);
         const p = gallery.filter((g) => g.$id !== id);
         setGallery(p);
-        await fetch(del).catch();
-        const update = await database.getDocument(
-          process.env.DATABASE_ID || "",
-          process.env.USERS_ID || "",
-          user.$id
-        );
+        await fetch(del).catch((err) => console.error(err));
         await database.deleteDocument(
           process.env.DATABASE_ID || "",
           process.env.GALLERY_ID || "",
           id
-        );
-        await database.updateDocument(
-          process.env.DATABASE_ID || "",
-          process.env.USERS_ID || "",
-          user.$id,
-          {
-            galleryTotal: update.galleryTotal - 1,
-          }
         );
       } catch (error) {
         //@ts-expect-error:expected error
@@ -207,6 +194,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   muted
                   height={500}
                   loop
+                  controls={remove ? false : true}
                   width={500}
                   onClick={() => handleClick(imageObj)}
                   src={imageObj.data}
