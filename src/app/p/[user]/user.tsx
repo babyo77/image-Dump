@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import sendEmail from "@/lib/sendMail";
 function User({ user }: { user: user }) {
-  const { match, setMatch } = useUserContext();
+  const { match, setMatch, country } = useUserContext();
   const router = useRouter();
   const [starred, setStarred] = useState<boolean>(user.isStarred || false);
   const Like = useCallback(async () => {
@@ -119,17 +119,20 @@ function User({ user }: { user: user }) {
   };
 
   useEffect(() => {
-    fetch("/api/analytics", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "profile",
-        v: user.usersDoc.views,
-        id: user.$id,
-      }),
-    }).catch((error) => {
-      console.error(error);
-    });
-  }, [user]);
+    if (country) {
+      fetch("/api/analytics", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "profile",
+          v: user.usersDoc.views,
+          id: user.$id,
+          country: country,
+        }),
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+  }, [user, country]);
   return (
     <>
       {fullImage && (

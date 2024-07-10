@@ -111,7 +111,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
 
   const chunkSize = Math.ceil(data.length / currentColumn);
 
-  const { gallery, setGallery } = useUserContext();
+  const { gallery, setGallery, country } = useUserContext();
   const distributed = chunk(data, chunkSize);
   const { setLoader, user } = useUserContext();
   const handleDelete = async (id: string, del: string) => {
@@ -151,6 +151,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
           type: "click",
           c: imageObj.clicks,
           user: user?.$id,
+          country: country,
         }),
       });
     } catch (error) {

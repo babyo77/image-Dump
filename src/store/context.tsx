@@ -21,7 +21,7 @@ interface useUserContextType {
   setGallery: React.Dispatch<React.SetStateAction<gallery[] | null>>;
   loader: boolean;
   setLoader: React.Dispatch<React.SetStateAction<boolean>>;
-  ip: string | null;
+  country: string | null;
 }
 
 const userContext = createContext<useUserContextType | undefined>(undefined);
@@ -32,14 +32,20 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [gallery, setGallery] = useState<gallery[] | null>(null);
   const [match, setMatch] = useState<boolean>(false);
   const [loader, setLoader] = useState(false);
-  const [ip, setIp] = useState<string | null>(null);
+  const [country, setCountry] = useState<string | null>(null);
   useEffect(() => {
     fetch("https://api.ipify.org/", {
       cache: "force-cache",
     })
       .then(async (response) => {
         const ip = await response.text();
-        setIp(ip);
+        try {
+          const res = await fetch(`/api/location${ip}`);
+          const country = (await res.json()).country;
+          setCountry(country);
+        } catch (error) {
+          setCountry("unknown");
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -59,7 +65,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           gallery,
           loader,
           setLoader,
-          ip,
+          country,
         }}
       >
         {children}

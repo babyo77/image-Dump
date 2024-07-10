@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ID, Permission, Role } from "node-appwrite";
 
 export async function POST(req: NextRequest) {
-  const { id, user, type, c, v } = await req.json();
+  const { id, user, type, c, v, country } = await req.json();
   const { db: database } = await createAdminClient();
 
   if (type === "profile") {
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         {
           for: id,
           type: "profile",
+          location: country,
         },
         [Permission.read(Role.user(id))]
       );
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
         {
           type: "image",
           for: id,
+          location: country,
         },
         [Permission.read(Role.user(user))]
       );
