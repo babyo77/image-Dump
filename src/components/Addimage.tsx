@@ -133,8 +133,10 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 tags: [],
               }
             );
-
-            setGallery([newImage, ...(gallery || [])]);
+            setFile(file);
+            fileRef.current = URL.createObjectURL(file);
+            setGallery((prev) => [...(prev || []), newImage]);
+            return newImage;
           }
         } catch (error) {
           fetch(delUrl);
@@ -146,7 +148,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
         }
       }
     },
-    [user, setGallery, gallery]
+    [user, setGallery]
   );
 
   const handleInstaUpload = useCallback(async () => {
@@ -160,20 +162,38 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           await res.json();
 
         const uploadPromises = data.map(async (data) => {
-          const r = await fetch(data.download_link);
+          let r = null;
+          try {
+            r = await fetch(data.download_link);
+          } catch (error) {
+            console.log(error);
+          }
+          r = await fetch("https://image-proxy-1a78.onrender.com/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ img: data.thumbnail_link }),
+          });
+          if (!res.ok) {
+            return;
+          }
+
           const blob = await r.blob();
           const fileName = getRandom();
           const file = new File([blob], fileName, { type: blob.type });
-          if (file.size <= 17 * 1024 * 1024) {
-            setFile(file);
-            fileRef.current = URL.createObjectURL(file);
+          if (
+            (file.size <= 17 * 1024 * 1024 && file.type.startsWith("image")) ||
+            file.type.startsWith("video")
+          ) {
             await handleUploadHelper(file);
           } else {
             if (file.type.startsWith("image")) {
-              toast.error("File size exceeds 7 MB");
+              toast.error("File size exceeds 7 MB or unknown type");
             } else {
-              toast.error("File size exceeds 17 MB");
+              toast.error("File size exceeds 17 MB or unknown type");
             }
+            throw new Error("File size exceeds or unknown file type");
           }
         });
 
@@ -187,6 +207,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
       toast.error("Something went wrong");
     } finally {
       setInstaLink("");
+      setFile(null);
       setUploading(false);
     }
   }, [instaLink, handleUploadHelper]);
