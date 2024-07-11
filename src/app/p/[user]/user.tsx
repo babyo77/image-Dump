@@ -332,7 +332,7 @@ function User({ user }: { user: user }) {
             }}
             exit={{ y: 0, opacity: 0 }}
             key={"footer"}
-            className="flex w-full  items-center justify-center bottom-0 pb-11"
+            className="flex w-full  items-center justify-center bottom-0 pb-7"
           >
             <Link href={"/login"} target="_blank">
               <Button size={"sm"}>Create your own imageDump</Button>
