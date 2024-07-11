@@ -6,9 +6,6 @@ import { Metadata } from "next";
 import { replaceInstagramURL } from "@/lib/utils";
 import AnimatedInterests from "./loggedIn";
 import Gallery from "./gallery";
-import { Dot } from "lucide-react";
-import { MdOutlinePlayCircle } from "react-icons/md";
-import Music from "./music";
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await getLoggedInUser();
@@ -52,7 +49,6 @@ export default async function page() {
         </div>
         <div className=" gap-5 flex flex-col w-full">
           <Details details={user} />
-          {user.usersDoc.music && <Music user={user} />}
           <Gallery user={user} remove />
         </div>
       </div>

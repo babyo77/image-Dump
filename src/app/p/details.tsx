@@ -39,6 +39,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import Music from "./music";
 
 function Details({ details }: { details: user }) {
   const fullNameRef = useRef<HTMLParagraphElement>(null);
@@ -233,6 +234,7 @@ function Details({ details }: { details: user }) {
         details={details}
         loggedIn={details ? true : false}
       />
+      {details.usersDoc.music?.title && <Music user={details} />}
     </AnimatePresence>
   );
 }
