@@ -191,7 +191,7 @@ function User({ user }: { user: user }) {
       )}
       <AnimatePresence>
         {!match && (
-          <div className="px-7 pt-11 flex pb-11 justify-start overflow-hidden items-start">
+          <div className="px-7 pt-11 flex pb-7 justify-start overflow-hidden items-start">
             <div className="cursor-pointer absolute flex-col items-center gap-2.5 hover:text-zinc-300 transition-all right-4 duration-300">
               <div className="flex flex-col items-center gap-2 z-20">
                 <motion.div
