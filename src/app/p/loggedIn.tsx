@@ -16,7 +16,6 @@ function AnimatedInterests({ user }: { user: user }) {
         transition={{
           duration: 1,
           delay: 1,
-
           stiffness: 45,
         }}
         exit={{ y: 0, opacity: 0 }}
@@ -33,13 +32,12 @@ function AnimatedInterests({ user }: { user: user }) {
         transition={{
           duration: 1,
           delay: 1,
-
           stiffness: 45,
         }}
         exit={{ y: 0, opacity: 0 }}
       >
         <Link href={"/discover"}>
-          <Compass className=" h-[1.4rem] w-[1.4rem] ml-0.5 text-zinc-400 hover:text-zinc-200" />
+          <Compass className=" h-[1.4rem] w-[1.4rem] ml-0.5 -mt-1 text-zinc-400 hover:text-zinc-200" />
         </Link>
         <ProfileAnalytics user={user} />
         <Bell
