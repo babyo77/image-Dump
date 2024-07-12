@@ -127,6 +127,7 @@ function Interests({
               <TagsInput
                 initialKeywords={interested}
                 onKeywordsChange={handleKeywordsChange}
+                name="interest"
                 placeholder="Type interest and hit enter"
               />
             </div>
@@ -186,6 +187,7 @@ function Interests({
               <TagsInput
                 initialKeywords={interested}
                 onKeywordsChange={handleKeywordsChange}
+                name="interest"
                 placeholder="Type interest and hit enter"
               />
             </div>

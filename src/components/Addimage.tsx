@@ -452,16 +452,6 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               placeholder="Upload from instagram (paste instagram link)"
               type="text"
             />
-            {/* <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Add to collection (optional)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-              </SelectContent>
-            </Select> */}
           </motion.div>
         </DrawerHeader>
       </DrawerContent>
