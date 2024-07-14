@@ -379,7 +379,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               </p>
             </div>
           </DrawerTitle>
-          <DrawerDescription>Analyzed by AI</DrawerDescription>
+          <DrawerDescription></DrawerDescription>
           <motion.div
             initial={{ filter: "blur(10px)", opacity: 0 }}
             animate={{ filter: "blur(0px)", opacity: 1 }}
