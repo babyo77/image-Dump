@@ -9,7 +9,7 @@ import Gallery from "@/lib/models/galleryModel";
 
 export async function getLoggedInUser() {
   try {
-    const session = cookies()?.get("babyid");
+    const session = cookies().get("babyid");
     if (!session || !session.value) {
       throw new Error("No session found");
     }
