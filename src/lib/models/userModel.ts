@@ -1,8 +1,8 @@
 import { gallery, metadata, music } from "@/app/types/types";
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 export interface IUser {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   name: string;
   username: string;
   fullName: string;

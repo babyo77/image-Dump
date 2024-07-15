@@ -141,11 +141,11 @@ function Profile({
             </motion.div>
           </div>
           <div className=" flex md:flex-wrap max-md:flex-col w-full md:px-14 gap-5 px-4 py-4">
-            {Array.from(Array(12)).map((_, i) => (
+            {/* {Array.from(Array(1)).map((_, i) => (
               <RoomCard
                 key={i + 1}
                 index={i}
-                name="demo"
+                name="DEMO"
                 ownerId="1232"
                 speakers={["asasds"]}
                 total={7}
@@ -153,7 +153,7 @@ function Profile({
                 location="india"
                 id="asd"
               />
-            ))}
+            ))} */}
           </div>
         </AnimatePresence>
       ) : (
@@ -237,7 +237,7 @@ function Profile({
                       stiffness: 45,
                     }}
                     exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
-                    key={user._id + i}
+                    key={user._id.toString()}
                     className="relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh] min-h-[80dvh] border w-full"
                   >
                     <div
