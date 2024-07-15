@@ -1,73 +1,33 @@
-import { createAdminClient } from "@/lib/server/appwrite";
+import Gallery from "@/lib/models/galleryModel";
+import dbConnect from "@/lib/server/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import { ID, Permission, Role } from "node-appwrite";
 
 export async function POST(req: NextRequest) {
-  const { id, user, type, c, v, country } = await req.json();
-  const { db: database } = await createAdminClient();
+  try {
+    const { id, _id } = await req.json();
 
-  if (type === "profile") {
-    try {
-      await database.updateDocument(
-        process.env.DATABASE_ID || "",
-        process.env.USERS_ID || "",
-        id,
-        {
-          views: v + 1,
-        }
-      );
-      await database.createDocument(
-        process.env.DATABASE_ID || "",
-        process.env.ANALYTICS_ID || "",
-        ID.unique(),
-        {
-          for: id,
-          type: "profile",
-          location: country,
-        },
-        [Permission.read(Role.user(id))]
-      );
-      return NextResponse.json({ status: "success" }, { status: 200 });
-    } catch (error) {
+    await dbConnect();
+
+    const result = await Gallery.updateOne(
+      { userId: _id, _id: id },
+      { $inc: { clicks: 1 } }
+    );
+    if (result.modifiedCount === 1) {
       return NextResponse.json(
-        //@ts-expect-error:expected error
-        { status: "failed", error: { message: error.message } },
-        { status: 500 }
+        { message: "Clicks incremented successfully" },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        { message: "Gallery not found or not authorized" },
+        { status: 404 }
       );
     }
+  } catch (error) {
+    console.error("Error incrementing clicks:", error);
+    return NextResponse.json(
+      { message: "Error incrementing clicks" },
+      { status: 500 }
+    );
   }
-  if (type === "click") {
-    try {
-      await database.updateDocument(
-        process.env.DATABASE_ID || "",
-        process.env.GALLERY_ID || "",
-        id,
-        {
-          clicks: c + 1,
-        }
-      );
-      await database.createDocument(
-        process.env.DATABASE_ID || "",
-        process.env.ANALYTICS_ID || "",
-        ID.unique(),
-        {
-          type: "image",
-          for: id,
-          location: country,
-        },
-        [Permission.read(Role.user(user))]
-      );
-    } catch (error) {
-      return NextResponse.json(
-        //@ts-expect-error:expected error
-        { status: "failed", error: { message: error.message } },
-        { status: 500 }
-      );
-    }
-    return NextResponse.json({ status: "success" }, { status: 200 });
-  }
-  return NextResponse.json(
-    { status: "failed", error: { message: "unknown type" } },
-    { status: 403 }
-  );
 }

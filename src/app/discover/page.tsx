@@ -1,7 +1,7 @@
 import { getDiscover } from "@/action/getDiscover";
-import { getLoggedInUser } from "@/lib/server/appwrite";
-import Profile from "./profile";
+import Profile from "./switcher";
 import { Metadata } from "next";
+import { getLoggedInUser } from "@/action/getLogggedInUser";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -40,7 +40,7 @@ async function page() {
   return (
     <Profile
       discover={
-        user ? discover.filter((u) => user && u.$id !== user.$id) : discover
+        user ? discover.filter((u) => user && u._id !== user._id) : discover
       }
       loggedIn={user}
     />

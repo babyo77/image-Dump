@@ -36,7 +36,6 @@ function CreateSpace() {
     return (
       <div className=" space-y-4">
         <Input type="text" placeholder="Space name" />
-
         <Select defaultValue="public">
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Space Type" />
@@ -49,8 +48,8 @@ function CreateSpace() {
         <p className="mb-2 text-center text-sm text-neutral-400">
           Start a space, open to everyone
         </p>
-        <Button size={"sm"} disabled className="w-full">
-          Coming soon
+        <Button size={"sm"} className="w-full">
+          Create Space
         </Button>
       </div>
     );
@@ -58,7 +57,7 @@ function CreateSpace() {
   if (isDesktop) {
     return (
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button
             size={"sm"}
             variant={"secondary"}
@@ -81,7 +80,7 @@ function CreateSpace() {
   }
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger asChild>
         <Button
           size={"sm"}
           variant={"secondary"}

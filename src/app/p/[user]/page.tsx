@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import Particles from "@/components/match";
 import User from "./user";
 import { replaceInstagramURL } from "@/lib/utils";
+import { IUser } from "@/lib/models/userModel";
 
 export async function generateMetadata({
   params,
@@ -14,27 +15,27 @@ export async function generateMetadata({
   const user = await getUser(params.user);
 
   return {
-    title: `${user?.usersDoc.fullName || "404"} (${user?.name || "404"})`,
-    description: `${user?.usersDoc.fullName || "404"}'s Dump`,
+    title: `${user?.fullName || "404"} (${user?.name || "404"})`,
+    description: `${user?.fullName || "404"}'s Dump`,
     icons: [
       {
         rel: "icon",
-        url: replaceInstagramURL(user?.prefs["image"]),
+        url: replaceInstagramURL(user?.image),
       },
     ],
     openGraph: {
       images: [
         {
-          url: replaceInstagramURL(user?.prefs["image"]),
+          url: replaceInstagramURL(user?.image),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       site: "@tanmay11117",
-      title: `${user?.usersDoc.fullName} (${user?.name})`,
+      title: `${user?.fullName} (${user?.name})`,
       description: `${user?.name} on imageDump`,
-      images: replaceInstagramURL(user?.prefs["image"]),
+      images: replaceInstagramURL(user?.image),
     },
   };
 }

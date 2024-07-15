@@ -1,37 +1,37 @@
 import Footer from "@/components/ui/Footer";
-import { getLoggedInUser } from "@/lib/server/appwrite";
 import { redirect } from "next/navigation";
 import Details from "./details";
 import { Metadata } from "next";
 import { replaceInstagramURL } from "@/lib/utils";
 import AnimatedInterests from "./loggedIn";
 import Gallery from "./gallery";
+import { getLoggedInUser } from "@/action/getLogggedInUser";
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await getLoggedInUser();
 
   return {
-    title: `${user?.usersDoc.fullName} | Profile`,
+    title: `${user?.fullName} | Profile`,
     description: `Do we have similar taste?`,
     icons: [
       {
         rel: "icon",
-        url: replaceInstagramURL(user?.prefs["image"]),
+        url: replaceInstagramURL(user?.image),
       },
     ],
     openGraph: {
       images: [
         {
-          url: replaceInstagramURL(user?.prefs["image"]),
+          url: replaceInstagramURL(user?.image),
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       site: "@tanmay11117",
-      title: `${user?.usersDoc.fullName} | Profile`,
+      title: `${user?.fullName} | Profile`,
       description: `${user?.name} on imageDump`,
-      images: replaceInstagramURL(user?.prefs["image"]),
+      images: replaceInstagramURL(user?.image),
     },
   };
 }

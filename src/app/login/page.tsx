@@ -1,4 +1,4 @@
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getLoggedInUser } from "@/action/getLogggedInUser";
 import Login from "./login";
 import { redirect } from "next/navigation";
 

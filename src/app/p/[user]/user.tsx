@@ -3,59 +3,30 @@ import React, { useCallback, useEffect, useState } from "react";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoStar } from "react-icons/io5";
 import { Links } from "@/components/links";
-import { user } from "@/app/types/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUserContext } from "@/store/context";
 import { replaceInstagramURL } from "@/lib/utils";
 import Gallery from "../gallery";
-import { database } from "@/lib/client/appwrite";
 import useDebounce from "@/app/hooks/useDebounce";
 import Music from "../music";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { HeartHandshake } from "lucide-react";
-import { ID } from "appwrite";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import sendEmail from "@/lib/sendMail";
-function User({ user }: { user: user }) {
+import { IUser } from "@/lib/models/userModel";
+function User({ user }: { user: IUser }) {
   const { match, setMatch, country } = useUserContext();
   const router = useRouter();
   const [starred, setStarred] = useState<boolean>(user.isStarred || false);
   const Like = useCallback(async () => {
     if (user.loggedInUser) {
       if (!starred) {
-        try {
-          setStarred(true);
-
-          await database.createDocument(
-            process.env.DATABASE_ID || "",
-            process.env.STARRED_ID || "",
-            user.$id + user.loggedInUser.$id,
-            {
-              username: user.loggedInUser.name,
-              userID: user.$id,
-              users: [user.loggedInUser.$id],
-            }
-          );
-        } catch (error) {
-          console.log(error);
-        }
       } else {
-        try {
-          setStarred(false);
-          await database.deleteDocument(
-            process.env.DATABASE_ID || "",
-            process.env.STARRED_ID || "",
-            user.$id + user.loggedInUser.$id
-          );
-        } catch (error) {
-          console.log(error);
-        }
+        router.push("/login");
       }
-    } else {
-      router.push("/login");
     }
   }, [user, starred, router]);
 
@@ -67,28 +38,28 @@ function User({ user }: { user: user }) {
       if (!activity) {
         sendEmail(user.email, "You have a new Match", {
           actionByName: user.loggedInUser?.name,
-          actionToName: user.name,
+          actionToName: user.username,
           match: user.match?.per || "1",
         });
 
         try {
-          const res = await database.createDocument(
-            process.env.DATABASE_ID || "",
-            process.env.ACTIVITY_ID || "",
-            ID.unique(),
-            {
-              type: "match",
-              actionBy: user.loggedInUser.$id,
-              actionByName: user.loggedInUser.name,
-              actionToName: user.name,
-              actionTo: user.$id,
-              match: user.match.per,
-              users: [user.$id, user.loggedInUser.$id],
-            }
-          );
-          if (res) {
-            setActivity(true);
-          }
+          // const res = await database.createDocument(
+          //   process.env.DATABASE_ID || "",
+          //   process.env.ACTIVITY_ID || "",
+          //   ID.unique(),
+          //   {
+          //     type: "match",
+          //     actionBy: user.loggedInUser.$id,
+          //     actionByName: user.loggedInUser.name,
+          //     actionToName: user.name,
+          //     actionTo: user.$id,
+          //     match: user.match.per,
+          //     users: [user.$id, user.loggedInUser.$id],
+          //   }
+          // );
+          // if (res) {
+          //   setActivity(true);
+          // }
         } catch (error) {
           setActivity(false);
         }
@@ -110,7 +81,7 @@ function User({ user }: { user: user }) {
     e.stopPropagation();
     try {
       navigator.share({
-        url: window.location.origin + "/p/" + user.name,
+        url: window.location.origin + "/p/" + user.username,
       });
     } catch (error) {
       //@ts-expect-error:expected-error
@@ -118,21 +89,6 @@ function User({ user }: { user: user }) {
     }
   };
 
-  useEffect(() => {
-    if (country) {
-      fetch("/api/analytics", {
-        method: "POST",
-        body: JSON.stringify({
-          type: "profile",
-          v: user.usersDoc.views,
-          id: user.$id,
-          country: country,
-        }),
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-  }, [user, country]);
   return (
     <>
       {fullImage && (
@@ -158,7 +114,7 @@ function User({ user }: { user: user }) {
               height={500}
               width={500}
               alt="profile"
-              src={replaceInstagramURL(user.prefs["image"]) || "/notFound.jpg"}
+              src={replaceInstagramURL(user.image) || "/notFound.jpg"}
               onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
               className=" h-[100%] w-[100%] object-cover"
             />
@@ -238,12 +194,6 @@ function User({ user }: { user: user }) {
                     onClick={handleMatch}
                     className=" h-6 w-6 text-zinc-400 hover:text-zinc-200 transition-all duration-500"
                   />
-                  {/* <div
-                    title="views"
-                    className=" z-10 flex items-center text-zinc-400 hover:text-zinc-200 transition-all font-medium duration-500 text-base gap-1 flex-col"
-                  >
-                    {user.usersDoc.views}
-                  </div> */}
                 </motion.div>
               </div>
             </div>
@@ -265,9 +215,7 @@ function User({ user }: { user: user }) {
                   height={500}
                   width={500}
                   alt="profile"
-                  src={
-                    replaceInstagramURL(user.prefs["image"]) || "/notFound.jpg"
-                  }
+                  src={replaceInstagramURL(user.image) || "/notFound.jpg"}
                   onError={(e) => (e.currentTarget.src = "/notFound.jpg")}
                   className=" h-[100%] w-[100%] object-cover cursor-pointer"
                 />
@@ -286,9 +234,7 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="font-semibold w-fit outline-none text-3xl py-0.5 pl-1.5 border-none -mt-2"
               >
-                <p className="w-[75dvw] break-words">
-                  {user.usersDoc.fullName}
-                </p>
+                <p className="w-[75dvw] break-words">{user.fullName}</p>
               </motion.div>
               <motion.div
                 key={"bio"}
@@ -303,10 +249,10 @@ function User({ user }: { user: user }) {
                 translate="no"
                 className="dark:text-zinc-100/95 w-fit outline-none border-none text-lg pl-1.5 -mt-4"
               >
-                {user.usersDoc.bio.length > 0 && (
+                {user.bio.length > 0 && (
                   <div>
                     {" "}
-                    {user.usersDoc.bio.split("\n").map((line, index) => (
+                    {user.bio.split("\n").map((line, index) => (
                       <p className=" w-[75dvw] break-words" key={index}>
                         {line}
                       </p>
@@ -315,7 +261,7 @@ function User({ user }: { user: user }) {
                 )}
               </motion.div>
               <Links details={user} loggedIn={false} />
-              {user.usersDoc.music && <Music user={user} />}
+              {user.music && <Music user={user} />}
               <Gallery user={user} />
             </motion.div>
           </div>

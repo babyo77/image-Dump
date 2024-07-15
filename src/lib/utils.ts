@@ -1,5 +1,6 @@
 import { metadata } from "@/app/types/types";
 import { type ClassValue, clsx } from "clsx";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -31,7 +32,7 @@ export const getMetadata = async (link: string) => {
   }
 };
 
-export function replaceInstagramURL(originalURL: string) {
+export function replaceInstagramURL(originalURL: string | undefined) {
   if (typeof originalURL == "undefined")
     return "https://imageDump.vercel.app/notFound.jpg";
   if (!originalURL.startsWith("https://instagram")) return originalURL;
@@ -80,4 +81,13 @@ export function generateRandomUsername(email: string) {
   const randomNum = Math.floor(Math.random() * 10000);
   const randomUsername = `${emailName}_${randomNum}`;
   return randomUsername;
+}
+
+export function showError(error: any) {
+  if (error instanceof Error) {
+    toast.error(error.message);
+  } else {
+    console.error("Unexpected error:", error);
+    toast.error("An unexpected error occurred");
+  }
 }

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { chunk, formatNumber, isValidURL } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { AiOutlineDelete } from "react-icons/ai";
-import { database } from "@/lib/client/appwrite";
 import { useUserContext } from "@/store/context";
 import { gallery } from "@/app/types/types";
 import { toast } from "sonner";
@@ -31,6 +30,7 @@ import { Input } from "./input";
 import { Loader } from "lucide-react";
 import { useMediaQuery } from "@react-hook/media-query";
 import { MdArrowOutward } from "react-icons/md";
+import mongoose from "mongoose";
 
 interface MasonryType {
   column?: Breakpoint;
@@ -112,21 +112,23 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
 
   const chunkSize = Math.ceil(data.length / currentColumn);
 
-  const { gallery, setGallery, country } = useUserContext();
+  const { gallery, setGallery } = useUserContext();
   const distributed = chunk(data, chunkSize);
   const { setLoader, user } = useUserContext();
-  const handleDelete = async (id: string, del: string) => {
+  const handleDelete = async (id: mongoose.Types.ObjectId, del: string) => {
     if (gallery && user) {
       try {
         setLoader(true);
-        const p = gallery.filter((g) => g.$id !== id);
+        const p = gallery.filter((g) => g._id !== id);
         setGallery(p);
+        const result = await fetch("/api/delete", {
+          method: "DELETE",
+          body: JSON.stringify({ id: id }),
+        });
+        if (!result.ok) {
+          throw new Error((await result.json()).message);
+        }
         await fetch(del).catch((err) => console.error(err));
-        await database.deleteDocument(
-          process.env.DATABASE_ID || "",
-          process.env.GALLERY_ID || "",
-          id
-        );
       } catch (error) {
         //@ts-expect-error:expected error
         toast.error(error.message);
@@ -144,15 +146,9 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
     try {
       await fetch("/api/analytics", {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
         body: JSON.stringify({
-          id: imageObj.$id,
-          type: "click",
-          c: imageObj.clicks,
-          user: user?.$id,
-          country: country,
+          id: imageObj._id,
+          _id: user?._id,
         }),
       });
     } catch (error) {
@@ -226,7 +222,7 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
                   <div
                     onClick={(e) => (
                       e.stopPropagation(),
-                      handleDelete(imageObj.$id, imageObj.del)
+                      handleDelete(imageObj._id, imageObj.del)
                     )}
                     className=" absolute flex gap-2 items-center text-xl hover:text-neutral-200 text-zinc-200 transition-all duration-500 cursor-pointer bottom-6 right-2"
                   >
@@ -259,14 +255,14 @@ const UpdateMasonry = ({ image }: { image: gallery }) => {
     if (newLink && isValidURL(newLink.value)) {
       setLoader(true);
       try {
-        await database.updateDocument(
-          process.env.DATABASE_ID || "",
-          process.env.GALLERY_ID || "",
-          image.$id,
-          {
-            link: newLink.value,
-          }
-        );
+        // await database.updateDocument(
+        //   process.env.DATABASE_ID || "",
+        //   process.env.GALLERY_ID || "",
+        //   image.$id,
+        //   {
+        //     link: newLink.value,
+        //   }
+        // );
 
         setLink(newLink.value);
         closeRef.current?.click();

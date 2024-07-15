@@ -4,16 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { MdOutlinePlayCircle, MdPauseCircleOutline } from "react-icons/md";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { user } from "../types/types";
 import { useUserContext } from "@/store/context";
-function Music({ user }: { user: user }) {
+import { IUser } from "@/lib/models/userModel";
+function Music({ user }: { user: IUser }) {
   const { user: contextUser } = useUserContext();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState<boolean>(false);
   const handlePlay = async () => {
     const music = audioRef.current;
-    if (music && user.usersDoc.music) {
-      music.currentTime = Number(user.usersDoc.music.start);
+    if (music && contextUser?.music) {
+      music.currentTime = Number(contextUser.music.start);
       music.play();
     }
   };
@@ -24,13 +24,9 @@ function Music({ user }: { user: user }) {
     if (music) {
       const handleEnd = () => {
         if (
-          user.usersDoc.music &&
+          user.music &&
           Math.floor(music.currentTime) ==
-            Math.floor(
-              Number(
-                contextUser?.usersDoc.music?.end || user.usersDoc.music.end
-              )
-            )
+            Math.floor(Number(contextUser?.music?.end || user.music.end))
         ) {
           music.pause();
         }
@@ -55,10 +51,7 @@ function Music({ user }: { user: user }) {
       className=" flex gap-0.5 ml-[0.257rem] items-center -my-1.5"
     >
       <audio
-        src={
-          contextUser?.usersDoc.music?.youtubeId ||
-          user.usersDoc.music?.youtubeId
-        }
+        src={contextUser?.music?.youtubeId || user.music?.youtubeId}
         onPlaying={() => setPlaying(true)}
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
@@ -80,19 +73,17 @@ function Music({ user }: { user: user }) {
       <Link
         target="_blank"
         href={`https://napster-drx.vercel.app/track/${
-          contextUser?.usersDoc.music?.audio || user.usersDoc.music?.audio
+          contextUser?.music?.audio || user.music?.audio
         }`}
         className=" hover:underline-offset-2 hover:underline cursor-pointer flex text-xs items-center max-w-[70dvw] truncate"
       >
         <span>
-          {contextUser?.usersDoc.music?.title ||
-            user.usersDoc.music?.title ||
-            "unknown"}
+          {contextUser?.music?.title || user.music?.title || "unknown"}
         </span>
         <Dot size={17} className="-mx-0.5" />{" "}
         <span className="text-zinc-400">
-          {contextUser?.usersDoc.music?.artists[0]?.name ||
-            user.usersDoc.music?.artists[0]?.name ||
+          {contextUser?.music?.artists[0]?.name ||
+            user.music?.artists[0]?.name ||
             "unknown"}
         </span>
       </Link>

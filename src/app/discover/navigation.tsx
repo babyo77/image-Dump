@@ -10,9 +10,7 @@ import {
 import { useMediaQuery } from "@react-hook/media-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { user } from "../types/types";
 import { Button } from "@/components/ui/button";
-import { account } from "@/lib/client/appwrite";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import {
@@ -25,22 +23,23 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useRef } from "react";
+import { IUser } from "@/lib/models/userModel";
 
-function UserSettings({ loggedIn }: { loggedIn?: user | null }) {
+function UserSettings({ loggedIn }: { loggedIn?: IUser | null }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const closeRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const options = [
     {
       title: "Login",
-      hidden: loggedIn?.$id ? true : false,
+      hidden: loggedIn?._id ? true : false,
       action: () => {
         router.push("/login");
       },
     },
     {
       title: "Go to profile",
-      hidden: loggedIn?.$id ? false : true,
+      hidden: loggedIn?._id ? false : true,
       action: () => {
         router.push("/p");
         closeRef.current?.click();
@@ -50,10 +49,10 @@ function UserSettings({ loggedIn }: { loggedIn?: user | null }) {
     {
       title: "Logout",
       variant: "destructive",
-      hidden: loggedIn?.$id ? false : true,
+      hidden: loggedIn?._id ? false : true,
       action: async () => {
         try {
-          await account.deleteSession("current");
+          await fetch("/api/logout");
           closeRef.current?.click();
           window.location.reload();
         } catch (error) {
@@ -93,7 +92,7 @@ function UserSettings({ loggedIn }: { loggedIn?: user | null }) {
           <div className=" h-10 w-10 rounded-full overflow-hidden">
             <Image
               alt="profile-image"
-              src={loggedIn ? loggedIn.prefs["image"] : "/notFound.jpg"}
+              src={loggedIn ? loggedIn.image : "/notFound.jpg"}
               height={200}
               width={200}
               className=" h-[100%] w-[100%] object-cover"
@@ -118,7 +117,7 @@ function UserSettings({ loggedIn }: { loggedIn?: user | null }) {
         <div className=" h-10 w-10 rounded-full overflow-hidden">
           <Image
             alt="profile-image"
-            src={loggedIn ? loggedIn.prefs["image"] : "/notFound.jpg"}
+            src={loggedIn ? loggedIn.image : "/notFound.jpg"}
             height={200}
             width={200}
             className=" h-[100%] w-[100%] object-cover"

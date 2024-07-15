@@ -21,18 +21,17 @@ import {
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import Image from "next/image";
-import { SearchSong } from "napster-info/dist/types";
 import useDebounce from "@/app/hooks/useDebounce";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@react-hook/media-query";
 import { Loader, PauseCircle, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
-import { database } from "@/lib/client/appwrite";
 import { useUserContext } from "@/store/context";
 import { Slider } from "./ui/slider";
+import { music } from "@/app/types/types";
 const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
-  const [searchedSongs, setSearchedSong] = useState<SearchSong[] | null>(null);
+  const [searchedSongs, setSearchedSong] = useState<music[] | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const song = e.target.value;
@@ -111,7 +110,15 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                 className=" flex flex-col gap-1.5 pt-3 w-full -mt-2 max-h-[50dvh] pb-2 overflow-y-scroll no-scrollbar"
               >
                 {searchedSongs?.map(
-                  ({ audio, title, artists, thumbnailUrl, youtubeId }) => (
+                  ({
+                    audio,
+                    title,
+                    artists,
+                    thumbnailUrl,
+                    youtubeId,
+                    start,
+                    end,
+                  }) => (
                     <motion.div
                       initial={{ filter: "blur(10px)", opacity: 0 }}
                       animate={{ filter: "blur(0px)", opacity: 1 }}
@@ -144,6 +151,8 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                             close={closeRef}
                             music={{
                               audio,
+                              start,
+                              end,
                               title,
                               thumbnailUrl,
                               artists,
@@ -200,7 +209,15 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
               className=" flex flex-col gap-1.5 items-start  max-h-[50dvh] pb-2 overflow-y-scroll no-scrollbar"
             >
               {searchedSongs?.map(
-                ({ audio, title, artists, thumbnailUrl, youtubeId }) => (
+                ({
+                  audio,
+                  title,
+                  artists,
+                  start,
+                  end,
+                  thumbnailUrl,
+                  youtubeId,
+                }) => (
                   <motion.div
                     initial={{ filter: "blur(10px)", opacity: 0 }}
                     animate={{ filter: "blur(0px)", opacity: 1 }}
@@ -230,6 +247,8 @@ const AddMusic = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
                         <AddMusicButton
                           close={closeRef}
                           music={{
+                            start,
+                            end,
                             audio,
                             title,
                             thumbnailUrl,
@@ -255,7 +274,7 @@ const AddMusicButton = ({
   music,
   close,
 }: {
-  music: SearchSong;
+  music: music;
   close: React.RefObject<HTMLButtonElement>;
 }) => {
   const [adding, setAdding] = useState<boolean>(false);
@@ -271,34 +290,31 @@ const AddMusicButton = ({
     if (user) {
       try {
         setAdding(true);
-        await database.updateDocument(
-          process.env.DATABASE_ID || "",
-          process.env.USERS_ID || "",
-          user.$id,
-          {
-            music: [
-              music.audio,
-              String(localValues[0]),
-              String(localValues[1]),
-            ],
-          }
-        );
+
+        const update = await fetch("/api/update", {
+          method: "PATCH",
+          body: JSON.stringify({
+            type: "music",
+            data: [music.audio, String(localValues[0]), String(localValues[1])],
+          }),
+        });
+        if (!update.ok) {
+          throw new Error((await update.json()).message);
+        }
 
         setUser({
           ...user,
-          usersDoc: {
-            ...user.usersDoc,
-            music: {
-              youtubeId: music.youtubeId,
-              audio: music.audio,
-              title: music?.title,
-              start: localValues[0],
-              end: localValues[1],
-              artists: music?.artists,
-              thumbnailUrl: music.thumbnailUrl,
-            },
+          music: {
+            youtubeId: music.youtubeId,
+            audio: music.audio,
+            title: music.title,
+            start: localValues[0],
+            end: localValues[1],
+            artists: music.artists,
+            thumbnailUrl: music.thumbnailUrl,
           },
         });
+
         closeRef.current?.click();
         close.current?.click();
       } catch (error) {
@@ -350,7 +366,7 @@ const AddMusicButton = ({
         <DialogContent
           aria-description="music"
           aria-describedby="music"
-          className="w-[40dvw] rounded-xl"
+          className="max-w-lg rounded-xl"
         >
           <audio
             autoPlay

@@ -7,12 +7,13 @@ import React, {
   useEffect,
 } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { gallery, metadata, user } from "@/app/types/types";
+import { gallery, metadata } from "@/app/types/types";
+import { IUser } from "@/lib/models/userModel";
 const queryClient = new QueryClient();
 
 interface useUserContextType {
-  user: user | null;
-  setUser: React.Dispatch<React.SetStateAction<user | null>>;
+  user: IUser | null;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   links: metadata[] | null;
   setLinks: React.Dispatch<React.SetStateAction<metadata[] | null>>;
   match: boolean;
@@ -27,7 +28,7 @@ interface useUserContextType {
 const userContext = createContext<useUserContextType | undefined>(undefined);
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<user | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [links, setLinks] = useState<metadata[] | null>(null);
   const [gallery, setGallery] = useState<gallery[] | null>(null);
   const [match, setMatch] = useState<boolean>(false);

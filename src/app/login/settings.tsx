@@ -1,3 +1,4 @@
+import { logout } from "@/action/logout";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +7,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { account } from "@/lib/client/appwrite";
 import { useUserContext } from "@/store/context";
 import { useRouter } from "next/navigation";
 import { IoIosLogOut } from "react-icons/io";
@@ -19,8 +19,8 @@ export function Settings() {
   const handleLogout = async () => {
     try {
       setLoader(true);
-      await account.deleteSession("current");
-      router.push(`/p/${user?.name}`);
+      await logout();
+      router.push(`/p/${user?.username}`);
     } catch (err) {
       toast.error("Something went wrong");
     } finally {

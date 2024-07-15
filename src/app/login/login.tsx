@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -37,7 +37,7 @@ function Login() {
         const user = result.user;
         if (user) {
           setStatus("Logging in...");
-          const res = await fetch("/api/verify", {
+          const res = await fetch("/api/login", {
             method: "POST",
             body: JSON.stringify(user),
           });
@@ -50,16 +50,10 @@ function Login() {
         }
       })
       .catch((error) => {
-        setStatus("Something went wrong");
-        const t = setTimeout(() => {
-          setStatus("Continue with Google");
-        }, 1000);
         console.log(error.message);
-        return () => {
-          clearTimeout(t);
-        };
       })
       .finally(() => {
+        setStatus("Continue with Google");
         setChecking(false);
       });
   };

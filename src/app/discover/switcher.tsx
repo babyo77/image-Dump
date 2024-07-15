@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { discover, user } from "../types/types";
+import { discover } from "../types/types";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdOutlineArrowOutward } from "react-icons/md";
@@ -16,25 +16,23 @@ import {
 } from "@/components/ui/select";
 import { getDiscover } from "@/action/getDiscover";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { BiSolidUserVoice } from "react-icons/bi";
-import { MapPinned, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import UserSettings from "./navigation";
 import CreateSpace from "./createSpace";
 import { useUserContext } from "@/store/context";
-import { client } from "@/lib/client/appwrite";
+import { RoomCard } from "./room/roomCard";
+import { IUser } from "@/lib/models/userModel";
 function Profile({
   loggedIn,
   discover,
 }: {
-  loggedIn?: user | null;
+  loggedIn?: IUser | null;
   discover: discover[];
 }) {
   const router = useRouter();
   const [profiles, setProfiles] = useState<discover[]>(discover);
-  const [space, setSpace] = useState<boolean>(false);
+  const [space, setSpace] = useState<boolean>(true);
   const [isExiting, setIsExiting] = useState(false);
   const [currentMode, setCurrentMode] = useState<"pop" | "for" | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
@@ -58,7 +56,7 @@ function Profile({
         setLoader(true);
         const data = await getDiscover(currentMode);
         setProfiles(
-          loggedIn ? data.filter((u) => u.$id !== loggedIn.$id) : data
+          loggedIn ? data.filter((u) => u._id !== loggedIn._id) : data
         );
       } catch (error) {
         console.error(error);
@@ -68,13 +66,6 @@ function Profile({
       }
     }
   }, [currentMode, loggedIn]);
-
-  useEffect(() => {
-    if (loggedIn && loggedIn.cookie) {
-      client.setSession(loggedIn.cookie.value);
-      setUser(loggedIn);
-    }
-  }, [loggedIn, setUser]);
 
   return (
     <>
@@ -119,7 +110,7 @@ function Profile({
           </header>
           <div className=" w-full md:px-14 gap-2 px-4 py-2 flex items-center justify-between">
             <motion.div
-              key={"createSpace"}
+              key={"searchSpace"}
               initial={{ y: 0, filter: "blur(10px)", opacity: 0 }}
               animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
               transition={{
@@ -150,66 +141,19 @@ function Profile({
             </motion.div>
           </div>
           <div className=" flex md:flex-wrap max-md:flex-col w-full md:px-14 gap-5 px-4 py-4">
-            {/* {Array.from(Array(7)).map((_, i) => (
-              <motion.div
-                initial={{
-                  y: isDesktop ? "5dvh" : 0,
-                  opacity: 0,
-                  filter: "blur(10px)",
-                }}
-                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.5,
-                  delay: Number(`1.${i}`),
-                  type: "spring",
-                  stiffness: 45,
-                }}
-                exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
-                key={i}
-                className=" rounded-xl min-h-52 md:min-w-[22.1dvw] bg-neutral-900 p-5 border relative"
-              >
-                <p className="break-words font-medium md:max-w-[19.2dvw]">
-                  Which anime to watch today?sdasd as das d asd
-                </p>
-                <motion.div
-                  initial={{ y: 0, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.7,
-                    stiffness: 45,
-                  }}
-                  exit={{ y: 0, opacity: 0 }}
-                  className="flex  cursor-pointer w-fit font-normal leading-tight dark:text-zinc-300 items-center text-sm pt-5 pb-1.5"
-                >
-                  {Array.from(Array(4)).map((_, i) => (
-                    <Avatar
-                      key={i}
-                      className={` ${
-                        i === 0 ? "" : "-ml-2.5"
-                      } h-8 w-8 border-2 border-zinc-100`}
-                    >
-                      <AvatarImage
-                        className=" w-[100%] h-[100%] object-cover"
-                        src={"/notFound.jpg"}
-                      />
-                      <AvatarFallback className=" bg-zinc-800">
-                        !
-                      </AvatarFallback>
-                    </Avatar>
-                  ))}
-                </motion.div>
-                <div className=" text-sm text-neutral-300">
-                  <p>tanmay,tony,aman</p>
-                </div>
-                <div className=" absolute bottom-2 right-2 flex items-center text-base text-neutral-300">
-                  2 <User className="h-4" />
-                </div>
-                <div className=" absolute bottom-2 left-2 flex items-center text-base text-neutral-400">
-                  <MapPinned className="h-4" /> India
-                </div>
-              </motion.div>
-            ))} */}
+            {Array.from(Array(12)).map((_, i) => (
+              <RoomCard
+                key={i + 1}
+                index={i}
+                name="demo"
+                ownerId="1232"
+                speakers={["asasds"]}
+                total={7}
+                listeners={["sdas"]}
+                location="india"
+                id="asd"
+              />
+            ))}
           </div>
         </AnimatePresence>
       ) : (
@@ -288,12 +232,12 @@ function Profile({
                     animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                     transition={{
                       duration: 0.5,
-                      delay: Number(`1.${i}`),
+                      delay: Number(`${Math.floor(i / 10) + 1}.${i % 10}`),
                       type: "spring",
                       stiffness: 45,
                     }}
                     exit={{ y: isDesktop ? "5dvh" : 0, opacity: 0 }}
-                    key={user.$id + i}
+                    key={user._id + i}
                     className="relative rounded-xl max-md:snap-start scroll-smooth overflow-hidden md:w-[22dvw] md:min-h-[70dvh] min-h-[80dvh] border w-full"
                   >
                     <div

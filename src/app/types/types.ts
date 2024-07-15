@@ -1,17 +1,4 @@
-import { SearchSong } from "napster-info/dist/types";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { Models } from "node-appwrite";
-
-export interface instagramUser {
-  username: string;
-  profile_pic_url: string;
-  hd_profile_pic_url_info: { url: string };
-  bio_links: { url: string }[];
-  biography: string;
-  pk_id: string;
-  full_name: string;
-  category: string;
-}
+import mongoose, { Document } from "mongoose";
 
 export interface metadata {
   id: number;
@@ -21,54 +8,60 @@ export interface metadata {
   url: string;
 }
 
-export interface gallery extends Models.Document {
+export interface gallery {
+  _id: mongoose.Types.ObjectId;
   type: "image" | "video";
-  index: number;
-  for: string;
-  tags: string[];
+  userId: mongoose.Types.ObjectId;
   data: string;
   del: string;
   link: string | null;
   clicks: number;
   features: string[];
 }
-export interface starred extends Models.Document {
-  username: string;
-  userID: string;
-}
-export interface music extends SearchSong {
-  start: number;
-  end: number;
-}
-export interface userDoc extends Models.Document {
-  links: string[];
-  bio: string;
-  fullName: string;
-  interests: string[];
-  galleryTotal: number;
-  starred: starred[];
-  gallery: gallery[];
-  music: music | null;
-  views: number;
+export interface starred extends Document {
+  userId: mongoose.Types.ObjectId;
 }
 
 export interface match {
   per: string;
   image: string;
 }
-export interface user extends Models.User<Models.Preferences> {
-  cookie: RequestCookie | undefined;
-  links: metadata[];
-  usersDoc: userDoc;
-  match?: match;
-  loggedInUser?: user | null;
-  isStarred?: boolean;
-}
 
 export interface discover {
+  _id: mongoose.Types.ObjectId;
   fullName: string;
   bio: string;
-  $id: string;
   image: string;
   username: string;
+}
+
+export interface roomCard {
+  index: number;
+  id: string;
+  name: string;
+  ownerId: string;
+  speakers: string[];
+  listeners: string[];
+  location: string;
+  total: number;
+}
+
+export interface upload {
+  data: { deletion_url: string; direct_url: string };
+  features: string[];
+}
+
+export interface Artist {
+  id?: string;
+  name?: string;
+}
+
+export interface music {
+  start: number;
+  end: number;
+  youtubeId: string;
+  audio: string;
+  title: string;
+  artists: Artist[];
+  thumbnailUrl: string;
 }

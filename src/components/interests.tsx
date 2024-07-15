@@ -3,7 +3,6 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -12,9 +11,7 @@ import {
 import React, { useCallback, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { account, database } from "@/lib/client/appwrite";
 import { TiPointOfInterest } from "react-icons/ti";
-import { user } from "@/app/types/types";
 import { motion } from "framer-motion";
 import { confettiAnimation } from "./ui/confettiAnimation";
 import { Loader } from "lucide-react";
@@ -30,6 +27,8 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import { Input } from "./ui/input";
+import { IUser } from "@/lib/models/userModel";
+import { showError } from "@/lib/utils";
 
 function Interests({
   isOpen,
@@ -38,12 +37,12 @@ function Interests({
 }: {
   className?: string;
   isOpen?: boolean;
-  user: user;
+  user: IUser;
 }) {
-  const [interested, setInterest] = useState<string[]>(user.usersDoc.interests);
+  const [interested, setInterest] = useState<string[]>(user.interests);
   const CloseRef = useRef<HTMLButtonElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>(user.name);
+  const [username, setUsername] = useState<string>(user.username);
 
   const handleContinue = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,35 +57,27 @@ function Interests({
           return;
         }
         setLoader(true);
-        const isExist = await fetch(`/api/check?u=${username}`, {
-          cache: "no-cache",
+        const res = await fetch("api/update", {
+          method: "PATCH",
+          body: JSON.stringify({
+            type: "username",
+            data: { username: username, interests: interested },
+          }),
         });
-
-        if (isExist.status === 404) {
-          await account.updateName(username.trim());
-        } else {
-          toast.error("username already taken");
-          return;
+        if (!res.ok) {
+          throw new Error((await res.json()).message);
         }
-        await database.updateDocument(
-          process.env.DATABASE_ID || "",
-          process.env.USERS_ID || "",
-          user.$id,
-          {
-            interests: interested.map((interest) => interest.toLowerCase()),
-          }
-        );
         if (CloseRef.current) {
           confettiAnimation();
           CloseRef.current.click();
         }
       } catch (error) {
-        toast.error("Failed to save interest");
+        showError(error);
       } finally {
         setLoader(false);
       }
     },
-    [interested, user, username]
+    [interested, username]
   );
 
   const handleKeywordsChange = (newKeywords: string[]) => {

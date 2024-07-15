@@ -13,6 +13,8 @@ const nextConfig = {
     UPLOAD_AUTH: process.env.UPLOAD_AUTH,
     GEMINI_API: process.env.GEMINI_API,
     EMAIL_PASS: process.env.EMAIL_PASS,
+    JWT_SECRET: process.env.JWT_SECRET,
+    MONGODB_URL: process.env.MONGODB_URL,
   },
   images: {
     remotePatterns: [

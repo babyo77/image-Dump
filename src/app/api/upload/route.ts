@@ -89,16 +89,6 @@ async function run(bytes: Buffer, req: NextRequest) {
     return text;
   } catch (error) {
     console.log(error);
-    await fetch(
-      `https://api.telegram.org/bot${
-        process.env.TELEGRAM
-      }/sendMessage?chat_id=5356614395&text=${encodeURIComponent(
-        //@ts-expect-error:expected error
-        error.message
-      )}`
-    ).catch((err) => {
-      console.log(err);
-    });
     return "[]";
   }
 }

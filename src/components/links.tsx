@@ -1,6 +1,7 @@
 "use client";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -10,59 +11,62 @@ import {
 import { useMediaQuery } from "@react-hook/media-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserContext } from "@/store/context";
-import { user } from "@/app/types/types";
+
 import Link from "next/link";
 import { IoMdRemove } from "react-icons/io";
-import { useCallback } from "react";
-import { database } from "@/lib/client/appwrite";
+
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
+import { IUser } from "@/lib/models/userModel";
+import { showError } from "@/lib/utils";
+import { useRef } from "react";
 
 export function Links({
   details,
   loggedIn,
 }: {
-  details: user;
+  details: IUser;
   loggedIn: Boolean;
 }) {
   const { links, setLinks, setLoader } = useUserContext();
-  const handleRemove = useCallback(
-    async (remove: number) => {
-      if (links && loggedIn) {
-        const previousLinks = [...links];
-        try {
-          setLoader(true);
-          const filter = links.filter((link) => link.id !== remove);
-          setLinks(filter);
-          await database.updateDocument(
-            process.env.DATABASE_ID || "",
-            process.env.USERS_ID || "",
-            details.$id,
-            {
-              links: filter.map((r) => r.url),
-            }
-          );
-        } catch (error) {
-          setLinks(previousLinks);
-          //@ts-expect-error:expected
-          toast.error(error.message);
-        } finally {
-          setLoader(false);
-        }
-      }
-    },
-
-    [setLinks, links, details, loggedIn, setLoader]
-  );
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const handleRemove = async (id: number) => {
+    try {
+      setLoader(true);
+      const updatedLinks = links?.filter((link) => link.id !== id);
+
+      setLinks(updatedLinks || []);
+      if (updatedLinks?.length === 0) {
+        closeRef.current?.click();
+        setLinks([]);
+      }
+      const response = await fetch("/api/update", {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "remove-links",
+          data: updatedLinks?.map((r) => r.url),
+        }),
+      });
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+    } catch (error) {
+      showError(error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
   if (isDesktop) {
     return (
       <Dialog>
@@ -95,7 +99,7 @@ export function Links({
               ))
             ) : (
               <>
-                {links.slice(0, 3).map(({ image }, i) => (
+                {links?.slice(0, 3).map(({ image }, i) => (
                   <Avatar
                     key={image + i}
                     className={` ${
@@ -183,6 +187,7 @@ export function Links({
                 </div>
               ))}
             </div>
+            <DialogClose ref={closeRef} />
           </DialogHeader>
         </DialogContent>
       </Dialog>
@@ -219,7 +224,7 @@ export function Links({
             ))
           ) : (
             <>
-              {links.slice(0, 3).map(({ image }, i) => (
+              {links?.slice(0, 3).map(({ image }, i) => (
                 <Avatar
                   key={image + i}
                   className={` ${
@@ -303,7 +308,8 @@ export function Links({
                 </motion.div>
               </div>
             ))}
-          </div>
+          </div>{" "}
+          <DrawerClose ref={closeRef} />
         </DrawerHeader>
       </DrawerContent>
     </Drawer>

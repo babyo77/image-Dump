@@ -9,11 +9,11 @@ import Link from "next/link";
 import { Info, X } from "lucide-react";
 import { useUserContext } from "@/store/context";
 import RetroGrid from "./ui/grid";
-import { user } from "@/app/types/types";
 import { replaceInstagramURL } from "@/lib/utils";
+import { IUser } from "@/lib/models/userModel";
 
 interface UserProp {
-  user: user | null;
+  user: IUser | null;
 }
 const Particles: React.FC<UserProp> = ({ user }) => {
   const { match, setMatch } = useUserContext();
@@ -40,7 +40,7 @@ const Particles: React.FC<UserProp> = ({ user }) => {
                 <Avatar className="h-28 w-28 border-4 border-zinc-200">
                   <AvatarImage
                     src={
-                      replaceInstagramURL(user?.match?.image || "") ||
+                      replaceInstagramURL(user?.loggedInUser?.image || "") ||
                       "/notFound.jpg"
                     }
                     className=" h-[100%] w-[100%] object-cover"
@@ -55,10 +55,7 @@ const Particles: React.FC<UserProp> = ({ user }) => {
               >
                 <Avatar className="h-28 w-28 -ml-7 border-4 border-zinc-200">
                   <AvatarImage
-                    src={
-                      replaceInstagramURL(user?.prefs["image"]) ||
-                      "/notFound.jpg"
-                    }
+                    src={replaceInstagramURL(user?.image) || "/notFound.jpg"}
                     className=" h-[100%] w-[100%] object-cover"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -82,7 +79,10 @@ const Particles: React.FC<UserProp> = ({ user }) => {
                 stiffness: 45,
               }}
             >
-              <Link href={`https://instagram.com/${user.name}`} target="_blank">
+              <Link
+                href={`https://instagram.com/${user.username}`}
+                target="_blank"
+              >
                 {user.match && parseInt(user.match.per) > 70 && (
                   <Button>Let&apos;s Connect 🫂</Button>
                 )}

@@ -22,8 +22,6 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { database } from "@/lib/client/appwrite";
-import { ID } from "appwrite";
 import { useUserContext } from "@/store/context";
 import { gallery } from "@/app/types/types";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -113,25 +111,26 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             } = await response.json();
             delUrl = data.data.deletion_url;
 
-            const newImage: gallery = await database.createDocument(
-              process.env.DATABASE_ID || "",
-              process.env.GALLERY_ID || "",
-              ID.unique(),
-              {
-                data: data.data.direct_url,
-                del: data.data.deletion_url,
-                type: file.type.startsWith("image") ? "image" : "video",
-                for: user.$id,
-                link: link?.value || optionalLink,
-                features:
-                  data.features.length > 0
-                    ? data.features.map((r) => r.toLowerCase())
-                    : [],
-                index: user.usersDoc.galleryTotal + 1,
-                users: [user.$id],
-                tags: [],
-              }
-            );
+            const image = {
+              type: file.type.startsWith("image") ? "image" : "video",
+              userId: user._id,
+              data: data.data.direct_url,
+              del: data.data.deletion_url,
+              link: link?.value || optionalLink,
+              features:
+                data.features.length > 0
+                  ? data.features.map((r) => r.toLowerCase())
+                  : [],
+            };
+            const res = await fetch("/api/update", {
+              method: "PATCH",
+              body: JSON.stringify({ type: "gallery", data: image }),
+            });
+            const newImage = await res.json();
+            if (!res.ok) {
+              const error = await res.json();
+              throw new Error(error.error.message);
+            }
             setFile(file);
             fileRef.current = URL.createObjectURL(file);
             setGallery((prev) => [newImage, ...(prev || [])]);
@@ -141,7 +140,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
             throw new Error(res.error.message);
           }
         } catch (error) {
-          fetch(delUrl);
+          await fetch(delUrl).catch((e) => console.error(e));
           //@ts-expect-error:expected error
           toast.error(error.message);
         } finally {
@@ -207,7 +206,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           return true;
         });
 
-        const completed = await Promise.all(uploadPromises);
+        await Promise.all(uploadPromises);
 
         if (closeRef.current) closeRef.current.click();
       } else {
@@ -238,7 +237,7 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
     return (
       <Dialog>
         <DialogTrigger ref={ref}></DialogTrigger>
-        <DialogContent className="w-[40dvw] rounded-xl ">
+        <DialogContent className="max-w-lg rounded-xl ">
           <DialogHeader>
             <DialogTitle>Upload</DialogTitle>
             <DialogDescription>Analyzed by AI</DialogDescription>

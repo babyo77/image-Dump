@@ -9,28 +9,22 @@ import {
 import { Input } from "./input";
 import { Settings } from "@/app/login/settings";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { account, client, database } from "@/lib/client/appwrite";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { useUserContext } from "@/store/context";
-import { getMetadata, isValidURL } from "@/lib/utils";
-import { user } from "@/app/types/types";
 import { AnimatePresence, motion } from "framer-motion";
 import AddGalleryItems from "../addGalleryitems";
 import Link from "next/link";
-function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
+import { IUser } from "@/lib/models/userModel";
+import { showError } from "@/lib/utils";
+function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
   const { setLoader } = useUserContext();
   const handleShare = async () => {
     try {
       setLoader(true);
-      const name = (await account.get()).name;
-      if (name) {
-        navigator.share({
-          url: window.location.origin + "/p/" + name,
-        });
-      } else {
-        toast.error("something went wrong");
-      }
+      navigator.share({
+        url: window.location.origin + "/p/" + user.username,
+      });
     } catch (error) {
       //@ts-expect-error:expected-error
       toast.error(error.message);
@@ -39,69 +33,41 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
     }
   };
 
-  const {
-    setUser,
-    user: loggedInUser,
-    setLinks,
-    links,
-    setGallery,
-    loader,
-  } = useUserContext();
+  const { setUser, setLinks, setGallery, links, loader } = useUserContext();
   useEffect(() => {
     setUser(user);
-    setLinks(user.links);
-    setGallery(user.usersDoc.gallery);
-    if (loggedIn && user.cookie) {
-      client.setSession(user.cookie.value);
-    }
-    if (user.loggedInUser && user.loggedInUser.cookie) {
-      client.setSession(user.loggedInUser.cookie.value);
-    }
-  }, [loggedIn, user, setUser, setLinks, setGallery]);
+    setGallery(user.gallery || []);
+    setLinks(user.links || []);
+  }, [user, setUser, setLinks, setGallery]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const linkRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const handleChange = useCallback(async () => {
-    if (linkRef.current) {
-      const link = linkRef.current.value;
-      if (link.trim().length > 0 && isValidURL(link) && links) {
-        if (links.length === 7)
-          return toast.error("Maximum 7 links are allowed");
-        try {
-          setLoading(true);
-          const newLink = await getMetadata(link);
-          if (newLink) {
-            const updated = await database.updateDocument(
-              process.env.DATABASE_ID || "",
-              process.env.USERS_ID || "",
-              user.$id,
-              {
-                links: [link, ...links.map((l) => l.url)],
-              }
-            );
-            if (updated) {
-              setLinks([{ ...newLink, id: links.length + 1 }, ...links]);
-              linkRef.current.value = "";
-              if (closeRef.current) {
-                closeRef.current.click();
-              }
-            }
-          } else {
-            toast.error("something went wrong");
-          }
-          setLoading(false);
-        } catch (error) {
-          //@ts-expect-error:expected
-          toast.error(error.message);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        toast.error("invalid link");
+    const link = linkRef.current?.value;
+    try {
+      setLoading(true);
+      const metadata = await fetch(`/api/metadata?url=${link}`);
+      if (metadata.ok) {
+        setLinks([
+          { ...(await metadata.json()), url: link, id: links?.length },
+          ...(links || []),
+        ]);
       }
+      const response = await fetch("/api/update", {
+        method: "PATCH",
+        body: JSON.stringify({ type: "links", data: link }),
+      });
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+      closeRef.current?.click();
+    } catch (error) {
+      showError(error);
+    } finally {
+      setLoading(false);
     }
-  }, [links, setLinks, user.$id]);
+  }, [setLinks, links]);
 
   return (
     <AnimatePresence>
@@ -160,7 +126,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: user }) {
                         type="url"
                         ref={linkRef}
                         disabled={loading}
-                        placeholder={loggedInUser?.links[0]?.url || ""}
+                        placeholder="Add new link in bio"
                         className=" bg-primary-foreground/80 rounded-none border-none"
                       />
                       <Button
