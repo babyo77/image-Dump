@@ -37,7 +37,7 @@ export async function PATCH(req: NextRequest) {
       case "username":
         updatedUser = await User.findByIdAndUpdate(
           user._id,
-          { username: data.username, interests: data.interests },
+          { username: data.username.toLowerCase(), interests: data.interests },
           { new: true }
         );
         break;
