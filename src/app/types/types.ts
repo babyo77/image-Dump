@@ -20,6 +20,7 @@ export interface gallery {
 }
 export interface starred extends Document {
   userId: mongoose.Types.ObjectId;
+  starredId: mongoose.Types.ObjectId;
 }
 
 export interface match {

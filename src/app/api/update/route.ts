@@ -1,5 +1,6 @@
 import { getLoggedInUser } from "@/action/getLogggedInUser";
 import Gallery from "@/lib/models/galleryModel";
+import Starred from "@/lib/models/starredModel";
 import User from "@/lib/models/userModel";
 import dbConnect from "@/lib/server/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,6 +27,18 @@ export async function PATCH(req: NextRequest) {
           { name: data, fullName: data },
           { new: true }
         );
+        break;
+      case "star":
+        updatedUser = await Starred.create({
+          userId: data.userId,
+          starredId: data.starredId,
+        });
+        break;
+      case "unStar":
+        updatedUser = await Starred.deleteOne({
+          userId: data.userId,
+          starredId: data.starredId,
+        });
         break;
       case "bio":
         updatedUser = await User.findByIdAndUpdate(

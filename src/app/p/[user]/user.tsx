@@ -23,10 +23,20 @@ function User({ user }: { user: IUser }) {
   const [starred, setStarred] = useState<boolean>(user.isStarred || false);
   const Like = useCallback(async () => {
     if (user.loggedInUser) {
-      if (!starred) {
-      } else {
-        router.push("/login");
-      }
+      const likePayload = {
+        type: starred ? "unStar" : "star",
+        data: {
+          userId: user.loggedInUser._id,
+          starredId: user._id,
+        },
+      };
+
+      const res = await fetch(`/api/update`, {
+        method: "PATCH",
+        body: JSON.stringify(likePayload),
+      });
+    } else {
+      router.push("/login");
     }
   }, [user, starred, router]);
 
@@ -165,14 +175,14 @@ function User({ user }: { user: IUser }) {
                   {starred ? (
                     <IoStar
                       onClick={() => (
-                        handleLike(), user.loggedInUser && setStarred(false)
+                        user.loggedInUser && setStarred(false), handleLike()
                       )}
                       className="h-7 w-7 text-yellow-400  transition-all duration-500"
                     />
                   ) : (
                     <IoIosStarOutline
                       onClick={() => (
-                        handleLike(), user.loggedInUser && setStarred(true)
+                        user.loggedInUser && setStarred(true), handleLike()
                       )}
                       className="h-7 w-7 text-zinc-400 hover:text-zinc-200 transition-all duration-500"
                     />

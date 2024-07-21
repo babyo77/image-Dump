@@ -8,6 +8,11 @@ const starredModel: Schema<starred> = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    starredId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

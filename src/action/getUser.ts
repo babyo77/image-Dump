@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getLoggedInUser } from "./getLogggedInUser";
 import Gallery from "@/lib/models/galleryModel";
 import { metadata, music } from "@/app/types/types";
+import Starred from "@/lib/models/starredModel";
 
 export async function getUser(username: string) {
   await dbConnect();
@@ -50,11 +51,17 @@ export async function getUser(username: string) {
       .sort({ updatedAt: -1 })
       .limit(40);
 
+    const isStarred = await Starred.findOne({
+      userId: loggedInUser?._id,
+      starredId: user.id,
+    });
+
     return {
       ...user.toObject(),
       links,
       loggedInUser,
       gallery,
+      isStarred: isStarred ? true : false,
       music,
       match: { per: 0 },
     } as IUser;
