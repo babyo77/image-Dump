@@ -46,7 +46,9 @@ export async function getUser(username: string) {
       }
     }
 
-    const gallery = await Gallery.find({ userId: user._id }).limit(40);
+    const gallery = await Gallery.find({ userId: user._id })
+      .sort({ updatedAt: -1 })
+      .limit(40);
 
     return {
       ...user.toObject(),
