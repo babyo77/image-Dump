@@ -162,11 +162,17 @@ const Masonry: React.FunctionComponent<MasonryType> = ({
         <div key={rowIndex} style={{ width: `${columnWidth}%` }}>
           {innerArray?.map((imageObj, columnIndex) => (
             <motion.div
-              initial={{ y: "5dvh", opacity: 0, filter: "blur(10px)" }}
+              initial={{
+                y: "5dvh",
+                opacity: 0,
+                filter: "blur(10px)",
+              }}
               animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
               transition={{
-                duration: 1,
-                delay: Number(`1.${rowIndex}`),
+                duration: 0.5,
+                delay: Number(
+                  `${Math.floor(rowIndex / 10) + 1}.${rowIndex % 10}`
+                ),
                 type: "spring",
                 stiffness: 45,
               }}
