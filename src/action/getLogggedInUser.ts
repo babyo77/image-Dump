@@ -30,7 +30,7 @@ export async function getLoggedInUser() {
     }
     let music: music | null = null;
     user.links = user.links.filter((r: string) => r.trim() !== "");
-
+    user.image = user.image.replace("s96", "s1440");
     const links: metadata[] = await Promise.all(
       user.links.map(async (link: string, id: number) => {
         const res = await fetch(`https://dub.co/api/metatags?url=${link}`, {
