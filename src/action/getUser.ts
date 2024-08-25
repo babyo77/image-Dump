@@ -22,13 +22,16 @@ export async function getUser(username: string) {
     }
 
     let music: music | null = null;
+    user.links = user.links.filter((r: string) => r.trim() !== "");
+
     const links: metadata[] = await Promise.all(
       user.links.map(async (link: string, id: number) => {
         const res = await fetch(`https://dub.co/api/metatags?url=${link}`, {
           next: { revalidate: 24 * 60 * 60 * 1000 },
         });
         if (!res.ok) return;
-        return { ...(await res.json()), url: link, id: id };
+        const data = await res.json();
+        return { ...data, url: link, id: id };
       })
     );
 

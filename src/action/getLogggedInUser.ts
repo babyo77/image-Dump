@@ -29,6 +29,8 @@ export async function getLoggedInUser() {
       throw new Error("User not found");
     }
     let music: music | null = null;
+    user.links = user.links.filter((r: string) => r.trim() !== "");
+
     const links: metadata[] = await Promise.all(
       user.links.map(async (link: string, id: number) => {
         const res = await fetch(`https://dub.co/api/metatags?url=${link}`, {
