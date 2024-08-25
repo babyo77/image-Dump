@@ -32,7 +32,7 @@ function Profile({
 }) {
   const router = useRouter();
   const [profiles, setProfiles] = useState<discover[]>(discover);
-  const [space, setSpace] = useState<boolean>(true);
+  const [space, setSpace] = useState<boolean>(false);
   const [isExiting, setIsExiting] = useState(false);
   const [currentMode, setCurrentMode] = useState<"pop" | "for" | null>(null);
   const [loader, setLoader] = useState<boolean>(false);

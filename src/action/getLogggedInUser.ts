@@ -56,7 +56,9 @@ export async function getLoggedInUser() {
 
     const gallery = await Gallery.find({ userId: decoded.user }).limit(40);
 
-    return { ...user.toObject(), links, music, gallery } as IUser;
+    return JSON.parse(
+      JSON.stringify({ ...user.toObject(), links, music, gallery })
+    ) as IUser;
   } catch (error) {
     console.error("Error in getLoggedInUser:", error);
     return null;

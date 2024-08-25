@@ -56,15 +56,17 @@ export async function getUser(username: string) {
       starredId: user.id,
     });
 
-    return {
-      ...user.toObject(),
-      links,
-      loggedInUser,
-      gallery,
-      isStarred: isStarred ? true : false,
-      music,
-      match: { per: 0 },
-    } as IUser;
+    return JSON.parse(
+      JSON.stringify({
+        ...user.toObject(),
+        links,
+        loggedInUser,
+        gallery,
+        isStarred: isStarred ? true : false,
+        music,
+        match: { per: 0 },
+      })
+    ) as IUser;
   }
   return null;
 }
