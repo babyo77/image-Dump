@@ -89,10 +89,17 @@ function User({ user }: { user: IUser }) {
   }, [fullImage]);
   const handleShare = (e: React.MouseEvent<HTMLParagraphElement>) => {
     e.stopPropagation();
+    const url = window.location.origin + "/p/" + user.username;
     try {
-      navigator.share({
-        url: window.location.origin + "/p/" + user.username,
-      });
+      if (navigator.share) {
+        navigator.share({
+          url,
+        });
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          toast.success("Link copied to clipboard");
+        });
+      }
     } catch (error) {
       //@ts-expect-error:expected-error
       toast.error(error.message);
