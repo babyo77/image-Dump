@@ -111,7 +111,9 @@ function Interests({
               <Input
                 placeholder="Username"
                 defaultValue={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase())}
+                onChange={(e) =>
+                  setUsername(e.target.value.toLowerCase().replace(/ /g, "_"))
+                }
                 name="username"
               />
 
