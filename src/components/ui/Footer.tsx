@@ -18,18 +18,21 @@ import Link from "next/link";
 import { IUser } from "@/lib/models/userModel";
 import { showError } from "@/lib/utils";
 function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
-  const { setLoader } = useUserContext();
   const handleShare = async () => {
+    const url = window.location.origin + "/p/" + user.username;
     try {
-      setLoader(true);
-      navigator.share({
-        url: window.location.origin + "/p/" + user.username,
-      });
+      if (navigator.share) {
+        navigator.share({
+          url,
+        });
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          toast.success("Link copied to clipboard");
+        });
+      }
     } catch (error) {
       //@ts-expect-error:expected-error
       toast.error(error.message);
-    } finally {
-      setLoader(false);
     }
   };
 
