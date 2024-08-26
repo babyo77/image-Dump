@@ -48,6 +48,15 @@ export async function PATCH(req: NextRequest) {
         );
         break;
       case "username":
+        const containsLetters = /[a-zA-Z]/.test(data.username);
+
+        if (!containsLetters) {
+          return NextResponse.json(
+            { message: "Invalid username" },
+            { status: 402 }
+          );
+        }
+
         updatedUser = await User.findByIdAndUpdate(
           user._id,
           {
