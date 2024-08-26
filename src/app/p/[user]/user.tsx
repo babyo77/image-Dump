@@ -91,7 +91,7 @@ function User({ user }: { user: IUser }) {
     e.stopPropagation();
     const url = window.location.origin + "/p/" + user.username;
     try {
-      if (navigator.canShare()) {
+      if (navigator.share) {
         navigator.share({
           url,
         });
