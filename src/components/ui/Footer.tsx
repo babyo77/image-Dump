@@ -18,8 +18,9 @@ import Link from "next/link";
 import { IUser } from "@/lib/models/userModel";
 import { showError } from "@/lib/utils";
 function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
+  const { user: loggedInUser } = useUserContext();
   const handleShare = async () => {
-    const url = window.location.origin + "/p/" + user.username;
+    const url = window.location.origin + "/p/" + loggedInUser?.username;
     try {
       if (navigator.share) {
         navigator.share({

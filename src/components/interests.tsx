@@ -29,6 +29,7 @@ import {
 import { Input } from "./ui/input";
 import { IUser } from "@/lib/models/userModel";
 import { showError } from "@/lib/utils";
+import { useUserContext } from "@/store/context";
 
 function Interests({
   isOpen,
@@ -39,6 +40,7 @@ function Interests({
   isOpen?: boolean;
   user: IUser;
 }) {
+  const { setUser } = useUserContext();
   const [interested, setInterest] = useState<string[]>(user.interests);
   const CloseRef = useRef<HTMLButtonElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
@@ -67,6 +69,7 @@ function Interests({
         if (!res.ok) {
           throw new Error((await res.json()).message);
         }
+        setUser((prev) => ({ ...(prev || user), username }));
         if (CloseRef.current) {
           confettiAnimation();
           CloseRef.current.click();
@@ -77,7 +80,7 @@ function Interests({
         setLoader(false);
       }
     },
-    [interested, username]
+    [interested, username, user, setUser]
   );
 
   const handleKeywordsChange = (newKeywords: string[]) => {
