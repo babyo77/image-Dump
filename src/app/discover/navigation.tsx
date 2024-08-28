@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/drawer";
 import { useRef } from "react";
 import { IUser } from "@/lib/models/userModel";
+import { logout } from "@/action/logout";
 
 function UserSettings({ loggedIn }: { loggedIn?: IUser | null }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -52,7 +53,7 @@ function UserSettings({ loggedIn }: { loggedIn?: IUser | null }) {
       hidden: loggedIn?._id ? false : true,
       action: async () => {
         try {
-          await fetch("/api/logout");
+          await logout();
           closeRef.current?.click();
           window.location.reload();
         } catch (error) {
