@@ -49,6 +49,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const handleChange = useCallback(async () => {
     const link = linkRef.current?.value;
+    if (link?.trim().length === 0) return;
     try {
       setLoading(true);
       const metadata = await fetch(`/api/metadata?url=${link}`);
