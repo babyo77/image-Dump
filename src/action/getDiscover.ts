@@ -5,9 +5,9 @@ import dbConnect from "@/lib/server/dbConnect";
 
 export async function getDiscover(mode?: "pop" | "for") {
   await dbConnect();
-  const usersList: IUser[] = await User.find({}).select(
-    "fullName bio _id image username"
-  );
+  const usersList: IUser[] = await User.find({})
+    .select("fullName bio _id image username")
+    .limit(40);
 
   if (mode === "pop") {
     return usersList as unknown as discover[];
