@@ -84,7 +84,7 @@ function Details({ details }: { details: IUser }) {
         "payload_json",
         JSON.stringify({
           upload_source: "dashboard",
-          domain: "the-chiefly-lasagna.tixte.co",
+          domain: "tanmay111-files.tixte.co",
           type: 1,
           name: details.name + image.name,
         })
