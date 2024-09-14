@@ -29,7 +29,7 @@ export interface match {
 }
 
 export interface discover {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
   fullName: string;
   bio: string;
   image: string;
