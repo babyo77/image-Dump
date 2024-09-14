@@ -24,6 +24,14 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "tanmay111-files.tixte.co",
+      },
+      {
+        protocol: "https",
+        hostname: "https://us-east-1.tixte.ne",
+      },
+      {
+        protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
       {
