@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
         },
         body: data,
       });
+      if (!response.ok) throw new Error("Missing permission");
       const imagedata = await response.json();
 
       return NextResponse.json(

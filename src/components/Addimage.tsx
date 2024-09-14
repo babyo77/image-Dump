@@ -89,13 +89,13 @@ const ImageGallery = forwardRef<HTMLButtonElement, {}>(({}, ref) => {
           "payload_json",
           JSON.stringify({
             upload_source: "dashboard",
-            domain: "the-chiefly-lasagna.tixte.co",
+            domain: "tanmay111-files.tixte.co",
             type: 1,
             name: file.name,
           })
         );
         formData.append("file", file);
-        let delUrl = "https://example.com";
+        let delUrl = "tanmay111-files.tixte.co";
         try {
           const response = await fetch("/api/upload", {
             method: "POST",
