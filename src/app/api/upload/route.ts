@@ -89,6 +89,6 @@ async function run(bytes: Buffer, req: NextRequest) {
     return text;
   } catch (error) {
     console.log(error);
-    return "['babyo7_']";
+    return `["babyo7_"]`;
   }
 }
