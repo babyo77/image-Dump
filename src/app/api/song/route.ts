@@ -5,8 +5,9 @@ export async function POST(req: NextRequest) {
     const data = await req.formData();
     const formData: File | null = data.get("file") as unknown as File;
     const fileSizeMB = formData.size / (1024 * 1024);
+
     if (
-      !formData.type.startsWith("audio") ||
+      !formData.type.startsWith("audio") &&
       !formData.type.startsWith("image")
     ) {
       return NextResponse.json(
