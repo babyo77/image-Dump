@@ -5,17 +5,22 @@ export async function POST(req: NextRequest) {
     const data = await req.formData();
     const formData: File | null = data.get("file") as unknown as File;
     const fileSizeMB = formData.size / (1024 * 1024);
-
+    if (!formData.type.startsWith("audio")) {
+      return NextResponse.json(
+        { status: "failed", error: { message: "invalid format" } },
+        { status: 400 }
+      );
+    }
     if (fileSizeMB > 20) {
       return NextResponse.json(
         { status: "failed", error: { message: "File size exceeds 20MB" } },
-        { status: 500 }
+        { status: 400 }
       );
     }
     if (!formData)
       return NextResponse.json(
         { error: { message: "no file" } },
-        { status: 403 }
+        { status: 400 }
       );
     const response = await fetch("https://api.tixte.com/v1/upload", {
       method: "POST",
