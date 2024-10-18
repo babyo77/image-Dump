@@ -43,7 +43,7 @@ export function Links({
   const handleRemove = async (id: number) => {
     try {
       setLoader(true);
-      const updatedLinks = links?.filter((link) => link.id !== id);
+      const updatedLinks = links?.filter((link) => link?.id !== id || "");
 
       setLinks(updatedLinks || []);
       if (updatedLinks?.length === 0) {
@@ -83,32 +83,32 @@ export function Links({
             className="flex -mt-[0.77rem] w-fit cursor-pointer font-normal leading-tight dark:text-zinc-300 items-center pl-[0.4rem] text-sm"
           >
             {!links ? (
-              details.links.slice(0, 3).map(({ image }, i) => (
+              details?.links?.slice(0, 3).map((data, i) => (
                 <Avatar
-                  key={image + i}
+                  key={data?.image + i}
                   className={` ${
                     i === 0 ? "" : "-ml-2.5"
                   } h-7 w-7 border-2 border-zinc-100`}
                 >
                   <AvatarImage
                     className=" w-[100%] h-[100%] object-cover"
-                    src={image || "/notFound.jpg"}
+                    src={data?.image || "/notFound.jpg"}
                   />
                   <AvatarFallback className=" bg-zinc-800">!</AvatarFallback>
                 </Avatar>
               ))
             ) : (
               <>
-                {links?.slice(0, 3).map(({ image }, i) => (
+                {links?.slice(0, 3).map((data, i) => (
                   <Avatar
-                    key={image + i}
+                    key={data?.image + i}
                     className={` ${
                       i === 0 ? "" : "-ml-2.5"
                     } h-7 w-7 border-2 border-zinc-100`}
                   >
                     <AvatarImage
                       className=" w-[100%] h-[100%] object-cover"
-                      src={image || "/notFound.jpg"}
+                      src={data?.image || "/notFound.jpg"}
                     />
                     <AvatarFallback className=" bg-zinc-800">!</AvatarFallback>
                   </Avatar>
@@ -147,11 +147,14 @@ export function Links({
             <DialogTitle>Links</DialogTitle>
             <DialogDescription></DialogDescription>
             <div className=" flex flex-col gap-2 w-full items-center">
-              {links?.map(({ url, title, image, id }, i) => (
-                <div key={url + i} className=" w-full flex gap-2 items-center">
+              {links?.map((data, i) => (
+                <div
+                  key={data?.url + i}
+                  className=" w-full flex gap-2 items-center"
+                >
                   {loggedIn && (
                     <IoMdRemove
-                      onClick={() => handleRemove(id)}
+                      onClick={() => handleRemove(data?.id)}
                       className=" hover:text-zinc-100 text-zinc-400 cursor-pointer"
                     />
                   )}
@@ -161,14 +164,14 @@ export function Links({
                     transition={{ duration: 0.5 }}
                   >
                     <Link
-                      href={url}
+                      href={data?.url || ""}
                       target="_blank"
                       className=" w-full py-2 flex gap-2 items-center"
                     >
                       <Avatar className="h-10 w-10 border-2 border-zinc-100">
                         <AvatarImage
                           className=" w-[100%] h-[100%] object-cover"
-                          src={image || "/notFound.jpg"}
+                          src={data?.image || "/notFound.jpg"}
                         />
                         <AvatarFallback className="bg-zinc-800 text-xs">
                           !
@@ -176,10 +179,10 @@ export function Links({
                       </Avatar>
                       <div className=" leading-tight text-start">
                         <p className="text-zinc-100 hover:text-zinc-300 duration-500 transition-all truncate md:max-w-[20dvw]  max-w-[55dvw]">
-                          {title}
+                          {data?.title}
                         </p>
                         <p className=" text-xs truncate md:max-w-[17dvw] max-w-[50dvw] text-zinc-400">
-                          {url.replace(/^(https?:\/\/)?(www\.)?/, "")}
+                          {data?.url.replace(/^(https?:\/\/)?(www\.)?/, "")}
                         </p>
                       </div>
                     </Link>
@@ -208,32 +211,32 @@ export function Links({
           className="flex -mt-2.5 cursor-pointer  w-fit font-normal leading-tight dark:text-zinc-300 items-center pl-1.5 text-sm"
         >
           {!links ? (
-            details.links.slice(0, 3).map(({ image }, i) => (
+            details.links.slice(0, 3).map((data, i) => (
               <Avatar
-                key={image + i}
+                key={data?.image + i}
                 className={` ${
                   i === 0 ? "" : "-ml-2.5"
                 } h-7 w-7 border-2 border-zinc-100`}
               >
                 <AvatarImage
                   className=" w-[100%] h-[100%] object-cover"
-                  src={image || "/notFound.jpg"}
+                  src={data?.image || "/notFound.jpg"}
                 />
                 <AvatarFallback className=" bg-zinc-800">!</AvatarFallback>
               </Avatar>
             ))
           ) : (
             <>
-              {links?.slice(0, 3).map(({ image }, i) => (
+              {links?.slice(0, 3).map((data, i) => (
                 <Avatar
-                  key={image + i}
+                  key={data?.image || "" + i}
                   className={` ${
                     i === 0 ? "" : "-ml-2.5"
                   } h-7 w-7 border-2 border-zinc-100`}
                 >
                   <AvatarImage
                     className=" w-[100%] h-[100%] object-cover"
-                    src={image || "/notFound.jpg"}
+                    src={data?.image || "/notFound.jpg"}
                   />
                   <AvatarFallback className=" bg-zinc-800">!</AvatarFallback>
                 </Avatar>
@@ -269,11 +272,14 @@ export function Links({
           <DrawerTitle>Links</DrawerTitle>
           <DrawerDescription></DrawerDescription>
           <div className=" flex flex-col gap-2 w-full items-center">
-            {links?.map(({ url, title, image, id }, i) => (
-              <div key={url + i} className=" w-full flex gap-2 items-center">
+            {links?.map((data, i) => (
+              <div
+                key={data?.url + i}
+                className=" w-full flex gap-2 items-center"
+              >
                 {loggedIn && (
                   <IoMdRemove
-                    onClick={() => handleRemove(id)}
+                    onClick={() => handleRemove(data?.id)}
                     className=" hover:text-zinc-100 text-zinc-400 cursor-pointer"
                   />
                 )}
@@ -283,14 +289,14 @@ export function Links({
                   transition={{ duration: 0.5 }}
                 >
                   <Link
-                    href={url}
+                    href={data?.url || ""}
                     target="_blank"
                     className=" w-full py-2 flex gap-2 items-center"
                   >
                     <Avatar className="h-10 w-10 border-2 border-zinc-100">
                       <AvatarImage
                         className=" w-[100%] h-[100%] object-cover"
-                        src={image || "/notFound.jpg"}
+                        src={data?.image || "/notFound.jpg"}
                       />
                       <AvatarFallback className="bg-zinc-800 text-xs">
                         !
@@ -298,10 +304,10 @@ export function Links({
                     </Avatar>
                     <div className=" leading-tight text-start">
                       <p className="text-zinc-100 truncate md:max-w-[20dvw]  max-w-[70dvw]">
-                        {title}
+                        {data?.title}
                       </p>
                       <p className=" text-xs truncate md:max-w-[17dvw] max-w-[65dvw] text-zinc-400">
-                        {url.replace(/^(https?:\/\/)?(www\.)?/, "")}
+                        {data?.url.replace(/^(https?:\/\/)?(www\.)?/, "")}
                       </p>
                     </div>
                   </Link>

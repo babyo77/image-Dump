@@ -10,12 +10,6 @@ export const capitalizeWords = (str: string) => {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-export const isValidURL = (value: string) => {
-  const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-
-  return urlRegex.test(value);
-};
-
 export const getMetadata = async (link: string) => {
   if (isValidURL(link)) {
     try {
@@ -91,3 +85,7 @@ export function showError(error: any) {
     toast.error("An unexpected error occurred");
   }
 }
+
+export const isValidURL = (url: string) => {
+  return url.startsWith("http");
+};

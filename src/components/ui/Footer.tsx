@@ -16,7 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import AddGalleryItems from "../addGalleryitems";
 import Link from "next/link";
 import { IUser } from "@/lib/models/userModel";
-import { showError } from "@/lib/utils";
+import { isValidURL, showError } from "@/lib/utils";
 function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
   const { user: loggedInUser } = useUserContext();
   const handleShare = async () => {
@@ -50,6 +50,7 @@ function Footer({ loggedIn, user }: { loggedIn: boolean; user: IUser }) {
   const handleChange = useCallback(async () => {
     const link = linkRef.current?.value;
     if (link?.trim().length === 0) return;
+    if (!isValidURL(link || "")) return toast.error("URL is not valid");
     try {
       setLoading(true);
       const metadata = await fetch(`/api/metadata?url=${link}`);
