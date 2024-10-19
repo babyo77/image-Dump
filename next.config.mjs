@@ -38,6 +38,7 @@ const nextConfig = {
     MONGODB_URL: process.env.MONGODB_URL,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
